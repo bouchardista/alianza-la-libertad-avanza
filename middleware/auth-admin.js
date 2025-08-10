@@ -3,6 +3,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   
   console.log('🔒 Middleware auth-admin ejecutándose...')
   console.log('👤 Usuario actual:', user.value)
+  console.log('📍 Ruta destino:', to.path)
   
   // Si no hay usuario, intentar verificar autenticación
   if (!user.value) {
