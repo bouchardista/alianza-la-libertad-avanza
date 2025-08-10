@@ -18,9 +18,11 @@ export const usePosts = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
-      const { user } = useAuth()
-      if (!user.value) {
-        return { success: false, error: 'Usuario no autenticado' }
+      // Obtener usuario actual de Supabase directamente
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado. Por favor, inicia sesión nuevamente.' }
       }
 
       const newPost = {
@@ -31,7 +33,7 @@ export const usePosts = () => {
         firmante: postData.firmante || 'Alianza La Libertad Avanza',
         date: postData.date || new Date().toISOString().split('T')[0],
         status: 'published',
-        author_id: user.value.id,
+        author_id: user.id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }
@@ -62,9 +64,11 @@ export const usePosts = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
-      const { user } = useAuth()
-      if (!user.value) {
-        return { success: false, error: 'Usuario no autenticado' }
+      // Obtener usuario actual de Supabase directamente
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado. Por favor, inicia sesión nuevamente.' }
       }
 
       const updateData = {
@@ -104,9 +108,11 @@ export const usePosts = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
-      const { user } = useAuth()
-      if (!user.value) {
-        return { success: false, error: 'Usuario no autenticado' }
+      // Obtener usuario actual de Supabase directamente
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado. Por favor, inicia sesión nuevamente.' }
       }
 
       const { error } = await supabase

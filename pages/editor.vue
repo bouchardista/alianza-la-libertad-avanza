@@ -350,7 +350,13 @@ const handleCreatePost = async () => {
     // Refrescar la lista de posts
     await refreshNuxtData('editor-posts')
   } else {
-    alert('Error al crear la publicación: ' + result.error)
+    // Mostrar error más descriptivo
+    if (result.error.includes('no autenticado')) {
+      alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
+      await navigateTo('/login')
+    } else {
+      alert('Error al crear la publicación: ' + result.error)
+    }
   }
 }
 </script>
