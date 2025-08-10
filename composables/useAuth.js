@@ -5,17 +5,23 @@ export const useAuth = () => {
   const signIn = async (email, password) => {
     loading.value = true
     try {
-      const { data, error } = await $fetch('/api/auth/login', {
+      const response = await $fetch('/api/auth/login', {
         method: 'POST',
         body: { email, password }
       })
       
-      if (error) throw error
+      console.log('🔍 Respuesta del servidor:', response)
       
-      user.value = data.user
-      return { success: true, user: data.user }
+      if (response && response.user) {
+        user.value = response.user
+        return { success: true, user: response.user }
+      } else {
+        console.error('❌ Respuesta inválida del servidor:', response)
+        return { success: false, error: 'Respuesta inválida del servidor' }
+      }
     } catch (error) {
-      return { success: false, error: error.message }
+      console.error('❌ Error en signIn:', error)
+      return { success: false, error: error.message || 'Error al iniciar sesión' }
     } finally {
       loading.value = false
     }
@@ -23,20 +29,27 @@ export const useAuth = () => {
 
   const signOut = async () => {
     try {
-      await $fetch('/api/auth/logout', { method: 'POST' })
+      const response = await $fetch('/api/auth/logout', { method: 'POST' })
       user.value = null
       return { success: true }
     } catch (error) {
+      console.error('❌ Error en signOut:', error)
       return { success: false, error: error.message }
     }
   }
 
   const checkAuth = async () => {
     try {
-      const { data } = await $fetch('/api/auth/user')
-      user.value = data.user
-      return data.user
+      const response = await $fetch('/api/auth/user')
+      if (response && response.user) {
+        user.value = response.user
+        return response.user
+      } else {
+        user.value = null
+        return null
+      }
     } catch (error) {
+      console.error('❌ Error en checkAuth:', error)
       user.value = null
       return null
     }
