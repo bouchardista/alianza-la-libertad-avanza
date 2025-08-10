@@ -42,11 +42,29 @@ export const useAuth = () => {
     }
   }
 
+  // Función para verificar si el usuario tiene un rol específico
+  const hasRole = (role) => {
+    return user.value?.role === role
+  }
+
+  // Función para verificar si el usuario es admin
+  const isAdmin = () => {
+    return hasRole('admin')
+  }
+
+  // Función para verificar si el usuario es editor
+  const isEditor = () => {
+    return hasRole('editor') || hasRole('admin')
+  }
+
   return {
     user: readonly(user),
     loading: readonly(loading),
     signIn,
     signOut,
-    checkAuth
+    checkAuth,
+    hasRole,
+    isAdmin,
+    isEditor
   }
 }
