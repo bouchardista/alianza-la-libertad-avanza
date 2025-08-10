@@ -14,6 +14,12 @@ export default defineNuxtConfig({
       exclude: ['/']
     }
   },
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.SUPABASE_URL,
+      supabaseKey: process.env.SUPABASE_KEY
+    }
+  },
   content: {
     highlight: {
       theme: 'github-dark'

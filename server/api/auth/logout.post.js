@@ -1,8 +1,30 @@
 export default defineEventHandler(async (event) => {
-  // Por ahora simulamos el logout
-  // Aquí iría la lógica real con Supabase
-  return {
-    success: true,
-    message: 'Sesión cerrada exitosamente'
+  const config = useRuntimeConfig()
+  
+  try {
+    // Crear cliente de Supabase
+    const { createClient } = await import('@supabase/supabase-js')
+    const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
+    
+    // Cerrar sesión en Supabase
+    const { error } = await supabase.auth.signOut()
+    
+    if (error) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: error.message
+      })
+    }
+    
+    return {
+      success: true,
+      message: 'Sesión cerrada exitosamente'
+    }
+  } catch (error) {
+    console.error('Error al cerrar sesión:', error)
+    throw createError({
+      statusCode: error.statusCode || 500,
+      statusMessage: error.statusMessage || 'Error al cerrar sesión'
+    })
   }
 })
