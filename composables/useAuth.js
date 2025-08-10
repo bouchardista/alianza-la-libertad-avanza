@@ -14,12 +14,16 @@ export const useAuth = () => {
         return null
       }
       
-      console.log('🔍 Auth disponible:', !!$supabase.auth)
-      if ($supabase.auth) {
-        console.log('🔍 Métodos de auth:', Object.keys($supabase.auth))
+      // El cliente real está en $supabase.client
+      const client = $supabase.client
+      console.log('🔍 Client disponible:', !!client)
+      console.log('🔍 Auth disponible:', !!client?.auth)
+      
+      if (client?.auth) {
+        console.log('🔍 Métodos de auth:', Object.keys(client.auth))
       }
       
-      return $supabase
+      return client
     } catch (error) {
       console.error('❌ Error obteniendo cliente de Supabase:', error)
       return null
