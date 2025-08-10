@@ -4,11 +4,21 @@ export const useAuth = () => {
 
   const getSupabase = () => {
     try {
+      console.log('🔍 Intentando obtener cliente de Supabase...')
       const { $supabase } = useNuxtApp()
+      console.log('🔍 $supabase obtenido:', !!$supabase)
+      console.log('🔍 Tipo de $supabase:', typeof $supabase)
+      
       if (!$supabase) {
         console.error('❌ Cliente de Supabase no disponible')
         return null
       }
+      
+      console.log('🔍 Auth disponible:', !!$supabase.auth)
+      if ($supabase.auth) {
+        console.log('🔍 Métodos de auth:', Object.keys($supabase.auth))
+      }
+      
       return $supabase
     } catch (error) {
       console.error('❌ Error obteniendo cliente de Supabase:', error)

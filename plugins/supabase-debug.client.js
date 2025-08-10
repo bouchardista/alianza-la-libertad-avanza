@@ -3,9 +3,16 @@ export default defineNuxtPlugin(() => {
   
   const { $supabase } = useNuxtApp()
   console.log('📊 Cliente de Supabase disponible:', !!$supabase)
+  console.log('🔍 Tipo de $supabase:', typeof $supabase)
+  console.log('🔍 $supabase completo:', $supabase)
   
   if ($supabase) {
     console.log('✅ Cliente de Supabase inicializado correctamente')
+    console.log('🔍 Métodos disponibles:', Object.keys($supabase))
+    console.log('🔍 Auth disponible:', !!$supabase.auth)
+    if ($supabase.auth) {
+      console.log('🔍 Métodos de auth:', Object.keys($supabase.auth))
+    }
   } else {
     console.error('❌ Cliente de Supabase no disponible en el plugin')
   }
