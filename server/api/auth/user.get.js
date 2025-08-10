@@ -1,5 +1,6 @@
 export default defineEventHandler(async (event) => {
   const token = getHeader(event, 'authorization')
+  const config = useRuntimeConfig()
   
   if (!token) {
     return {
@@ -8,8 +9,9 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    // Usar el cliente de Supabase del módulo
-    const { supabase } = event.context
+    // Crear cliente de Supabase para el servidor
+    const { createClient } = await import('@supabase/supabase-js')
+    const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
     
     // Obtener usuario actual
     const { data: { user }, error } = await supabase.auth.getUser(token.replace('Bearer ', ''))

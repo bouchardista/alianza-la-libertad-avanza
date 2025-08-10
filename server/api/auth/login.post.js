@@ -2,9 +2,12 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { email, password } = body
 
+  const config = useRuntimeConfig()
+
   try {
-    // Usar el cliente de Supabase del módulo
-    const { supabase } = event.context
+    // Crear cliente de Supabase para el servidor
+    const { createClient } = await import('@supabase/supabase-js')
+    const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
     
     // Intentar autenticación con Supabase
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -13,6 +16,7 @@ export default defineEventHandler(async (event) => {
     })
     
     if (error) {
+      console.error('Error de autenticación:', error)
       throw createError({
         statusCode: 401,
         statusMessage: error.message
@@ -39,7 +43,7 @@ export default defineEventHandler(async (event) => {
       }
     }
   } catch (error) {
-    console.error('Error de autenticación:', error)
+    console.error('Error general en login:', error)
     throw createError({
       statusCode: error.statusCode || 500,
       statusMessage: error.statusMessage || 'Error en el servidor de autenticación'
