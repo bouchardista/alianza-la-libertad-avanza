@@ -1,0 +1,106 @@
+<template>
+  <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      <div>
+        <div class="mx-auto h-20 w-20 rounded-full bg-[#B23B8F] flex items-center justify-center shadow-lg">
+          <Icon name="heroicons:flag" class="h-12 w-12 text-white" />
+        </div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
+          Acceso al Sistema
+        </h2>
+        <p class="mt-2 text-center text-sm text-white/80">
+          Alianza La Libertad Avanza - Córdoba
+        </p>
+      </div>
+      
+      <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <label for="email" class="sr-only">Email</label>
+            <input
+              id="email"
+              v-model="email"
+              name="email"
+              type="email"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 placeholder-white/60 text-white bg-white/10 rounded-t-md focus:outline-none focus:ring-[#EFB141] focus:border-[#EFB141] focus:z-10 sm:text-sm"
+              placeholder="Email"
+            />
+          </div>
+          <div>
+            <label for="password" class="sr-only">Contraseña</label>
+            <input
+              id="password"
+              v-model="password"
+              name="password"
+              type="password"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 placeholder-white/60 text-white bg-white/10 rounded-b-md focus:outline-none focus:ring-[#EFB141] focus:border-[#EFB141] focus:z-10 sm:text-sm"
+              placeholder="Contraseña"
+            />
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            :disabled="loading"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-800 bg-[#EFB141] hover:bg-[#E36030] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#EFB141] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <span v-if="loading" class="absolute left-0 inset-y-0 flex items-center pl-3">
+              <Icon name="heroicons:arrow-path" class="h-5 w-5 animate-spin" />
+            </span>
+            {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+          </button>
+        </div>
+
+        <div v-if="error" class="text-red-400 text-sm text-center">
+          {{ error }}
+        </div>
+      </form>
+
+      <div class="text-center">
+        <a href="/" class="text-[#EFB141] hover:text-[#E36030] text-sm transition-colors">
+          ← Volver al sitio principal
+        </a>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+useHead({
+  title: 'Login - Alianza La Libertad Avanza',
+  meta: [
+    { name: 'description', content: 'Acceso al sistema de administración' }
+  ]
+});
+
+const email = ref('');
+const password = ref('');
+const loading = ref(false);
+const error = ref('');
+
+const handleLogin = async () => {
+  loading.value = true;
+  error.value = '';
+  
+  try {
+    // Aquí iría la lógica de autenticación real
+    // Por ahora simulamos un login básico
+    if (email.value === 'admin@alianza.com' && password.value === 'admin123') {
+      // Login exitoso como admin
+      await navigateTo('/admin');
+    } else if (email.value === 'editor@alianza.com' && password.value === 'editor123') {
+      // Login exitoso como editor
+      await navigateTo('/editor');
+    } else {
+      error.value = 'Credenciales incorrectas';
+    }
+  } catch (err) {
+    error.value = 'Error al iniciar sesión';
+  } finally {
+    loading.value = false;
+  }
+};
+</script>
