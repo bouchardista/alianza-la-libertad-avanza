@@ -18,7 +18,6 @@ export const usePosts = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
-      // Obtener usuario actual de Supabase directamente
       const { data: { user }, error: authError } = await supabase.auth.getUser()
       
       if (authError || !user) {
@@ -64,7 +63,6 @@ export const usePosts = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
-      // Obtener usuario actual de Supabase directamente
       const { data: { user }, error: authError } = await supabase.auth.getUser()
       
       if (authError || !user) {
@@ -108,7 +106,6 @@ export const usePosts = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
-      // Obtener usuario actual de Supabase directamente
       const { data: { user }, error: authError } = await supabase.auth.getUser()
       
       if (authError || !user) {

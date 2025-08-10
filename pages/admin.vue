@@ -52,7 +52,7 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Loader de contenido -->
-      <div v-if="pending" class="flex justify-center py-12">
+      <div v-if="postsLoading" class="flex justify-center py-12">
         <div class="text-center">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#31B4E7] mx-auto mb-4"></div>
           <p class="text-white/80">Cargando publicaciones...</p>
@@ -278,34 +278,34 @@ useHead({
 });
 
 const { user, signOut, loading } = useAuth()
-const { createPost, loading: postsLoading } = usePosts()
+const { createPost, loading: postsLoading, getPosts } = usePosts()
 
 // Estado de carga inicial
 const pageLoading = ref(true)
 
-// Cargar posts con loading state
-const { data: posts, pending, error: postsError } = await useAsyncData("admin-posts", () =>
-  queryContent("/posts").sort({ date: -1 }).find()
-);
+// Cargar posts desde Supabase
+const posts = ref([])
+const postsError = ref(null)
 
-// Marcar página como cargada cuando los datos estén listos
-watch(pending, (isPending) => {
-  if (!isPending) {
-    pageLoading.value = false
+// Función para cargar posts
+const loadPosts = async () => {
+  const result = await getPosts()
+  if (result.success) {
+    posts.value = result.posts
+  } else {
+    postsError.value = result.error
   }
-})
+}
 
-// Evitar problemas de hidratación y manejar errores
-onMounted(() => {
+// Cargar posts al montar la página
+onMounted(async () => {
+  await loadPosts()
+  pageLoading.value = false
+  
   // Timeout de seguridad para evitar que se cuelgue
   setTimeout(() => {
     pageLoading.value = false
-  }, 5000) // 5 segundos máximo
-  
-  // Si hay error, también quitar el loading
-  if (postsError.value) {
-    pageLoading.value = false
-  }
+  }, 5000)
 })
 
 const showCreateModal = ref(false)
@@ -348,7 +348,7 @@ const handleCreatePost = async () => {
       firmante: 'Alianza La Libertad Avanza'
     }
     // Refrescar la lista de posts
-    await refreshNuxtData('admin-posts')
+    await loadPosts()
   } else {
     // Mostrar error más descriptivo
     if (result.error.includes('no autenticado')) {

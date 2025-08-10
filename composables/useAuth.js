@@ -35,7 +35,6 @@ export const useAuth = () => {
         return { success: false, error: 'Respuesta inválida del servidor de autenticación' }
       }
       
-      // Obtener información adicional del perfil
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role, name')
@@ -92,7 +91,6 @@ export const useAuth = () => {
         return null
       }
       
-      // Obtener información adicional del perfil
       const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role, name')
@@ -114,17 +112,14 @@ export const useAuth = () => {
     }
   }
 
-  // Función para verificar si el usuario tiene un rol específico
   const hasRole = (role) => {
     return user.value?.role === role
   }
 
-  // Función para verificar si el usuario es admin
   const isAdmin = () => {
     return hasRole('admin')
   }
 
-  // Función para verificar si el usuario es editor
   const isEditor = () => {
     return hasRole('editor') || hasRole('admin')
   }
