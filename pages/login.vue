@@ -94,13 +94,13 @@ const handleLogin = async () => {
     console.log('👤 Usuario:', result.user)
     console.log('🎭 Rol:', result.user.role)
     
-    // Redirigir según el rol
+    // Redirigir según el rol usando window.location
     if (result.user.role === 'admin') {
-      console.log('🔄 Redirigiendo a /admin')
-      await navigateTo('/admin')
+      console.log('🔄 Redirigiendo a /admin con window.location')
+      window.location.href = '/admin'
     } else if (result.user.role === 'editor') {
-      console.log('🔄 Redirigiendo a /editor')
-      await navigateTo('/editor')
+      console.log('🔄 Redirigiendo a /editor con window.location')
+      window.location.href = '/editor'
     } else {
       console.log('⚠️ Rol no reconocido:', result.user.role)
     }

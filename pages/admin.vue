@@ -185,6 +185,8 @@ useHead({
   ]
 });
 
+console.log('🎯 Página de admin cargándose...')
+
 const { user, signOut, loading } = useAuth()
 
 const { data: posts } = await useAsyncData("admin-posts", () =>
