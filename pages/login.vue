@@ -84,17 +84,28 @@ const error = ref('')
 
 const handleLogin = async () => {
   error.value = ''
+  console.log('🚀 Iniciando proceso de login...')
   
   const result = await signIn(email.value, password.value)
+  console.log('📊 Resultado del login:', result)
   
   if (result.success) {
+    console.log('✅ Login exitoso, redirigiendo...')
+    console.log('👤 Usuario:', result.user)
+    console.log('🎭 Rol:', result.user.role)
+    
     // Redirigir según el rol
     if (result.user.role === 'admin') {
+      console.log('🔄 Redirigiendo a /admin')
       await navigateTo('/admin')
     } else if (result.user.role === 'editor') {
+      console.log('🔄 Redirigiendo a /editor')
       await navigateTo('/editor')
+    } else {
+      console.log('⚠️ Rol no reconocido:', result.user.role)
     }
   } else {
+    console.error('❌ Error en login:', result.error)
     error.value = result.error || 'Error al iniciar sesión'
   }
 }
