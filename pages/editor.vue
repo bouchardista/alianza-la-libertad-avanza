@@ -10,6 +10,9 @@
             <p class="text-sm text-white/80 mt-1">
               Alianza La Libertad Avanza - Córdoba
             </p>
+            <p v-if="user" class="text-xs text-white/60 mt-1">
+              Conectado como: {{ user.name }} ({{ user.role }})
+            </p>
           </div>
           <div class="flex space-x-4">
             <a
@@ -20,11 +23,12 @@
               Volver al sitio
             </a>
             <button
-              @click="logout"
-              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#AD3257] hover:bg-[#8B1F3F] transition-colors"
+              @click="handleLogout"
+              :disabled="loading"
+              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#AD3257] hover:bg-[#8B1F3F] transition-colors disabled:opacity-50"
             >
               <Icon name="heroicons:arrow-right-on-rectangle" class="w-4 h-4 mr-2" />
-              Cerrar Sesión
+              {{ loading ? 'Cerrando...' : 'Cerrar Sesión' }}
             </button>
           </div>
         </div>
@@ -169,12 +173,19 @@
 </template>
 
 <script setup>
+// Middleware para proteger la ruta
+definePageMeta({
+  middleware: 'auth-editor'
+})
+
 useHead({
   title: 'Editor - Alianza La Libertad Avanza',
   meta: [
     { name: 'description', content: 'Panel de editor del sitio oficial' }
   ]
 });
+
+const { user, signOut, loading } = useAuth()
 
 const { data: posts } = await useAsyncData("editor-posts", () =>
   queryContent("/posts").sort({ date: -1 }).find()
@@ -212,8 +223,10 @@ const saveAsDraft = (post) => {
   alert(`Guardando como borrador: ${post.title}`);
 };
 
-const logout = () => {
-  // Aquí iría la lógica de logout
-  navigateTo('/login');
+const handleLogout = async () => {
+  const result = await signOut()
+  if (result.success) {
+    await navigateTo('/login')
+  }
 };
 </script>

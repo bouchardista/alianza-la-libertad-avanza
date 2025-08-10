@@ -76,31 +76,26 @@ useHead({
   ]
 });
 
-const email = ref('');
-const password = ref('');
-const loading = ref(false);
-const error = ref('');
+const { signIn, loading } = useAuth()
+
+const email = ref('')
+const password = ref('')
+const error = ref('')
 
 const handleLogin = async () => {
-  loading.value = true;
-  error.value = '';
+  error.value = ''
   
-  try {
-    // Aquí iría la lógica de autenticación real
-    // Por ahora simulamos un login básico
-    if (email.value === 'admin@alianza.com' && password.value === 'admin123') {
-      // Login exitoso como admin
-      await navigateTo('/admin');
-    } else if (email.value === 'editor@alianza.com' && password.value === 'editor123') {
-      // Login exitoso como editor
-      await navigateTo('/editor');
-    } else {
-      error.value = 'Credenciales incorrectas';
+  const result = await signIn(email.value, password.value)
+  
+  if (result.success) {
+    // Redirigir según el rol
+    if (result.user.role === 'admin') {
+      await navigateTo('/admin')
+    } else if (result.user.role === 'editor') {
+      await navigateTo('/editor')
     }
-  } catch (err) {
-    error.value = 'Error al iniciar sesión';
-  } finally {
-    loading.value = false;
+  } else {
+    error.value = result.error || 'Error al iniciar sesión'
   }
-};
+}
 </script>
