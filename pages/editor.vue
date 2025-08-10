@@ -61,6 +61,17 @@
 
       <!-- Contenido principal -->
       <div v-else>
+        <!-- Error de carga -->
+        <div v-if="postsError" class="bg-red-500/10 border border-red-500/20 rounded-lg p-6 mb-8">
+          <div class="flex items-center">
+            <Icon name="heroicons:exclamation-triangle" class="h-8 w-8 text-red-400 mr-4" />
+            <div>
+              <h3 class="text-lg font-medium text-red-400">Error al cargar publicaciones</h3>
+              <p class="text-red-300 mt-1">No se pudieron cargar las publicaciones. Intenta recargar la página.</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Estadísticas -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
@@ -273,13 +284,26 @@ const { createPost, loading: postsLoading } = usePosts()
 const pageLoading = ref(true)
 
 // Cargar posts con loading state
-const { data: posts, pending } = await useAsyncData("editor-posts", () =>
+const { data: posts, pending, error: postsError } = await useAsyncData("editor-posts", () =>
   queryContent("/posts").sort({ date: -1 }).find()
 );
 
 // Marcar página como cargada cuando los datos estén listos
 watch(pending, (isPending) => {
   if (!isPending) {
+    pageLoading.value = false
+  }
+})
+
+// Evitar problemas de hidratación y manejar errores
+onMounted(() => {
+  // Timeout de seguridad para evitar que se cuelgue
+  setTimeout(() => {
+    pageLoading.value = false
+  }, 5000) // 5 segundos máximo
+  
+  // Si hay error, también quitar el loading
+  if (postsError.value) {
     pageLoading.value = false
   }
 })

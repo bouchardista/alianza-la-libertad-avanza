@@ -91,6 +91,11 @@ const password = ref('')
 const error = ref('')
 const pageLoading = ref(false)
 
+// Evitar problemas de hidratación usando onMounted
+onMounted(() => {
+  // El estado se inicializa en el cliente
+})
+
 const handleLogin = async () => {
   error.value = ''
   pageLoading.value = true
