@@ -23,6 +23,7 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
-    "@nuxtjs/supabase": "^1.6.0"
+    "@nuxtjs/supabase": "^1.6.0",
+    "dotenv": "^17.2.1"
   }
 }

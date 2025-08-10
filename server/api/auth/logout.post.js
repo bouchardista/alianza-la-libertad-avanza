@@ -1,10 +1,7 @@
 export default defineEventHandler(async (event) => {
-  const config = useRuntimeConfig()
-  
   try {
-    // Crear cliente de Supabase
-    const { createClient } = await import('@supabase/supabase-js')
-    const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
+    // Usar el cliente de Supabase del módulo
+    const { supabase } = event.context
     
     // Cerrar sesión en Supabase
     const { error } = await supabase.auth.signOut()

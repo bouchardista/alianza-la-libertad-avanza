@@ -2,12 +2,9 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const { email, password } = body
 
-  const config = useRuntimeConfig()
-  
   try {
-    // Crear cliente de Supabase
-    const { createClient } = await import('@supabase/supabase-js')
-    const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
+    // Usar el cliente de Supabase del módulo
+    const { supabase } = event.context
     
     // Intentar autenticación con Supabase
     const { data, error } = await supabase.auth.signInWithPassword({
