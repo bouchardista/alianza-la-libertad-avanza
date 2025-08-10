@@ -1,5 +1,13 @@
 <template>
   <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859]">
+    <!-- Loader de página -->
+    <div v-if="pageLoading" class="fixed inset-0 bg-gradient-to-b from-[#1A043C] to-[#371859] flex items-center justify-center z-50">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-[#31B4E7] mx-auto mb-4"></div>
+        <p class="text-white/80 text-lg">Cargando panel de administración...</p>
+      </div>
+    </div>
+
     <header class="bg-white/10 backdrop-blur-sm border-b border-white/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex justify-between items-center">
@@ -43,82 +51,97 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Estadísticas -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-white/60">Total Publicaciones</p>
-              <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-white/60">Resoluciones</p>
-              <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'resolucion').length || 0 }}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <Icon name="heroicons:megaphone" class="h-8 w-8 text-[#B23B8F]" />
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-white/60">Comunicados</p>
-              <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'comunicado').length || 0 }}</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <Icon name="heroicons:calendar" class="h-8 w-8 text-[#6A4C98]" />
-            </div>
-            <div class="ml-4">
-              <p class="text-sm font-medium text-white/60">Este Mes</p>
-              <p class="text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
-            </div>
-          </div>
+      <!-- Loader de contenido -->
+      <div v-if="pending" class="flex justify-center py-12">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#31B4E7] mx-auto mb-4"></div>
+          <p class="text-white/80">Cargando publicaciones...</p>
         </div>
       </div>
 
-      <!-- Lista de Publicaciones -->
-      <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-        <div class="px-6 py-4 border-b border-white/20">
-          <h2 class="text-xl font-semibold text-white">Publicaciones Recientes</h2>
-        </div>
-        <div class="divide-y divide-white/20">
-          <div v-for="post in posts" :key="post._path" class="px-6 py-4">
-            <div class="flex items-center justify-between">
-              <div class="flex-1">
-                <h3 class="text-lg font-medium text-white">{{ post.title }}</h3>
-                <div class="flex items-center space-x-4 mt-2">
-                  <Badge :type="post.type" />
-                  <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
-                  <span class="text-sm text-white/60">{{ post.firmante }}</span>
-                </div>
+      <!-- Contenido principal -->
+      <div v-else>
+        <!-- Estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
               </div>
-              <div class="flex space-x-2">
-                <button class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors">
-                  <Icon name="heroicons:pencil" class="w-5 h-5" />
-                </button>
-                <button class="text-[#AD3257] hover:text-[#8B1F3F] transition-colors">
-                  <Icon name="heroicons:trash" class="w-5 h-5" />
-                </button>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Total Publicaciones</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
               </div>
             </div>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Resoluciones</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'RESOLUCIÓN').length || 0 }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <Icon name="heroicons:megaphone" class="h-8 w-8 text-[#B23B8F]" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Comunicados</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'COMUNICADO').length || 0 }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <Icon name="heroicons:calendar" class="h-8 w-8 text-[#6A4C98]" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Este Mes</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de Publicaciones -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+          <div class="px-6 py-4 border-b border-white/20">
+            <h2 class="text-xl font-semibold text-white">Publicaciones Recientes</h2>
+          </div>
+          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20">
+            <div v-for="post in posts" :key="post._path" class="px-6 py-4">
+              <div class="flex items-center justify-between">
+                <div class="flex-1">
+                  <h3 class="text-lg font-medium text-white">{{ post.title }}</h3>
+                  <div class="flex items-center space-x-4 mt-2">
+                    <Badge :type="post.type" />
+                    <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
+                    <span class="text-sm text-white/60">{{ post.firmante }}</span>
+                  </div>
+                </div>
+                <div class="flex space-x-2">
+                  <button class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors">
+                    <Icon name="heroicons:pencil" class="w-5 h-5" />
+                  </button>
+                  <button class="text-[#AD3257] hover:text-[#8B1F3F] transition-colors">
+                    <Icon name="heroicons:trash" class="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else class="px-6 py-12 text-center">
+            <Icon name="heroicons:document-text" class="h-12 w-12 text-white/40 mx-auto mb-4" />
+            <p class="text-white/60">No hay publicaciones disponibles.</p>
           </div>
         </div>
       </div>
@@ -246,9 +269,20 @@ useHead({
 const { user, signOut, loading } = useAuth()
 const { createPost, loading: postsLoading } = usePosts()
 
-const { data: posts } = await useAsyncData("admin-posts", () =>
+// Estado de carga inicial
+const pageLoading = ref(true)
+
+// Cargar posts con loading state
+const { data: posts, pending } = await useAsyncData("admin-posts", () =>
   queryContent("/posts").sort({ date: -1 }).find()
 );
+
+// Marcar página como cargada cuando los datos estén listos
+watch(pending, (isPending) => {
+  if (!isPending) {
+    pageLoading.value = false
+  }
+})
 
 const showCreateModal = ref(false)
 const newPost = ref({
