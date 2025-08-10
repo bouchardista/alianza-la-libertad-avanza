@@ -2,14 +2,31 @@ export const useAuth = () => {
   const user = useState('user', () => null)
   const loading = useState('auth-loading', () => false)
 
+  const getSupabase = () => {
+    try {
+      const { $supabase } = useNuxtApp()
+      if (!$supabase) {
+        console.error('❌ Cliente de Supabase no disponible')
+        return null
+      }
+      return $supabase
+    } catch (error) {
+      console.error('❌ Error obteniendo cliente de Supabase:', error)
+      return null
+    }
+  }
+
   const signIn = async (email, password) => {
     loading.value = true
     try {
       console.log('🚀 Iniciando login con Supabase...')
       
-      // Usar el cliente de Supabase directamente
-      const { $supabase } = useNuxtApp()
-      const { data, error } = await $supabase.auth.signInWithPassword({
+      const supabase = getSupabase()
+      if (!supabase) {
+        return { success: false, error: 'Cliente de Supabase no disponible' }
+      }
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       })
@@ -29,7 +46,7 @@ export const useAuth = () => {
       console.log('✅ Usuario autenticado:', data.user.id)
       
       // Obtener información adicional del perfil
-      const { data: profile, error: profileError } = await $supabase
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role, name')
         .eq('id', data.user.id)
@@ -62,9 +79,12 @@ export const useAuth = () => {
     try {
       console.log('🚪 Cerrando sesión...')
       
-      // Usar el cliente de Supabase directamente
-      const { $supabase } = useNuxtApp()
-      const { error } = await $supabase.auth.signOut()
+      const supabase = getSupabase()
+      if (!supabase) {
+        return { success: false, error: 'Cliente de Supabase no disponible' }
+      }
+      
+      const { error } = await supabase.auth.signOut()
       
       if (error) {
         console.error('❌ Error al cerrar sesión:', error)
@@ -84,9 +104,13 @@ export const useAuth = () => {
     try {
       console.log('🔍 Verificando autenticación...')
       
-      // Usar el cliente de Supabase directamente
-      const { $supabase } = useNuxtApp()
-      const { data: { user }, error } = await $supabase.auth.getUser()
+      const supabase = getSupabase()
+      if (!supabase) {
+        console.log('❌ Cliente de Supabase no disponible')
+        return null
+      }
+      
+      const { data: { user }, error } = await supabase.auth.getUser()
       
       console.log('📊 Respuesta de Supabase auth:', { user, error })
       
@@ -97,7 +121,7 @@ export const useAuth = () => {
       }
       
       // Obtener información adicional del perfil
-      const { data: profile, error: profileError } = await $supabase
+      const { data: profile, error: profileError } = await supabase
         .from('profiles')
         .select('role, name')
         .eq('id', user.id)
