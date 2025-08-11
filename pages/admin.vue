@@ -122,6 +122,7 @@
             <div class="flex items-center">
               <div class="flex-shrink-0">
                 <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
+              </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Resoluciones</p>
                 <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'RESOLUCIÓN').length || 0 }}</p>
