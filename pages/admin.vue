@@ -143,7 +143,7 @@
                         </div>
           <div v-if="posts && posts.length > 0" class="divide-y divide-white/20">
             <div v-for="post in posts" :key="post.id" class="px-4 sm:px-6 py-4">
-                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                                <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">
                       <h3 class="text-base sm:text-lg font-medium text-white truncate">{{ post.title }}</h3>
                       <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2">
@@ -157,15 +157,21 @@
                         </span>
                       </div>
                     </div>
-                    <div class="flex items-center space-x-2 mt-3 sm:mt-0">
+                    <div class="flex items-end space-x-2">
                       <button 
                         v-if="post.status === 'draft'"
                         @click="handlePublishDraft(post)"
-                        class="inline-flex items-center space-x-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+                        :disabled="disabledButtons.has(post.id)"
+                        :class="[
+                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors',
+                          disabledButtons.has(post.id)
+                            ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
+                            : 'bg-green-600 hover:bg-green-700 text-white'
+                        ]"
                         title="Publicar borrador"
                       >
                         <Icon name="heroicons:arrow-up-circle" class="w-4 h-4" />
-                        <span>Publicar</span>
+                        <span>{{ disabledButtons.has(post.id) ? 'Publicando...' : 'Publicar' }}</span>
                       </button>
                       <button 
                         @click="handleEditPost(post)"
@@ -562,6 +568,9 @@ const newPost = ref({
 // Estado para archivos seleccionados
 const selectedFiles = ref([])
 const isDragOver = ref(false)
+
+// Estado para botones deshabilitados
+const disabledButtons = ref(new Set())
 const editingPost = ref({
   id: null,
   title: '',
@@ -695,6 +704,9 @@ const confirmDelete = async () => {
 }
 
 const handlePublishDraft = async (post) => {
+  // Deshabilitar el botón inmediatamente
+  disabledButtons.value.add(post.id)
+  
   const result = await publishDraft(post.id)
   
   if (result.success) {
@@ -702,6 +714,8 @@ const handlePublishDraft = async (post) => {
     await loadPosts()
     showSuccess('✅ Borrador publicado exitosamente')
   } else {
+    // Re-habilitar el botón si hay error
+    disabledButtons.value.delete(post.id)
     alert('Error al publicar el borrador: ' + result.error)
   }
 }
