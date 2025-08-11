@@ -34,50 +34,50 @@
 
     <header class="bg-white/10 backdrop-blur-sm border-b border-white/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                          <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
-                    <div class="flex items-center space-x-4">
-                      <div class="flex-shrink-0">
-                        <NuxtLink to="/" class="block hover:opacity-80 transition-opacity bg-transparent">
-                          <img src="/white-logo.png" alt="Logo" class="h-16 w-16 object-contain bg-transparent" />
-                        </NuxtLink>
-                      </div>
-                      <div>
-                        <h1 class="text-2xl lg:text-3xl font-bold text-white">
-                          Panel de Admin
-                        </h1>
-                        <p class="text-sm text-white/80 mt-1">
-                          Alianza La Libertad Avanza Córdoba
-                        </p>
-                        <p v-if="user" class="text-xs text-white/60 mt-1">
-                          Conectado como: {{ user.name }} ({{ user.role }})
-                        </p>
-                      </div>
-                    </div>
-                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
-                      <button
-                        @click="showCreateModal = true"
-                        class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#31B4E7] hover:bg-[#2A9BC7] transition-colors"
-                      >
-                        <Icon name="heroicons:plus" class="w-4 h-4 mr-2" />
-                        Nueva Publicación
-                      </button>
-                      <a
-                        href="/"
-                        class="inline-flex items-center justify-center px-4 py-2 border border-white/20 rounded-md shadow-sm text-sm font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
-                      >
-                        <Icon name="heroicons:arrow-left" class="w-4 h-4 mr-2" />
-                        Volver al sitio
-                      </a>
-                      <button
-                        @click="handleLogout"
-                        :disabled="loading"
-                        class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#AD3257] hover:bg-[#8B1F3F] transition-colors disabled:opacity-50"
-                      >
-                        <Icon name="heroicons:arrow-right-on-rectangle" class="w-4 h-4 mr-2" />
-                        {{ loading ? 'Cerrando...' : 'Cerrar Sesión' }}
-                      </button>
-                    </div>
-                  </div>
+        <div class="flex justify-between items-center">
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <NuxtLink to="/" class="block hover:opacity-80 transition-opacity bg-transparent">
+                <img src="/white-logo.png" alt="Logo" class="h-16 w-16 object-contain bg-transparent" />
+              </NuxtLink>
+            </div>
+            <div>
+              <h1 class="text-3xl font-bold text-white">
+                Panel de Admin
+              </h1>
+              <p class="text-sm text-white/80 mt-1">
+                Alianza La Libertad Avanza Córdoba
+              </p>
+              <p v-if="user" class="text-xs text-white/60 mt-1">
+                Conectado como: {{ user.name }} ({{ user.role }})
+              </p>
+            </div>
+          </div>
+          <div class="flex space-x-4">
+            <button
+              @click="showCreateModal = true"
+              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#31B4E7] hover:bg-[#2A9BC7] transition-colors"
+            >
+              <Icon name="heroicons:plus" class="w-4 h-4 mr-2" />
+              Nueva Publicación
+            </button>
+            <a
+              href="/"
+              class="inline-flex items-center px-4 py-2 border border-white/20 rounded-md shadow-sm text-sm font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
+            >
+              <Icon name="heroicons:arrow-left" class="w-4 h-4 mr-2" />
+              Volver al sitio
+            </a>
+            <button
+              @click="handleLogout"
+              :disabled="loading"
+              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#AD3257] hover:bg-[#8B1F3F] transition-colors disabled:opacity-50"
+            >
+              <Icon name="heroicons:arrow-right-on-rectangle" class="w-4 h-4 mr-2" />
+              {{ loading ? 'Cerrando...' : 'Cerrar Sesión' }}
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -103,28 +103,28 @@
           </div>
         </div>
 
-                              <!-- Estadísticas -->
-                      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-6 mb-8 w-full">
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
+        <!-- Estadísticas -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-6 mb-8 w-full">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:document-text" class="h-5 w-5 sm:h-8 sm:w-8 text-[#31B4E7]" />
+                <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
               </div>
-              <div class="ml-2 sm:ml-4">
-                <p class="text-xs sm:text-sm font-medium text-white/60">Total Publicaciones</p>
-                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Total Publicaciones</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
               </div>
             </div>
           </div>
           
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:flag" class="h-5 w-5 sm:h-8 sm:w-8 text-[#EFB141]" />
+                <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
               </div>
-              <div class="ml-2 sm:ml-4">
-                <p class="text-xs sm:text-sm font-medium text-white/60">Resoluciones</p>
-                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'RESOLUCIÓN').length || 0 }}</p>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Resoluciones</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'RESOLUCIÓN').length || 0 }}</p>
               </div>
             </div>
           </div>

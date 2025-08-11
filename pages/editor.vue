@@ -464,6 +464,98 @@
             </div>
           </div>
           
+          <div>
+            <label class="block text-sm font-medium text-white mb-2">Archivos adjuntos</label>
+            <div 
+              ref="editDropZone"
+              class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center transition-colors"
+              :class="{ 'border-[#31B4E7] bg-[#31B4E7]/10': isDragOver }"
+              @dragover.prevent="handleDragOver"
+              @dragleave.prevent="handleDragLeave"
+              @drop.prevent="handleDrop"
+            >
+              <input
+                ref="editFileInput"
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.webp"
+                @change="handleFileUpload"
+                class="hidden"
+              />
+              <div class="space-y-4">
+                <Icon name="heroicons:cloud-arrow-up" class="w-12 h-12 text-gray-400 mx-auto" />
+                <div>
+                  <p class="text-white text-sm">
+                    <button 
+                      type="button"
+                      @click="$refs.editFileInput.click()"
+                      class="text-[#31B4E7] hover:text-[#2A9BC7] font-medium"
+                    >
+                      Haz clic para subir
+                    </button>
+                    o arrastra archivos aquí
+                  </p>
+                  <p class="text-gray-400 text-xs mt-1">
+                    PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, WEBP (máx. 50MB cada uno)
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Lista de archivos seleccionados -->
+            <div v-if="selectedFiles.length > 0" class="mt-4 space-y-2">
+              <h4 class="text-sm font-medium text-white">Archivos seleccionados:</h4>
+              <div v-for="(file, index) in selectedFiles" :key="index" class="flex items-center justify-between bg-gray-800 rounded-lg p-3">
+                <div class="flex items-center space-x-3">
+                  <Icon name="heroicons:document" class="w-5 h-5 text-[#31B4E7]" />
+                  <div>
+                    <p class="text-white text-sm">{{ file.name }}</p>
+                    <p class="text-white/60 text-xs">{{ formatFileSize(file.size) }}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  @click="removeFile(index)"
+                  class="text-red-400 hover:text-red-300"
+                >
+                  <Icon name="heroicons:trash" class="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            
+            <!-- Lista de archivos adjuntos existentes -->
+            <div v-if="editingPost.attachments && editingPost.attachments.length > 0" class="mt-4 space-y-2">
+              <h4 class="text-sm font-medium text-white">Archivos adjuntos existentes:</h4>
+              <div v-for="attachment in editingPost.attachments" :key="attachment.id" class="flex items-center justify-between bg-gray-800 rounded-lg p-3">
+                <div class="flex items-center space-x-3">
+                  <Icon name="heroicons:document" class="w-5 h-5 text-[#31B4E7]" />
+                  <div>
+                    <p class="text-white text-sm">{{ attachment.file_name }}</p>
+                    <p class="text-white/60 text-xs">{{ formatFileSize(attachment.file_size) }}</p>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <button
+                    type="button"
+                    @click="openAttachment(attachment)"
+                    class="text-[#31B4E7] hover:text-[#2A9BC7]"
+                    title="Ver archivo"
+                  >
+                    <Icon name="heroicons:eye" class="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    @click="handleDeleteAttachment(attachment.id)"
+                    class="text-red-400 hover:text-red-300"
+                    title="Eliminar archivo"
+                  >
+                    <Icon name="heroicons:trash" class="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <div class="flex justify-end space-x-4 pt-4">
             <button
               type="button"
@@ -695,7 +787,14 @@ const handleUpdatePost = async () => {
   const result = await updatePost(editingPost.value.id, editingPost.value)
   
   if (result.success) {
+    // Subir archivos si hay alguno seleccionado
+    if (selectedFiles.value.length > 0) {
+      await uploadFilesToPost(editingPost.value.id)
+    }
+    
     showEditModal.value = false
+    // Limpiar archivos seleccionados
+    selectedFiles.value = []
     // Refrescar la lista de posts
     await loadPosts()
     showSuccess('✅ Borrador actualizado exitosamente')
@@ -705,6 +804,29 @@ const handleUpdatePost = async () => {
       await navigateTo('/login')
     } else {
       alert('Error al actualizar la publicación: ' + result.error)
+    }
+  }
+}
+
+// Función para abrir archivo adjunto
+const openAttachment = (attachment) => {
+  if (attachment.storage_url) {
+    window.open(attachment.storage_url, '_blank')
+  }
+}
+
+// Función para eliminar archivo adjunto
+const handleDeleteAttachment = async (attachmentId) => {
+  if (confirm('¿Estás seguro de que quieres eliminar este archivo?')) {
+    const result = await deleteAttachment(attachmentId)
+    if (result.success) {
+      // Remover el archivo de la lista
+      editingPost.value.attachments = editingPost.value.attachments.filter(
+        attachment => attachment.id !== attachmentId
+      )
+      showSuccess('✅ Archivo eliminado exitosamente')
+    } else {
+      alert('Error al eliminar el archivo: ' + result.error)
     }
   }
 }

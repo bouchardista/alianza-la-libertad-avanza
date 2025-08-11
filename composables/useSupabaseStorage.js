@@ -74,9 +74,7 @@ export const useSupabaseStorage = () => {
 
   // Función para agregar archivo adjunto a un post
   const addAttachment = async (postId, fileData) => {
-    try {
-      console.log('Agregando archivo adjunto:', { postId, fileData })
-      
+    try {      
       const supabase = getSupabase()
       if (!supabase) {
         return { success: false, error: 'Cliente de Supabase no disponible' }
