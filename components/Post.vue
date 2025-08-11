@@ -17,7 +17,7 @@
         <NuxtLink 
           v-if="isPreview"
           :to="`/posts/${generateSlug(content.title)}`"
-          class="text-white hover:text-[#31B4E7] transition-colors cursor-pointer"
+          class="text-white hover:text-[#31B4E7] transition-colors cursor-pointer title-link"
         >
           {{ content.title }}
         </NuxtLink>
@@ -27,7 +27,14 @@
       </h1>
 
       <div class="document prose prose-invert prose-sm max-w-none">
-        <div v-if="content.content" v-html="formatContent(content.content, isPreview)"></div>
+        <NuxtLink 
+          v-if="isPreview && content.content"
+          :to="`/posts/${generateSlug(content.title)}`"
+          class="block hover:text-[#31B4E7] transition-colors cursor-pointer content-link"
+        >
+          <div v-html="formatContent(content.content, isPreview)"></div>
+        </NuxtLink>
+        <div v-else-if="content.content" v-html="formatContent(content.content, isPreview)"></div>
       </div>
       
       <!-- Botón "Ver post completo" solo en vista previa -->
@@ -188,6 +195,47 @@ const getIconClass = (type) => {
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
+}
+
+/* Hover para contenido clickeable en vista previa */
+.document a:hover .document p,
+.document a:hover .document h1,
+.document a:hover .document h2,
+.document a:hover .document h3,
+.document a:hover .document h4,
+.document a:hover .document h5,
+.document a:hover .document h6,
+.document a:hover .document ul,
+.document a:hover .document ol,
+.document a:hover .document blockquote {
+  color: #31B4E7 !important;
+}
+
+/* Hover conectado entre título y contenido */
+.title-link:hover ~ .document .content-link,
+.content-link:hover ~ h1 .title-link,
+.title-link:hover + .document .content-link {
+  color: #31B4E7 !important;
+}
+
+/* Cuando se hace hover en el contenido, activar el título */
+.content-link:hover ~ h1 .title-link,
+.content-link:hover + h1 .title-link {
+  color: #31B4E7 !important;
+}
+
+/* Cuando se hace hover en el título, activar el contenido */
+.title-link:hover ~ .document .content-link .document p,
+.title-link:hover ~ .document .content-link .document h1,
+.title-link:hover ~ .document .content-link .document h2,
+.title-link:hover ~ .document .content-link .document h3,
+.title-link:hover ~ .document .content-link .document h4,
+.title-link:hover ~ .document .content-link .document h5,
+.title-link:hover ~ .document .content-link .document h6,
+.title-link:hover ~ .document .content-link .document ul,
+.title-link:hover ~ .document .content-link .document ol,
+.title-link:hover ~ .document .content-link .document blockquote {
+  color: #31B4E7 !important;
 }
 
 .document h1, .document h2, .document h3, .document h4, .document h5, .document h6 {
