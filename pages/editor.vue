@@ -290,7 +290,8 @@
                 v-model="newPost.date"
                 type="date"
                 required
-                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
               />
             </div>
             
@@ -381,7 +382,7 @@
               :disabled="postsLoading"
               class="px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-md transition-colors disabled:opacity-50"
             >
-              {{ postsLoading ? 'Creando...' : 'Crear Borrador' }}
+              {{ postsLoading ? 'Creando...' : 'Crear Publicación' }}
             </button>
           </div>
         </form>
@@ -449,7 +450,8 @@
                 v-model="editingPost.date"
                 type="date"
                 required
-                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
               />
             </div>
             
@@ -750,7 +752,7 @@ const handleCreatePost = async () => {
     selectedFiles.value = []
     // Refrescar la lista de posts
     await loadPosts()
-    showSuccess('✅ Borrador creado exitosamente')
+    showSuccess('✅ Publicación creada exitosamente')
   } else {
     // Mostrar error más descriptivo
     if (result.error.includes('no autenticado')) {

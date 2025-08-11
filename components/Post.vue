@@ -34,7 +34,7 @@
       <div v-if="isPreview && content.content && content.content.length > 150" class="mt-4">
         <NuxtLink 
           :to="`/posts/${generateSlug(content.title)}`"
-          class="inline-flex items-center space-x-2 px-3 py-1.5 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-lg transition-colors text-sm"
+          class="inline-flex items-center space-x-2 px-3 py-1.5 bg-transparent border border-white text-white hover:bg-white/10 rounded-lg transition-colors text-sm"
         >
           <span>Ver post completo</span>
           <Icon name="heroicons:arrow-right" class="w-3 h-3" />

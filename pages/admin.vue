@@ -304,7 +304,8 @@
                 v-model="newPost.date"
                 type="date"
                 required
-                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
               />
             </div>
             
@@ -397,7 +398,7 @@
               class="px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-md transition-colors disabled:opacity-50"
             >
               <Icon name="heroicons:plus" class="w-4 h-4 inline mr-2" />
-              <span>{{ postsLoading ? 'Creando...' : 'Crear Borrador' }}</span>
+              <span>{{ postsLoading ? 'Creando...' : 'Crear Publicación' }}</span>
             </button>
           </div>
         </form>
@@ -465,7 +466,8 @@
                 v-model="editingPost.date"
                 type="date"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
               />
             </div>
             
@@ -687,6 +689,7 @@ const newPost = ref({
   content: '',
   type: 'COMUNICADO',
   category: 'general',
+  status: 'published',
   date: new Date().toISOString().split('T')[0],
   firmante: 'Alianza La Libertad Avanza Córdoba'
 })
@@ -763,6 +766,7 @@ const handleCreatePost = async () => {
         content: '',
         type: 'COMUNICADO',
         category: 'general',
+        status: 'published',
         date: new Date().toISOString().split('T')[0],
         firmante: 'Alianza La Libertad Avanza Córdoba'
       }
@@ -770,7 +774,7 @@ const handleCreatePost = async () => {
       selectedFiles.value = []
       // Refrescar la lista de posts
       await loadPosts()
-      showSuccess('✅ Borrador creado exitosamente')
+      showSuccess('✅ Publicación creada exitosamente')
     } else {
       // Mostrar error más descriptivo
       if (result.error.includes('no autenticado')) {
@@ -787,7 +791,7 @@ const handleCreatePost = async () => {
     // Re-habilitar el botón
     if (createButton) {
       createButton.disabled = false
-      createButton.innerHTML = '<Icon name="heroicons:plus" class="w-4 h-4" /><span>Crear Borrador</span>'
+      createButton.innerHTML = '<Icon name="heroicons:plus" class="w-4 h-4" /><span>Crear Publicación</span>'
     }
   }
 }

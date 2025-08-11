@@ -113,10 +113,20 @@ useHead({
     { name: "og:description", content: seoConfig.og.description },
     { name: "og:image", content: seoConfig.og.image },
     { name: "og:url", content: seoConfig.og.url },
-    { name: "twitter:title", content: seoConfig.og.title },
-    { name: "twitter:description", content: seoConfig.og.description },
-    { name: "twitter:image", content: seoConfig.og.image },
-    { name: "twitter:card", content: "summary_large_image" },
+    { name: "og:type", content: seoConfig.og.type },
+    { name: "og:site_name", content: seoConfig.og.site_name },
+    { name: "og:image:width", content: "1200" },
+    { name: "og:image:height", content: "630" },
+    { name: "og:image:alt", content: "Logo de Alianza La Libertad Avanza Córdoba" },
+    { name: "twitter:title", content: seoConfig.twitter.title },
+    { name: "twitter:description", content: seoConfig.twitter.description },
+    { name: "twitter:image", content: seoConfig.twitter.image },
+    { name: "twitter:card", content: seoConfig.twitter.card },
+    { name: "twitter:image:alt", content: "Logo de Alianza La Libertad Avanza Córdoba" },
+    // Meta tags específicos para WhatsApp
+    { name: "theme-color", content: "#8B5CF6" }, // Color violeta del fondo
+    { name: "msapplication-TileColor", content: "#8B5CF6" },
+    { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
   ],
 });
 
