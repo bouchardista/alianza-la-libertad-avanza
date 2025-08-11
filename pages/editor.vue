@@ -163,6 +163,14 @@
                       >
                         <Icon name="heroicons:pencil" class="w-5 h-5" />
                       </button>
+                      <button 
+                        v-if="post.status === 'draft'"
+                        @click="handleRequestPublication(post)"
+                        class="text-green-500 hover:text-green-400 transition-colors"
+                        title="Solicitar publicación"
+                      >
+                        <Icon name="heroicons:paper-airplane" class="w-5 h-5" />
+                      </button>
                     </div>
                   </div>
             </div>
@@ -177,7 +185,7 @@
 
     <!-- Modal para crear nueva publicación -->
     <div v-if="showCreateModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-6 w-full max-w-2xl mx-4">
+      <div class="bg-gray-900 rounded-lg border border-gray-700 p-6 w-full max-w-2xl mx-4">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-white">Nueva Publicación</h2>
           <button @click="showCreateModal = false" class="text-white/60 hover:text-white">
@@ -192,7 +200,7 @@
               v-model="newPost.title"
               type="text"
               required
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               placeholder="Título de la publicación"
             />
           </div>
@@ -203,7 +211,7 @@
               <select
                 v-model="newPost.type"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               >
                 <option value="RESOLUCIÓN">Resolución</option>
                 <option value="COMUNICADO">Comunicado</option>
@@ -215,7 +223,7 @@
               <select
                 v-model="newPost.category"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               >
                 <option value="general">General</option>
                 <option value="politica">Política</option>
@@ -227,9 +235,9 @@
           
           <div>
             <label class="block text-sm font-medium text-white mb-2">Estado</label>
-            <div class="w-full px-3 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-md text-yellow-300 text-sm">
+            <div class="w-full px-3 py-2 bg-blue-500/20 border border-blue-500/30 rounded-md text-blue-300 text-sm">
               <Icon name="heroicons:information-circle" class="w-4 h-4 inline mr-2" />
-              Los editores solo pueden crear borradores. Los administradores revisarán y publicarán el contenido.
+              Crea tu contenido y luego solicita publicación. Los administradores revisarán y aprobarán el contenido.
             </div>
           </div>
           
@@ -239,7 +247,7 @@
               v-model="newPost.content"
               required
               rows="8"
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               placeholder="Contenido de la publicación..."
             ></textarea>
           </div>
@@ -251,7 +259,7 @@
                 v-model="newPost.date"
                 type="date"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               />
             </div>
             
@@ -260,7 +268,7 @@
               <input
                 v-model="newPost.firmante"
                 type="text"
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
                 placeholder="Alianza La Libertad Avanza"
               />
             </div>
@@ -288,7 +296,7 @@
 
     <!-- Modal para editar publicación -->
     <div v-if="showEditModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-6 w-full max-w-2xl mx-4">
+      <div class="bg-gray-900 rounded-lg border border-gray-700 p-6 w-full max-w-2xl mx-4">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-white">Editar Publicación</h2>
           <button @click="showEditModal = false" class="text-white/60 hover:text-white">
@@ -303,7 +311,7 @@
               v-model="editingPost.title"
               type="text"
               required
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               placeholder="Título de la publicación"
             />
           </div>
@@ -314,7 +322,7 @@
               <select
                 v-model="editingPost.type"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               >
                 <option value="RESOLUCIÓN">Resolución</option>
                 <option value="COMUNICADO">Comunicado</option>
@@ -326,7 +334,7 @@
               <select
                 v-model="editingPost.category"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               >
                 <option value="general">General</option>
                 <option value="politica">Política</option>
@@ -342,7 +350,7 @@
               v-model="editingPost.content"
               required
               rows="8"
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               placeholder="Contenido de la publicación..."
             ></textarea>
           </div>
@@ -354,7 +362,7 @@
                 v-model="editingPost.date"
                 type="date"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               />
             </div>
             
@@ -363,7 +371,7 @@
               <input
                 v-model="editingPost.firmante"
                 type="text"
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
                 placeholder="Alianza La Libertad Avanza"
               />
             </div>
@@ -440,7 +448,7 @@ useHead({
 });
 
 const { user, signOut, loading } = useAuth()
-const { createPost, updatePost, loading: postsLoading, getPosts } = usePosts()
+const { createPost, updatePost, requestPublication, loading: postsLoading, getPosts } = usePosts()
 
 // Estado de carga inicial
 const pageLoading = ref(true)
@@ -528,7 +536,9 @@ const handleLogout = async () => {
 }
 
 const handleCreatePost = async () => {
-  const result = await createPost(newPost.value)
+  // Forzar que sea borrador para editores
+  const postData = { ...newPost.value, status: 'draft' }
+  const result = await createPost(postData)
   
   if (result.success) {
     showCreateModal.value = false
@@ -587,27 +597,15 @@ const handleUpdatePost = async () => {
   }
 }
 
-const handleDeletePost = (post) => {
-  deleteConfirmPost.value = post
-  showDeleteModal.value = true
-}
-
-const confirmDelete = async () => {
-  const result = await deletePost(deleteConfirmPost.value.id)
+const handleRequestPublication = async (post) => {
+  const result = await requestPublication(post.id)
   
   if (result.success) {
-    showDeleteModal.value = false
-    deleteConfirmPost.value = null
     // Refrescar la lista de posts
     await loadPosts()
-    showSuccess('✅ Publicación eliminada exitosamente')
+    showSuccess('✅ Solicitud de publicación enviada. Los administradores la revisarán.')
   } else {
-    if (result.error.includes('no autenticado')) {
-      alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
-      await navigateTo('/login')
-    } else {
-      alert('Error al eliminar la publicación: ' + result.error)
-    }
+    alert('Error al solicitar publicación: ' + result.error)
   }
 }
 </script>

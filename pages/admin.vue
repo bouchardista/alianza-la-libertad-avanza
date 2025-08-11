@@ -195,7 +195,7 @@
 
     <!-- Modal para crear nueva publicación -->
     <div v-if="showCreateModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-4 sm:p-6 w-full max-w-2xl">
+      <div class="bg-gray-900 rounded-lg border border-gray-700 p-4 sm:p-6 w-full max-w-2xl">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-white">Nueva Publicación</h2>
           <button @click="showCreateModal = false" class="text-white/60 hover:text-white">
@@ -210,7 +210,7 @@
               v-model="newPost.title"
               type="text"
               required
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               placeholder="Título de la publicación"
             />
           </div>
@@ -221,7 +221,7 @@
               <select
                 v-model="newPost.type"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               >
                 <option value="RESOLUCIÓN">Resolución</option>
                 <option value="COMUNICADO">Comunicado</option>
@@ -233,7 +233,7 @@
               <select
                 v-model="newPost.category"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               >
                 <option value="general">General</option>
                 <option value="politica">Política</option>
@@ -249,7 +249,7 @@
               v-model="newPost.content"
               required
               rows="8"
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               placeholder="Contenido de la publicación..."
             ></textarea>
           </div>
@@ -261,7 +261,7 @@
                 v-model="newPost.date"
                 type="date"
                 required
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               />
             </div>
             
@@ -270,7 +270,7 @@
               <input
                 v-model="newPost.firmante"
                 type="text"
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
                 placeholder="Alianza La Libertad Avanza"
               />
             </div>
@@ -298,7 +298,7 @@
 
     <!-- Modal para editar publicación -->
     <div v-if="showEditModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-4 sm:p-6 w-full max-w-2xl">
+      <div class="bg-gray-900 rounded-lg border border-gray-700 p-4 sm:p-6 w-full max-w-2xl">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-white">Editar Publicación</h2>
           <button @click="showEditModal = false" class="text-white/60 hover:text-white">
@@ -313,7 +313,7 @@
               v-model="editingPost.title"
               type="text"
               required
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
               placeholder="Título de la publicación"
             />
           </div>
