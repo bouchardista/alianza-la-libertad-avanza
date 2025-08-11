@@ -1,14 +1,14 @@
 <template>
   <header class="pb-2 pt-7 px-4 sm:px-6 lg:px-8 bg-[#1A043C]">
-    <div class="relative mx-auto max-w-[37.5rem] pt-12 text-center pb-2">
-      <div class="sm:flex items-center justify-center space-x-3">
+    <div class="relative mx-auto max-w-4xl pt-12 text-center pb-2">
+      <div class="sm:flex items-center justify-center space-x-6">
         <div class="flex items-center justify-center">
-          <div class="h-32 w-32 flex items-center justify-center shadow-lg">
-            <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-28 w-28 object-contain" />
+          <div class="h-40 w-40 flex items-center justify-center shadow-lg">
+            <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-36 w-36 object-contain" />
           </div>
         </div>
         <div class="text-center">
-          <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+          <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl whitespace-nowrap">
             Alianza La Libertad
           </h1>
           <h2 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl mt-1">
