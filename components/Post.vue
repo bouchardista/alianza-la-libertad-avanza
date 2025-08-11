@@ -212,16 +212,16 @@ const getIconClass = (type) => {
 }
 
 /* Hover conectado entre título y contenido */
-.title-link:hover ~ .document .content-hover-area .document p,
-.title-link:hover ~ .document .content-hover-area .document h1,
-.title-link:hover ~ .document .content-hover-area .document h2,
-.title-link:hover ~ .document .content-hover-area .document h3,
-.title-link:hover ~ .document .content-hover-area .document h4,
-.title-link:hover ~ .document .content-hover-area .document h5,
-.title-link:hover ~ .document .content-hover-area .document h6,
-.title-link:hover ~ .document .content-hover-area .document ul,
-.title-link:hover ~ .document .content-hover-area .document ol,
-.title-link:hover ~ .document .content-hover-area .document blockquote {
+.title-link:hover ~ .document .content-hover-area p,
+.title-link:hover ~ .document .content-hover-area h1,
+.title-link:hover ~ .document .content-hover-area h2,
+.title-link:hover ~ .document .content-hover-area h3,
+.title-link:hover ~ .document .content-hover-area h4,
+.title-link:hover ~ .document .content-hover-area h5,
+.title-link:hover ~ .document .content-hover-area h6,
+.title-link:hover ~ .document .content-hover-area ul,
+.title-link:hover ~ .document .content-hover-area ol,
+.title-link:hover ~ .document .content-hover-area blockquote {
   color: #31B4E7 !important;
 }
 
@@ -239,6 +239,20 @@ const getIconClass = (type) => {
 .content-hover-area:hover {
   text-decoration: none !important;
   color: inherit !important;
+}
+
+/* Hover directo en el contenido */
+.content-hover-area:hover p,
+.content-hover-area:hover h1,
+.content-hover-area:hover h2,
+.content-hover-area:hover h3,
+.content-hover-area:hover h4,
+.content-hover-area:hover h5,
+.content-hover-area:hover h6,
+.content-hover-area:hover ul,
+.content-hover-area:hover ol,
+.content-hover-area:hover blockquote {
+  color: #31B4E7 !important;
 }
 
 .document h1, .document h2, .document h3, .document h4, .document h5, .document h6 {
