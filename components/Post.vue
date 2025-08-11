@@ -40,7 +40,10 @@ const props = defineProps({
 const formatDate = (dateString) => {
   if (!dateString) return '';
   try {
-    const date = new Date(dateString);
+    // Crear la fecha en la zona horaria local para evitar problemas de UTC
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day); // month - 1 porque los meses van de 0-11
+    
     return date.toLocaleDateString('es-AR', {
       year: 'numeric',
       month: 'long',
