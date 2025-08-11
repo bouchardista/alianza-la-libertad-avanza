@@ -78,7 +78,7 @@
 
 <script setup>
 useHead({
-  title: 'Login - Alianza La Libertad Avanza',
+  title: 'Login - Alianza La Libertad Avanza Córdoba',
   meta: [
     { name: 'description', content: 'Acceso al sistema de administración' }
   ]

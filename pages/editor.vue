@@ -356,7 +356,7 @@
               :disabled="postsLoading"
               class="px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-md transition-colors disabled:opacity-50"
             >
-              {{ postsLoading ? 'Creando...' : 'Crear Publicación' }}
+              {{ postsLoading ? 'Creando...' : 'Crear Borrador' }}
             </button>
           </div>
         </form>
@@ -459,7 +459,7 @@
               :disabled="postsLoading"
               class="px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-md transition-colors disabled:opacity-50"
             >
-              {{ postsLoading ? 'Actualizando...' : 'Actualizar Publicación' }}
+              {{ postsLoading ? 'Actualizando...' : 'Actualizar Borrador' }}
             </button>
           </div>
         </form>
@@ -510,7 +510,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Editor - Alianza La Libertad Avanza',
+  title: 'Editor - Alianza La Libertad Avanza - Córdoba',
   meta: [
     { name: 'description', content: 'Panel de editor del sitio oficial' }
   ]

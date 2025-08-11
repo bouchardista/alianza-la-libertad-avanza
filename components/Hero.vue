@@ -9,10 +9,10 @@
         </div>
         <div class="text-center">
           <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
-            Alianza
+            Alianza La Libertad
           </h1>
-          <h2 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl mt-1">
-            La Libertad Avanza
+          <h2 class="text-2xl font-bold tracking-tight text-[#EFB141] sm:text-3xl mt-2">
+            Avanza Córdoba
           </h2>
         </div>
       </div>

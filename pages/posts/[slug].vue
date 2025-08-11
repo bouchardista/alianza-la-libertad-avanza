@@ -146,11 +146,11 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: post.value ? post.value.title : 'Publicación - Alianza La Libertad Avanza',
+  title: post.value ? post.value.title : 'Publicación - Alianza La Libertad Avanza Córdoba',
   meta: [
     {
       name: 'description',
-      content: post.value ? post.value.content?.substring(0, 160) + '...' : 'Publicación de Alianza La Libertad Avanza'
+              content: post.value ? post.value.content?.substring(0, 160) + '...' : 'Publicación de Alianza La Libertad Avanza - Córdoba'
     }
   ]
 })

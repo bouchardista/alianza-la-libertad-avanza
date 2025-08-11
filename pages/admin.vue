@@ -354,11 +354,13 @@
               Cancelar
             </button>
             <button
+              id="create-post-button"
               type="submit"
               :disabled="postsLoading"
               class="px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-md transition-colors disabled:opacity-50"
             >
-              {{ postsLoading ? 'Creando...' : 'Crear Publicación' }}
+              <Icon name="heroicons:plus" class="w-4 h-4 inline mr-2" />
+              <span>{{ postsLoading ? 'Creando...' : 'Crear Borrador' }}</span>
             </button>
           </div>
         </form>
@@ -461,7 +463,7 @@
               :disabled="postsLoading"
               class="px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-md transition-colors disabled:opacity-50"
             >
-              {{ postsLoading ? 'Actualizando...' : 'Actualizar Publicación' }}
+              {{ postsLoading ? 'Actualizando...' : 'Actualizar Borrador' }}
             </button>
           </div>
         </form>
@@ -512,7 +514,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Administración - Alianza La Libertad Avanza',
+  title: 'Administración - Alianza La Libertad Avanza - Córdoba',
   meta: [
     { name: 'description', content: 'Panel de administración del sitio oficial' }
   ]
@@ -614,36 +616,54 @@ const handleLogout = async () => {
 }
 
 const handleCreatePost = async () => {
-  const result = await createPost(newPost.value)
+  // Deshabilitar el botón inmediatamente
+  const createButton = document.querySelector('#create-post-button')
+  if (createButton) {
+    createButton.disabled = true
+    createButton.innerHTML = '<Icon name="heroicons:arrow-path" class="w-4 h-4 animate-spin" /><span>Creando...</span>'
+  }
   
-  if (result.success) {
-    // Subir archivos si hay alguno seleccionado
-    if (selectedFiles.value.length > 0) {
-      await uploadFilesToPost(result.post.id)
-    }
+  try {
+    const result = await createPost(newPost.value)
     
-    showCreateModal.value = false
-    // Resetear el formulario
-    newPost.value = {
-      title: '',
-      content: '',
-      type: 'COMUNICADO',
-      category: 'general',
-      date: new Date().toISOString().split('T')[0],
-      firmante: 'Alianza La Libertad Avanza'
-    }
-    // Limpiar archivos seleccionados
-    selectedFiles.value = []
-    // Refrescar la lista de posts
-    await loadPosts()
-    showSuccess('✅ Publicación creada exitosamente')
-  } else {
-    // Mostrar error más descriptivo
-    if (result.error.includes('no autenticado')) {
-      alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
-      await navigateTo('/login')
+    if (result.success) {
+      // Subir archivos si hay alguno seleccionado
+      if (selectedFiles.value.length > 0) {
+        await uploadFilesToPost(result.post.id)
+      }
+      
+      showCreateModal.value = false
+      // Resetear el formulario
+      newPost.value = {
+        title: '',
+        content: '',
+        type: 'COMUNICADO',
+        category: 'general',
+        date: new Date().toISOString().split('T')[0],
+        firmante: 'Alianza La Libertad Avanza'
+      }
+      // Limpiar archivos seleccionados
+      selectedFiles.value = []
+      // Refrescar la lista de posts
+      await loadPosts()
+      showSuccess('✅ Publicación creada exitosamente')
     } else {
-      alert('Error al crear la publicación: ' + result.error)
+      // Mostrar error más descriptivo
+      if (result.error.includes('no autenticado')) {
+        alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
+        await navigateTo('/login')
+      } else {
+        alert('Error al crear la publicación: ' + result.error)
+      }
+    }
+  } catch (error) {
+    console.error('Error en handleCreatePost:', error)
+    alert('Error al crear la publicación: ' + error.message)
+  } finally {
+    // Re-habilitar el botón
+    if (createButton) {
+      createButton.disabled = false
+      createButton.innerHTML = '<Icon name="heroicons:plus" class="w-4 h-4" /><span>Crear Borrador</span>'
     }
   }
 }
