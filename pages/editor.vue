@@ -104,7 +104,7 @@
         </div>
 
         <!-- Estadísticas -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-6 mb-8 w-full">
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
@@ -159,7 +159,7 @@
                                   <div class="px-6 py-4 border-b border-white/20">
                           <h2 class="text-xl font-semibold text-white">Mis Publicaciones y Borradores</h2>
                         </div>
-          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20 overflow-x-auto">
+          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20 overflow-x-auto min-w-full">
             <div v-for="post in posts" :key="post.id" class="px-6 py-4">
                                 <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">

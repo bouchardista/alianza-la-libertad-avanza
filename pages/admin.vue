@@ -104,7 +104,7 @@
         </div>
 
                               <!-- Estadísticas -->
-                      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-6 mb-8">
+                      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-6 mb-8 w-full">
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
@@ -141,14 +141,14 @@
             </div>
           </div>
           
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:calendar" class="h-8 w-8 text-white" />
+                <Icon name="heroicons:calendar" class="h-5 w-5 sm:h-8 sm:w-8 text-white" />
               </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Este Mes</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
+              <div class="ml-2 sm:ml-4">
+                <p class="text-xs sm:text-sm font-medium text-white/60">Este Mes</p>
+                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@
                                   <div class="px-6 py-4 border-b border-white/20">
                           <h2 class="text-xl font-semibold text-white">Todas las Publicaciones</h2>
                         </div>
-          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20 overflow-x-auto">
+          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20 overflow-x-auto min-w-full">
             <div v-for="post in posts" :key="post.id" class="px-4 sm:px-6 py-4">
                                 <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">
