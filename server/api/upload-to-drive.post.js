@@ -59,14 +59,24 @@ export default defineEventHandler(async (event) => {
 
     if (!file) {
       console.error('❌ No se proporcionó ningún archivo')
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'No se proporcionó ningún archivo'
-      })
+      return {
+        success: false,
+        error: 'No se proporcionó ningún archivo'
+      }
     }
 
     // Convertir el archivo a buffer
-    const buffer = Buffer.from(await file.arrayBuffer())
+    let buffer
+    try {
+      buffer = Buffer.from(await file.arrayBuffer())
+      console.log('✅ Archivo convertido a buffer, tamaño:', buffer.length)
+    } catch (bufferError) {
+      console.error('❌ Error al convertir archivo a buffer:', bufferError)
+      return {
+        success: false,
+        error: 'Error al procesar el archivo'
+      }
+    }
 
     // Configurar los metadatos del archivo
     const fileMetadata = {

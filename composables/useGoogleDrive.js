@@ -44,6 +44,12 @@ export const useGoogleDrive = () => {
       })
 
       console.log('Respuesta de Google Drive:', response)
+      
+      // Verificar si la respuesta indica un error
+      if (response.success === false) {
+        return { success: false, error: response.error }
+      }
+      
       return { success: true, fileData: response }
     } catch (error) {
       console.error('Error en uploadToDrive:', error)

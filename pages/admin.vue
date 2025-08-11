@@ -37,7 +37,9 @@
                           <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
                     <div class="flex items-center space-x-4">
                       <div class="flex-shrink-0">
-                        <img src="/white-logo.png" alt="Logo" class="h-16 w-16 object-contain" />
+                        <NuxtLink to="/" class="block hover:opacity-80 transition-opacity">
+                          <img src="/white-logo.png" alt="Logo" class="h-16 w-16 object-contain" />
+                        </NuxtLink>
                       </div>
                       <div>
                         <h1 class="text-2xl lg:text-3xl font-bold text-white">
