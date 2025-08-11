@@ -672,7 +672,7 @@ const handleCreatePost = async () => {
   }
 }
 
-const handleEditPost = (post) => {
+const handleEditPost = async (post) => {
   editingPost.value = {
     id: post.id,
     title: post.title,
@@ -683,6 +683,12 @@ const handleEditPost = (post) => {
     firmante: post.firmante
   }
   showEditModal.value = true
+  
+  // Cargar archivos adjuntos existentes
+  const attachmentsResult = await getPostAttachments(post.id)
+  if (attachmentsResult.success) {
+    editingPost.value.attachments = attachmentsResult.attachments
+  }
 }
 
 const handleUpdatePost = async () => {

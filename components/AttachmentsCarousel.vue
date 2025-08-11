@@ -31,7 +31,7 @@
             <!-- Preview de imagen -->
             <div v-if="isImage(attachment.file_type)" class="mb-3">
               <img 
-                :src="attachment.thumbnail_url || attachment.drive_view_url" 
+                :src="attachment.storage_url" 
                 :alt="attachment.file_name"
                 class="w-full h-32 object-cover rounded-md"
                 @error="handleImageError"
@@ -129,8 +129,8 @@ onMounted(() => {
 
 // Función para abrir archivo
 const openFile = (attachment) => {
-  if (attachment.drive_view_url) {
-    window.open(attachment.drive_view_url, '_blank')
+  if (attachment.storage_url) {
+    window.open(attachment.storage_url, '_blank')
   }
 }
 
