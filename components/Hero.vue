@@ -1,6 +1,6 @@
 <template>
   <header class="pb-2 pt-7 px-4 sm:px-6 lg:px-8 bg-[#1A043C]">
-    <div class="relative mx-auto max-w-4xl text-center pb-2">
+    <div class="relative mx-auto max-w-3xl text-center pb-2">
       <div class="sm:flex items-center justify-center space-x-2">
         <div class="flex items-center justify-center">
           <div class="h-48 w-48 flex items-center justify-center bg-transparent">

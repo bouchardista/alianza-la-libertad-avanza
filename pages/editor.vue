@@ -164,13 +164,15 @@
                                 <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">
                       <h3 class="text-base sm:text-lg font-medium text-white truncate">
-                        <NuxtLink 
+                        <a 
                           v-if="post.status === 'published'"
-                          :to="`/posts/${generateSlug(post.title)}`"
+                          :href="`/posts/${generateSlug(post.title)}`"
+                          target="_blank"
+                          rel="noopener noreferrer"
                           class="text-white hover:text-[#31B4E7] underline transition-colors cursor-pointer"
                         >
                           {{ post.title }}
-                        </NuxtLink>
+                        </a>
                         <span v-else class="text-white">{{ post.title }}</span>
                       </h3>
                       <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2">
