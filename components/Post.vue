@@ -30,7 +30,7 @@
         <NuxtLink 
           v-if="isPreview && content.content"
           :to="`/posts/${generateSlug(content.title)}`"
-          class="block hover:text-[#31B4E7] transition-colors cursor-pointer content-link"
+          class="block content-hover-area no-underline"
         >
           <div v-html="formatContent(content.content, isPreview)"></div>
         </NuxtLink>
@@ -212,30 +212,33 @@ const getIconClass = (type) => {
 }
 
 /* Hover conectado entre título y contenido */
-.title-link:hover ~ .document .content-link,
-.content-link:hover ~ h1 .title-link,
-.title-link:hover + .document .content-link {
+.title-link:hover ~ .document .content-hover-area .document p,
+.title-link:hover ~ .document .content-hover-area .document h1,
+.title-link:hover ~ .document .content-hover-area .document h2,
+.title-link:hover ~ .document .content-hover-area .document h3,
+.title-link:hover ~ .document .content-hover-area .document h4,
+.title-link:hover ~ .document .content-hover-area .document h5,
+.title-link:hover ~ .document .content-hover-area .document h6,
+.title-link:hover ~ .document .content-hover-area .document ul,
+.title-link:hover ~ .document .content-hover-area .document ol,
+.title-link:hover ~ .document .content-hover-area .document blockquote {
   color: #31B4E7 !important;
 }
 
 /* Cuando se hace hover en el contenido, activar el título */
-.content-link:hover ~ h1 .title-link,
-.content-link:hover + h1 .title-link {
+.content-hover-area:hover ~ h1 .title-link {
   color: #31B4E7 !important;
 }
 
-/* Cuando se hace hover en el título, activar el contenido */
-.title-link:hover ~ .document .content-link .document p,
-.title-link:hover ~ .document .content-link .document h1,
-.title-link:hover ~ .document .content-link .document h2,
-.title-link:hover ~ .document .content-link .document h3,
-.title-link:hover ~ .document .content-link .document h4,
-.title-link:hover ~ .document .content-link .document h5,
-.title-link:hover ~ .document .content-link .document h6,
-.title-link:hover ~ .document .content-link .document ul,
-.title-link:hover ~ .document .content-link .document ol,
-.title-link:hover ~ .document .content-link .document blockquote {
-  color: #31B4E7 !important;
+/* Estilos para enlaces sin subrayado */
+.content-hover-area {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.content-hover-area:hover {
+  text-decoration: none !important;
+  color: inherit !important;
 }
 
 .document h1, .document h2, .document h3, .document h4, .document h5, .document h6 {
