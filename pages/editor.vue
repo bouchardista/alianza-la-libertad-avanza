@@ -488,11 +488,20 @@ const editingPost = ref({
 })
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('es-AR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
+  if (!date) return '';
+  try {
+    // Crear la fecha en la zona horaria local para evitar problemas de UTC
+    const [year, month, day] = date.split('-').map(Number);
+    const dateObj = new Date(year, month - 1, day); // month - 1 porque los meses van de 0-11
+    
+    return dateObj.toLocaleDateString('es-AR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  } catch (error) {
+    return date;
+  }
 }
 
 const showSuccess = (message) => {
