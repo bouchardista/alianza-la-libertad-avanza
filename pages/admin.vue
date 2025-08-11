@@ -35,16 +35,21 @@
     <header class="bg-white/10 backdrop-blur-sm border-b border-white/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                           <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
-                    <div>
-                      <h1 class="text-2xl lg:text-3xl font-bold text-white">
-                        Panel de Administración
-                      </h1>
-                      <p class="text-sm text-white/80 mt-1">
-                        Alianza La Libertad Avanza Córdoba
-                      </p>
-                      <p v-if="user" class="text-xs text-white/60 mt-1">
-                        Conectado como: {{ user.name }} ({{ user.role }})
-                      </p>
+                    <div class="flex items-center space-x-4">
+                      <div class="flex-shrink-0">
+                        <img src="/white-logo.png" alt="Logo" class="h-12 w-12 object-contain" />
+                      </div>
+                      <div>
+                        <h1 class="text-2xl lg:text-3xl font-bold text-white">
+                          Panel de Administración
+                        </h1>
+                        <p class="text-sm text-white/80 mt-1">
+                          Alianza La Libertad Avanza Córdoba
+                        </p>
+                        <p v-if="user" class="text-xs text-white/60 mt-1">
+                          Conectado como: {{ user.name }} ({{ user.role }})
+                        </p>
+                      </div>
                     </div>
                     <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
                       <button
@@ -116,8 +121,7 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <img src="/white-logo.png" alt="Logo" class="h-8 w-8 object-contain" />
-              </div>
+                <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Resoluciones</p>
                 <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'RESOLUCIÓN').length || 0 }}</p>

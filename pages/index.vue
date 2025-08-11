@@ -58,7 +58,7 @@
       </div>
 
       <!-- Lista de publicaciones -->
-      <div v-else-if="posts && posts.length > 0">
+      <div v-else-if="filteredPosts && filteredPosts.length > 0">
         <post 
           v-for="post in filteredPosts" 
           :key="post.id" 
@@ -67,7 +67,7 @@
         />
       </div>
       
-      <div v-else class="text-center py-12">
+      <div v-else-if="posts && posts.length > 0" class="text-center py-12">
         <div class="max-w-md mx-auto">
           <div class="bg-white/10 border border-white/20 rounded-lg p-8">
             <div class="flex justify-center mb-4">
@@ -79,6 +79,19 @@
             <p v-if="filterType" class="text-white/60 text-sm">
               con el filtro seleccionado.
             </p>
+          </div>
+        </div>
+      </div>
+      
+      <div v-else class="text-center py-12">
+        <div class="max-w-md mx-auto">
+          <div class="bg-white/10 border border-white/20 rounded-lg p-8">
+            <div class="flex justify-center mb-4">
+              <Icon name="heroicons:document-text" class="h-16 w-16 text-white/40" />
+            </div>
+            <h2 class="text-white text-xl font-semibold mb-2">
+              No se encontraron publicaciones
+            </h2>
           </div>
         </div>
       </div>

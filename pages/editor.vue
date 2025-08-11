@@ -35,16 +35,21 @@
     <header class="bg-white/10 backdrop-blur-sm border-b border-white/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex justify-between items-center">
-          <div>
-            <h1 class="text-3xl font-bold text-white">
-              Panel de Editor
-            </h1>
-            <p class="text-sm text-white/80 mt-1">
-              Alianza La Libertad Avanza Córdoba
-            </p>
-            <p v-if="user" class="text-xs text-white/60 mt-1">
-              Conectado como: {{ user.name }} ({{ user.role }})
-            </p>
+          <div class="flex items-center space-x-4">
+            <div class="flex-shrink-0">
+              <img src="/white-logo.png" alt="Logo" class="h-12 w-12 object-contain" />
+            </div>
+            <div>
+              <h1 class="text-3xl font-bold text-white">
+                Panel de Editor
+              </h1>
+              <p class="text-sm text-white/80 mt-1">
+                Alianza La Libertad Avanza Córdoba
+              </p>
+              <p v-if="user" class="text-xs text-white/60 mt-1">
+                Conectado como: {{ user.name }} ({{ user.role }})
+              </p>
+            </div>
           </div>
           <div class="flex space-x-4">
             <button
@@ -113,7 +118,7 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <img src="/white-logo.png" alt="Logo" class="h-8 w-8 object-contain" />
+                <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
               </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Resoluciones</p>
