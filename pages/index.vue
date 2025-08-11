@@ -41,11 +41,27 @@
         </button>
       </div>
 
+      <!-- Loader -->
+      <div v-if="postsLoading" class="flex justify-center py-12">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#EFB141] mx-auto mb-4"></div>
+          <p class="text-white/80">Cargando publicaciones...</p>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div v-else-if="postsError" class="text-center py-12">
+        <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-6">
+          <p class="text-red-400 text-lg">Error al cargar las publicaciones</p>
+          <p class="text-red-300 mt-2">{{ postsError }}</p>
+        </div>
+      </div>
+
       <!-- Lista de publicaciones -->
-      <div v-if="posts && posts.length > 0">
+      <div v-else-if="posts && posts.length > 0">
         <post 
           v-for="post in filteredPosts" 
-          :key="post._path" 
+          :key="post.id" 
           :content="post" 
         />
       </div>
@@ -84,11 +100,30 @@ useHead({
   ],
 });
 
-const { data: posts } = await useAsyncData("feed", () =>
-  queryContent("/posts").sort({ date: -1 }).find()
-);
+const { getPosts } = usePosts()
+const filterType = ref(null)
 
-const filterType = ref(null);
+// Estado para los posts
+const posts = ref([])
+const postsLoading = ref(true)
+const postsError = ref(null)
+
+// Cargar posts desde Supabase
+const loadPosts = async () => {
+  postsLoading.value = true
+  const result = await getPosts()
+  if (result.success) {
+    posts.value = result.posts
+  } else {
+    postsError.value = result.error
+  }
+  postsLoading.value = false
+}
+
+// Cargar posts al montar la página
+onMounted(async () => {
+  await loadPosts()
+})
 
 const filteredPosts = computed(() => {
   if (!posts.value) return [];
