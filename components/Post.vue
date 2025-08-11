@@ -25,6 +25,9 @@
           Firmado por: <span class="text-[#EFB141]">{{ content.firmante }}</span>
         </p>
       </div>
+      
+      <!-- Archivos adjuntos -->
+      <AttachmentsCarousel :attachments="attachments" />
     </div>
   </article>
 </template>
@@ -36,6 +39,25 @@ const props = defineProps({
     default: () => ({})
   }
 });
+
+// Estado para archivos adjuntos
+const attachments = ref([])
+const { getPostAttachments } = useGoogleDrive()
+
+// Cargar archivos adjuntos
+const loadAttachments = async () => {
+  if (props.content.id) {
+    const result = await getPostAttachments(props.content.id)
+    if (result.success) {
+      attachments.value = result.attachments
+    }
+  }
+}
+
+// Cargar archivos adjuntos al montar el componente
+onMounted(() => {
+  loadAttachments()
+})
 
 const formatDate = (dateString) => {
   if (!dateString) return '';

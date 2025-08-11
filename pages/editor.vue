@@ -274,6 +274,62 @@
             </div>
           </div>
           
+          <div>
+            <label class="block text-sm font-medium text-white mb-2">Archivos adjuntos</label>
+            <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+              <input
+                ref="fileInput"
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.webp"
+                @change="handleFileUpload"
+                class="hidden"
+              />
+              <div class="space-y-4">
+                <Icon name="heroicons:cloud-arrow-up" class="w-12 h-12 text-gray-400 mx-auto" />
+                <div>
+                  <p class="text-white text-sm">
+                    <button 
+                      type="button"
+                      @click="$refs.fileInput.click()"
+                      class="text-[#31B4E7] hover:text-[#2A9BC7] font-medium"
+                    >
+                      Haz clic para subir
+                    </button>
+                    o arrastra archivos aquí
+                  </p>
+                  <p class="text-gray-400 text-xs mt-1">
+                    PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, WEBP (máx. 10MB cada uno)
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Lista de archivos seleccionados -->
+            <div v-if="selectedFiles.length > 0" class="mt-4 space-y-2">
+              <div 
+                v-for="(file, index) in selectedFiles" 
+                :key="index"
+                class="flex items-center justify-between p-3 bg-gray-800 rounded-lg"
+              >
+                <div class="flex items-center space-x-3">
+                  <Icon name="heroicons:document" class="w-5 h-5 text-gray-400" />
+                  <div>
+                    <p class="text-white text-sm font-medium">{{ file.name }}</p>
+                    <p class="text-gray-400 text-xs">{{ formatFileSize(file.size) }}</p>
+                  </div>
+                </div>
+                <button 
+                  type="button"
+                  @click="removeFile(index)"
+                  class="text-red-400 hover:text-red-300"
+                >
+                  <Icon name="heroicons:x-mark" class="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div class="flex justify-end space-x-4 pt-4">
             <button
               type="button"
@@ -449,6 +505,7 @@ useHead({
 
 const { user, signOut, loading } = useAuth()
 const { createPost, updatePost, requestPublication, loading: postsLoading, getPosts } = usePosts()
+const { uploadToDrive, addAttachment, deleteAttachment, getPostAttachments } = useGoogleDrive()
 
 // Estado de carga inicial
 const pageLoading = ref(true)
@@ -493,6 +550,9 @@ const newPost = ref({
   date: new Date().toISOString().split('T')[0],
   firmante: 'Alianza La Libertad Avanza'
 })
+
+// Estado para archivos seleccionados
+const selectedFiles = ref([])
 const editingPost = ref({
   id: null,
   title: '',
@@ -541,6 +601,11 @@ const handleCreatePost = async () => {
   const result = await createPost(postData)
   
   if (result.success) {
+    // Subir archivos si hay alguno seleccionado
+    if (selectedFiles.value.length > 0) {
+      await uploadFilesToPost(result.post.id)
+    }
+    
     showCreateModal.value = false
     // Resetear el formulario
     newPost.value = {
@@ -552,6 +617,8 @@ const handleCreatePost = async () => {
       date: new Date().toISOString().split('T')[0],
       firmante: 'Alianza La Libertad Avanza'
     }
+    // Limpiar archivos seleccionados
+    selectedFiles.value = []
     // Refrescar la lista de posts
     await loadPosts()
     showSuccess('✅ Publicación creada exitosamente')
@@ -606,6 +673,56 @@ const handleRequestPublication = async (post) => {
     showSuccess('✅ Solicitud de publicación enviada. Los administradores la revisarán.')
   } else {
     alert('Error al solicitar publicación: ' + result.error)
+  }
+}
+
+// Funciones para manejar archivos
+const handleFileUpload = (event) => {
+  const files = Array.from(event.target.files)
+  
+  // Validar tamaño máximo (10MB)
+  const maxSize = 10 * 1024 * 1024 // 10MB
+  const validFiles = files.filter(file => {
+    if (file.size > maxSize) {
+      alert(`El archivo ${file.name} es demasiado grande. Máximo 10MB.`)
+      return false
+    }
+    return true
+  })
+  
+  selectedFiles.value.push(...validFiles)
+  event.target.value = '' // Limpiar input
+}
+
+const removeFile = (index) => {
+  selectedFiles.value.splice(index, 1)
+}
+
+const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes'
+  
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+// Función para subir archivos a Google Drive y agregarlos al post
+const uploadFilesToPost = async (postId) => {
+  if (selectedFiles.value.length === 0) return
+  
+  for (const file of selectedFiles.value) {
+    try {
+      // Subir a Google Drive
+      const uploadResult = await uploadToDrive(file)
+      if (uploadResult.success) {
+        // Agregar como adjunto al post
+        await addAttachment(postId, uploadResult.fileData)
+      }
+    } catch (error) {
+      console.error('Error al subir archivo:', error)
+    }
   }
 }
 </script>
