@@ -163,7 +163,16 @@
             <div v-for="post in posts" :key="post.id" class="px-4 sm:px-6 py-4">
                                 <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">
-                      <h3 class="text-base sm:text-lg font-medium text-white truncate">{{ post.title }}</h3>
+                      <h3 class="text-base sm:text-lg font-medium text-white truncate">
+                        <NuxtLink 
+                          v-if="post.status === 'published'"
+                          :to="`/posts/${generateSlug(post.title)}`"
+                          class="text-white hover:text-[#31B4E7] underline transition-colors cursor-pointer"
+                        >
+                          {{ post.title }}
+                        </NuxtLink>
+                        <span v-else class="text-white">{{ post.title }}</span>
+                      </h3>
                       <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2">
                         <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
                         <span class="text-sm text-white/60 truncate">{{ post.firmante }}</span>
@@ -603,6 +612,7 @@ useHead({
 const { user, signOut, loading } = useAuth()
 const { createPost, updatePost, deletePost, publishDraft, convertToDraft, loading: postsLoading, getPosts } = usePosts()
 const { uploadToDrive, addAttachment, deleteAttachment, getPostAttachments } = useGoogleDrive()
+const { generateSlug } = useSlug()
 
 // Estado de carga inicial
 const pageLoading = ref(true)

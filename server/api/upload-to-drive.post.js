@@ -81,7 +81,10 @@ export default defineEventHandler(async (event) => {
     // Configurar los metadatos del archivo
     const fileMetadata = {
       name: file.name,
-      parents: folderId ? [folderId] : [config.googleDriveFolderId]
+      parents: folderId ? [folderId] : [config.googleDriveFolderId],
+      // Forzar que se suba a un Shared Drive si está configurado
+      supportsAllDrives: true,
+      supportsTeamDrives: true
     }
 
     // Configurar los medios usando un stream de buffer
@@ -97,7 +100,9 @@ export default defineEventHandler(async (event) => {
     const response = await drive.files.create({
       requestBody: fileMetadata,
       media: media,
-      fields: 'id,name,size,mimeType,webViewLink,webContentLink,thumbnailLink'
+      fields: 'id,name,size,mimeType,webViewLink,webContentLink,thumbnailLink',
+      supportsAllDrives: true,
+      supportsTeamDrives: true
     })
 
     return {
