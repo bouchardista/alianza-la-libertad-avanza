@@ -11,13 +11,13 @@
           <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
             Alianza La Libertad
           </h1>
-          <h2 class="text-2xl font-bold tracking-tight text-[#EFB141] sm:text-3xl mt-2">
+          <h2 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl mt-1">
             Avanza Córdoba
           </h2>
         </div>
       </div>
       <p class="mt-4 text-lg leading-8 text-white">
-        Sitio oficial de la organización cordobesa. Resoluciones, comunicados y declaraciones oficiales.
+        Sitio oficial de la organización. Resoluciones, comunicados y declaraciones oficiales.
       </p>
     </div>
   </header>

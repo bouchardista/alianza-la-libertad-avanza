@@ -7,7 +7,9 @@ export default defineEventHandler(async (event) => {
     
     console.log('📋 Configuración disponible:', {
       hasServiceAccount: !!config.googleDriveServiceAccountJson,
-      hasFolderId: !!config.googleDriveFolderId
+      hasFolderId: !!config.googleDriveFolderId,
+      serviceAccountLength: config.googleDriveServiceAccountJson ? config.googleDriveServiceAccountJson.length : 0,
+      folderId: config.googleDriveFolderId
     })
     
     // Verificar que las credenciales estén configuradas
@@ -92,9 +94,22 @@ export default defineEventHandler(async (event) => {
   } catch (error) {
     console.error('Error al subir archivo a Google Drive:', error)
     
+    // Proporcionar más información sobre el error
+    let errorMessage = 'Error al subir archivo a Google Drive'
+    
+    if (error.message) {
+      errorMessage += `: ${error.message}`
+    }
+    
+    if (error.code) {
+      errorMessage += ` (Código: ${error.code})`
+    }
+    
+    console.error('Mensaje de error detallado:', errorMessage)
+    
     throw createError({
       statusCode: 500,
-      statusMessage: error.message || 'Error al subir archivo a Google Drive'
+      statusMessage: errorMessage
     })
   }
 })
