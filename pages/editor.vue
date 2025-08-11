@@ -99,7 +99,7 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
+                <img src="/white-logo.png" alt="Logo" class="h-8 w-8 object-contain" />
               </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Resoluciones</p>

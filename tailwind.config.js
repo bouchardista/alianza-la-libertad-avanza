@@ -3,6 +3,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: [
+        "Montserrat",
         "Inter",
         "Avenir Next",
         "Roboto",

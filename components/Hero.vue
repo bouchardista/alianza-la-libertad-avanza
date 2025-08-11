@@ -3,8 +3,8 @@
     <div class="relative mx-auto max-w-[37.5rem] pt-12 text-center pb-2">
       <div class="sm:flex items-center justify-center space-x-3">
         <div class="flex items-center justify-center">
-          <div class="h-20 w-20 rounded-full bg-[#B23B8F] flex items-center justify-center shadow-lg">
-            <Icon name="heroicons:flag" class="h-12 w-12 text-white" />
+          <div class="h-20 w-20 flex items-center justify-center shadow-lg">
+            <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-16 w-16 object-contain" />
           </div>
         </div>
         <div class="text-center">
