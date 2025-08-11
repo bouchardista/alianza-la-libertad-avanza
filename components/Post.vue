@@ -31,7 +31,7 @@
       </div>
       
       <!-- Botón "Ver post completo" solo en vista previa -->
-      <div v-if="isPreview && content.content && content.content.length > 200" class="mt-4">
+      <div v-if="isPreview && content.content && content.content.length > 150" class="mt-4">
         <NuxtLink 
           :to="`/posts/${generateSlug(content.title)}`"
           class="inline-flex items-center space-x-2 px-3 py-1.5 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-lg transition-colors text-sm"
@@ -118,15 +118,15 @@ const formatContent = (content, isPreview = false) => {
   let processedContent = content;
   
   // Si es vista previa, truncar el contenido
-  if (isPreview && content.length > 300) {
+  if (isPreview && content.length > 200) {
     // Buscar un buen punto de corte (después de un punto o salto de línea)
-    let cutPoint = 300;
-    const nextPeriod = content.indexOf('.', 300);
-    const nextNewline = content.indexOf('\n', 300);
+    let cutPoint = 200;
+    const nextPeriod = content.indexOf('.', 200);
+    const nextNewline = content.indexOf('\n', 200);
     
-    if (nextPeriod !== -1 && nextPeriod < 400) {
+    if (nextPeriod !== -1 && nextPeriod < 250) {
       cutPoint = nextPeriod + 1;
-    } else if (nextNewline !== -1 && nextNewline < 400) {
+    } else if (nextNewline !== -1 && nextNewline < 250) {
       cutPoint = nextNewline;
     }
     
