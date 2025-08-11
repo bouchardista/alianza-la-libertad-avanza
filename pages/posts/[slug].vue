@@ -35,14 +35,10 @@
         <div class="max-w-md mx-auto">
           <div class="bg-red-500/10 border border-red-500/20 rounded-lg p-8">
             <div class="flex justify-center mb-4">
-              <Icon name="heroicons:exclamation-triangle" class="h-16 w-16 text-red-400" />
+              <Icon name="heroicons:archive-box" class="h-16 w-16 text-red-400" />
             </div>
             <h2 class="text-red-400 text-xl font-semibold mb-2">Error al cargar la publicación</h2>
-            <p class="text-red-300 text-sm mb-4">{{ error }}</p>
-            <a href="/" class="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
-              <Icon name="heroicons:arrow-left" class="w-4 h-4 mr-2" />
-              Volver al inicio
-            </a>
+            <p class="text-red-300 text-sm">{{ error }}</p>
           </div>
         </div>
       </div>

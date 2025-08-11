@@ -770,7 +770,7 @@ const handlePublishDraft = async (post) => {
   if (result.success) {
     // Refrescar la lista de posts
     await loadPosts()
-    showSuccess('✅ Borrador publicado exitosamente')
+    showSuccess('✅ Publicado exitosamente')
   } else {
     // Re-habilitar el botón si hay error
     disabledButtons.value.delete(post.id)
@@ -790,7 +790,7 @@ const handleConvertToDraft = async (post) => {
   if (result.success) {
     // Refrescar la lista de posts
     await loadPosts()
-    showSuccess('✅ Publicación convertida en borrador exitosamente')
+    showSuccess('✅ Publicación convertida en Borrador exitosamente')
   } else {
     // Re-habilitar el botón si hay error
     disabledButtons.value.delete(post.id)

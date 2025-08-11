@@ -1,7 +1,7 @@
 <template>
   <header class="pb-2 pt-7 px-4 sm:px-6 lg:px-8 bg-[#1A043C]">
     <div class="relative mx-auto max-w-4xl pt-12 text-center pb-2">
-      <div class="sm:flex items-center justify-center space-x-4">
+      <div class="sm:flex items-center justify-center space-x-2">
         <div class="flex items-center justify-center">
           <div class="h-48 w-48 flex items-center justify-center shadow-lg">
             <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-44 w-44 object-contain" />
@@ -16,7 +16,7 @@
           </h2>
         </div>
       </div>
-      <div class="mt-4 text-lg leading-8 text-white">
+      <div class="mt-2 mb-8 text-lg leading-8 text-white">
         <p>Sitio oficial de la organización.</p>
         <p>Resoluciones, comunicados y declaraciones oficiales.</p>
       </div>
