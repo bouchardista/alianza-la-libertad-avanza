@@ -111,7 +111,7 @@
                 <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
               </div>
               <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Total Publicaciones</p>
+                <p class="text-sm font-medium text-white/60">Total</p>
                 <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
               </div>
             </div>
@@ -283,7 +283,7 @@
             />
           </div>
           
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-3 gap-4">
             <div>
               <label class="block text-sm font-medium text-white mb-2">Fecha</label>
               <input
@@ -294,7 +294,7 @@
               />
             </div>
             
-            <div>
+            <div class="col-span-2">
               <label class="block text-sm font-medium text-white mb-2">Firmante</label>
               <input
                 value="Alianza La Libertad Avanza Córdoba"
@@ -442,7 +442,7 @@
             />
           </div>
           
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-3 gap-4">
             <div>
               <label class="block text-sm font-medium text-white mb-2">Fecha</label>
               <input
@@ -453,7 +453,7 @@
               />
             </div>
             
-            <div>
+            <div class="col-span-2">
               <label class="block text-sm font-medium text-white mb-2">Firmante</label>
               <input
                 value="Alianza La Libertad Avanza Córdoba"
@@ -485,19 +485,17 @@
               <div class="space-y-4">
                 <Icon name="heroicons:cloud-arrow-up" class="w-12 h-12 text-gray-400 mx-auto" />
                 <div>
-                  <p class="text-white text-sm">
-                    <button 
+                  <p class="text-white/80 text-sm">
+                    Arrastra archivos aquí o
+                    <button
                       type="button"
                       @click="$refs.editFileInput.click()"
-                      class="text-[#31B4E7] hover:text-[#2A9BC7] font-medium"
+                      class="text-[#31B4E7] hover:text-[#2A9BC7] underline"
                     >
-                      Haz clic para subir
+                      haz clic para seleccionar
                     </button>
-                    o arrastra archivos aquí
                   </p>
-                  <p class="text-gray-400 text-xs mt-1">
-                    PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, WEBP (máx. 50MB cada uno)
-                  </p>
+                  <p class="text-white/60 text-xs mt-1">Máximo 50MB por archivo</p>
                 </div>
               </div>
             </div>

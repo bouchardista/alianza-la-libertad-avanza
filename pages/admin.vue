@@ -111,7 +111,7 @@
                 <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
               </div>
               <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Total Publicaciones</p>
+                <p class="text-sm font-medium text-white/60">Total</p>
                 <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
               </div>
             </div>
