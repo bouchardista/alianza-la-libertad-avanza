@@ -139,14 +139,13 @@
                           <h2 class="text-xl font-semibold text-white">Mis Publicaciones y Borradores</h2>
                         </div>
           <div v-if="posts && posts.length > 0" class="divide-y divide-white/20">
-            <div v-for="post in posts" :key="post._path" class="px-6 py-4">
-                                <div class="flex items-center justify-between">
-                    <div class="flex-1">
-                      <h3 class="text-lg font-medium text-white">{{ post.title }}</h3>
-                      <div class="flex items-center space-x-4 mt-2">
-                        <Badge :type="post.type" />
+            <div v-for="post in posts" :key="post.id" class="px-6 py-4">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
+                    <div class="flex-1 min-w-0">
+                      <h3 class="text-base sm:text-lg font-medium text-white truncate">{{ post.title }}</h3>
+                      <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2">
                         <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
-                        <span class="text-sm text-white/60">{{ post.firmante }}</span>
+                        <span class="text-sm text-white/60 truncate">{{ post.firmante }}</span>
                         <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full">
                           Borrador
                         </span>
@@ -155,21 +154,22 @@
                         </span>
                       </div>
                     </div>
-                    <div class="flex space-x-2">
-                      <button 
-                        @click="handleEditPost(post)"
-                        class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors"
-                        title="Editar"
-                      >
-                        <Icon name="heroicons:pencil" class="w-5 h-5" />
-                      </button>
+                    <div class="flex items-center space-x-2 mt-3 sm:mt-0">
                       <button 
                         v-if="post.status === 'draft'"
                         @click="handleRequestPublication(post)"
-                        class="text-green-500 hover:text-green-400 transition-colors"
+                        class="inline-flex items-center space-x-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
                         title="Solicitar publicación"
                       >
-                        <Icon name="heroicons:paper-airplane" class="w-5 h-5" />
+                        <Icon name="heroicons:paper-airplane" class="w-4 h-4" />
+                        <span>Solicitar</span>
+                      </button>
+                      <button 
+                        @click="handleEditPost(post)"
+                        class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors p-1"
+                        title="Editar"
+                      >
+                        <Icon name="heroicons:pencil" class="w-5 h-5" />
                       </button>
                     </div>
                   </div>

@@ -147,7 +147,6 @@
                     <div class="flex-1 min-w-0">
                       <h3 class="text-base sm:text-lg font-medium text-white truncate">{{ post.title }}</h3>
                       <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2">
-                        <Badge :type="post.type" />
                         <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
                         <span class="text-sm text-white/60 truncate">{{ post.firmante }}</span>
                         <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full">
@@ -158,21 +157,22 @@
                         </span>
                       </div>
                     </div>
-                    <div class="flex space-x-2">
+                    <div class="flex items-center space-x-2 mt-3 sm:mt-0">
+                      <button 
+                        v-if="post.status === 'draft'"
+                        @click="handlePublishDraft(post)"
+                        class="inline-flex items-center space-x-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition-colors"
+                        title="Publicar borrador"
+                      >
+                        <Icon name="heroicons:arrow-up-circle" class="w-4 h-4" />
+                        <span>Publicar</span>
+                      </button>
                       <button 
                         @click="handleEditPost(post)"
                         class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors p-1"
                         title="Editar"
                       >
                         <Icon name="heroicons:pencil" class="w-5 h-5" />
-                      </button>
-                      <button 
-                        v-if="post.status === 'draft'"
-                        @click="handlePublishDraft(post)"
-                        class="text-green-500 hover:text-green-400 transition-colors p-1"
-                        title="Publicar borrador"
-                      >
-                        <Icon name="heroicons:arrow-up-circle" class="w-5 h-5" />
                       </button>
                       <button 
                         @click="handleDeletePost(post)"
