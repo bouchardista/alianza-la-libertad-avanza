@@ -37,8 +37,8 @@
         <div class="flex justify-between items-center">
           <div class="flex items-center space-x-4">
             <div class="flex-shrink-0">
-              <NuxtLink to="/" class="block hover:opacity-80 transition-opacity">
-                <img src="/white-logo.png" alt="Logo" class="h-16 w-16 object-contain" />
+              <NuxtLink to="/" class="block hover:opacity-80 transition-opacity bg-transparent">
+                <img src="/white-logo.png" alt="Logo" class="h-16 w-16 object-contain bg-transparent" />
               </NuxtLink>
             </div>
             <div>
@@ -59,16 +59,14 @@
               class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#31B4E7] hover:bg-[#2A9BC7] transition-colors"
             >
               <Icon name="heroicons:plus" class="w-4 h-4 mr-2" />
-              <span class="hidden sm:inline">Nueva Publicación</span>
-              <span class="sm:hidden">Nueva Publicación</span>
+              Nueva Publicación
             </button>
             <a
               href="/"
               class="inline-flex items-center px-4 py-2 border border-white/20 rounded-md shadow-sm text-sm font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
             >
               <Icon name="heroicons:arrow-left" class="w-4 h-4 mr-2" />
-              <span class="hidden sm:inline">Volver al sitio</span>
-              <span class="sm:hidden">Volver al sitio</span>
+              Volver al sitio
             </a>
             <button
               @click="handleLogout"
@@ -76,8 +74,7 @@
               class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#AD3257] hover:bg-[#8B1F3F] transition-colors disabled:opacity-50"
             >
               <Icon name="heroicons:arrow-right-on-rectangle" class="w-4 h-4 mr-2" />
-              <span class="hidden sm:inline">{{ loading ? 'Cerrando...' : 'Cerrar Sesión' }}</span>
-              <span class="sm:hidden">{{ loading ? 'Cerrando...' : 'Cerrar Sesión' }}</span>
+              {{ loading ? 'Cerrando...' : 'Cerrar Sesión' }}
             </button>
           </div>
         </div>
@@ -273,13 +270,10 @@
           
           <div>
             <label class="block text-sm font-medium text-white mb-2">Contenido</label>
-            <textarea
+            <MarkdownEditor
               v-model="newPost.content"
-              required
-              rows="8"
-              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
-              placeholder="Contenido de la publicación..."
-            ></textarea>
+              placeholder="Escribe el contenido de la publicación en Markdown..."
+            />
           </div>
           
           <div class="grid grid-cols-2 gap-4">

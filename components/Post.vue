@@ -133,23 +133,34 @@ const formatContent = (content, isPreview = false) => {
     processedContent = content.substring(0, cutPoint) + '...';
   }
   
-  // Convertir Markdown básico a HTML
-  return processedContent
-    // Headers
-    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mb-3 text-white">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mb-4 text-white">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mb-5 text-white">$1</h1>')
-    // Bold
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
-    // Lists
-    .replace(/^- (.*$)/gim, '<li class="text-white mb-1">$1</li>')
-    .replace(/(<li.*<\/li>)/s, '<ul class="list-disc list-inside mb-4 space-y-1">$1</ul>')
-    // Paragraphs
-    .replace(/\n\n/g, '</p><p class="text-white mb-4">')
-    .replace(/^(.+)$/gm, '<p class="text-white mb-4">$1</p>')
-    // Clean up empty paragraphs
-    .replace(/<p class="text-white mb-4"><\/p>/g, '')
-    .replace(/<p class="text-white mb-4">\s*<\/p>/g, '');
+  // Usar marked para convertir Markdown a HTML
+  try {
+    const { marked } = await import('marked')
+    marked.setOptions({
+      breaks: true,
+      gfm: true
+    })
+    return marked(processedContent)
+  } catch (error) {
+    console.error('Error rendering markdown:', error)
+    // Fallback al método anterior si marked falla
+    return processedContent
+      // Headers
+      .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mb-3 text-white">$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mb-4 text-white">$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mb-5 text-white">$1</h1>')
+      // Bold
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
+      // Lists
+      .replace(/^- (.*$)/gim, '<li class="text-white mb-1">$1</li>')
+      .replace(/(<li.*<\/li>)/s, '<ul class="list-disc list-inside mb-4 space-y-1">$1</ul>')
+      // Paragraphs
+      .replace(/\n\n/g, '</p><p class="text-white mb-4">')
+      .replace(/^(.+)$/gm, '<p class="text-white mb-4">$1</p>')
+      // Clean up empty paragraphs
+      .replace(/<p class="text-white mb-4"><\/p>/g, '')
+      .replace(/<p class="text-white mb-4">\s*<\/p>/g, '');
+  }
 };
 
 const getBadgeClass = (type) => {
