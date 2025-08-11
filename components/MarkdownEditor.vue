@@ -39,7 +39,7 @@
         ]"
       >
         <Icon name="heroicons:arrows-right-left" class="w-4 h-4 inline mr-2" />
-        Dividido
+        Pantalla Dividida
       </button>
     </div>
 

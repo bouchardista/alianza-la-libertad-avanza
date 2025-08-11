@@ -43,7 +43,7 @@
                       </div>
                       <div>
                         <h1 class="text-2xl lg:text-3xl font-bold text-white">
-                          Panel de Administración
+                          Panel de Admin
                         </h1>
                         <p class="text-sm text-white/80 mt-1">
                           Alianza La Libertad Avanza Córdoba

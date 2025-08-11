@@ -8,6 +8,8 @@ export default defineEventHandler(async (event) => {
     // Verificar configuración de Supabase
     if (!config.public.supabaseUrl || !config.public.supabaseKey) {
       console.error('❌ Supabase no está configurado correctamente')
+      console.error('supabaseUrl:', config.public.supabaseUrl)
+      console.error('supabaseKey:', config.public.supabaseKey ? 'DEFINIDO' : 'NO DEFINIDO')
       return {
         success: false,
         error: 'Supabase no está configurado correctamente. Contacta al administrador.'
