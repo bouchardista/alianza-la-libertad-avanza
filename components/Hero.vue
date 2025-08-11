@@ -8,7 +8,7 @@
           </div>
         </div>
         <div class="text-center">
-          <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl whitespace-nowrap">
+          <h1 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl sm:mt-[30px] whitespace-nowrap">
             Alianza La Libertad
           </h1>
           <h2 class="text-4xl font-extrabold tracking-tight text-white sm:text-5xl mt-1">
