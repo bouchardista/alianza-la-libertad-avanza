@@ -100,7 +100,7 @@ useHead({
   ],
 });
 
-const { getPosts } = usePosts()
+const { getPublicPosts } = usePosts()
 const filterType = ref(null)
 
 // Estado para los posts
@@ -111,7 +111,7 @@ const postsError = ref(null)
 // Cargar posts desde Supabase
 const loadPosts = async () => {
   postsLoading.value = true
-  const result = await getPosts()
+  const result = await getPublicPosts()
   if (result.success) {
     posts.value = result.posts
   } else {

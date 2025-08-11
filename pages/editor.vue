@@ -227,14 +227,10 @@
           
           <div>
             <label class="block text-sm font-medium text-white mb-2">Estado</label>
-            <select
-              v-model="newPost.status"
-              required
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
-            >
-              <option value="draft">Borrador</option>
-              <option value="published">Publicar directamente</option>
-            </select>
+            <div class="w-full px-3 py-2 bg-yellow-500/20 border border-yellow-500/30 rounded-md text-yellow-300 text-sm">
+              <Icon name="heroicons:information-circle" class="w-4 h-4 inline mr-2" />
+              Los editores solo pueden crear borradores. Los administradores revisarán y publicarán el contenido.
+            </div>
           </div>
           
           <div>

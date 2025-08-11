@@ -176,6 +176,29 @@ export const usePosts = () => {
     }
   }
 
+  const getPublicPosts = async () => {
+    try {
+      const supabase = getSupabase()
+      if (!supabase) {
+        return { success: false, error: 'Cliente de Supabase no disponible' }
+      }
+
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('status', 'published')
+        .order('date', { ascending: false })
+
+      if (error) {
+        return { success: false, error: error.message }
+      }
+
+      return { success: true, posts: data }
+    } catch (error) {
+      return { success: false, error: error.message || 'Error al obtener las publicaciones' }
+    }
+  }
+
   const getPost = async (postId) => {
     try {
       const supabase = getSupabase()
@@ -249,6 +272,7 @@ export const usePosts = () => {
     updatePost,
     deletePost,
     getPosts,
+    getPublicPosts,
     getPost,
     publishDraft
   }
