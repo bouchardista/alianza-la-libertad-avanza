@@ -27,11 +27,11 @@ export const usePosts = () => {
       const newPost = {
         title: postData.title,
         content: postData.content,
-        type: postData.type || 'comunicado',
+        type: postData.type || 'COMUNICADO',
         category: postData.category || 'general',
         firmante: postData.firmante || 'Alianza La Libertad Avanza',
         date: postData.date || new Date().toISOString().split('T')[0],
-        status: 'published',
+        status: postData.status || 'draft',
         author_id: user.id,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
