@@ -37,7 +37,7 @@
         <div class="flex justify-between items-center">
           <div class="flex items-center space-x-4">
             <div class="flex-shrink-0">
-              <img src="/white-logo.png" alt="Logo" class="h-12 w-12 object-contain" />
+              <img src="/white-logo.png" alt="Logo" class="h-16 w-16 object-contain" />
             </div>
             <div>
               <h1 class="text-3xl font-bold text-white">
