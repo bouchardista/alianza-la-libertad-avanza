@@ -140,10 +140,18 @@
                   </div>
                 </div>
                 <div class="flex space-x-2">
-                  <button class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors">
+                  <button 
+                    @click="handleEditPost(post)"
+                    class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors"
+                    title="Editar"
+                  >
                     <Icon name="heroicons:pencil" class="w-5 h-5" />
                   </button>
-                  <button class="text-[#AD3257] hover:text-[#8B1F3F] transition-colors">
+                  <button 
+                    @click="handleDeletePost(post)"
+                    class="text-[#AD3257] hover:text-[#8B1F3F] transition-colors"
+                    title="Eliminar"
+                  >
                     <Icon name="heroicons:trash" class="w-5 h-5" />
                   </button>
                 </div>
@@ -260,6 +268,109 @@
         </form>
       </div>
     </div>
+
+    <!-- Modal para editar publicación -->
+    <div v-if="showEditModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-6 w-full max-w-2xl mx-4">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-2xl font-bold text-white">Editar Publicación</h2>
+          <button @click="showEditModal = false" class="text-white/60 hover:text-white">
+            <Icon name="heroicons:x-mark" class="w-6 h-6" />
+          </button>
+        </div>
+        
+        <form @submit.prevent="handleUpdatePost" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-white mb-2">Título</label>
+            <input
+              v-model="editingPost.title"
+              type="text"
+              required
+              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              placeholder="Título de la publicación"
+            />
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-white mb-2">Tipo</label>
+              <select
+                v-model="editingPost.type"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              >
+                <option value="RESOLUCIÓN">Resolución</option>
+                <option value="COMUNICADO">Comunicado</option>
+              </select>
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-white mb-2">Categoría</label>
+              <select
+                v-model="editingPost.category"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              >
+                <option value="general">General</option>
+                <option value="politica">Política</option>
+                <option value="institucional">Institucional</option>
+                <option value="eventos">Eventos</option>
+              </select>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-white mb-2">Contenido</label>
+            <textarea
+              v-model="editingPost.content"
+              required
+              rows="8"
+              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              placeholder="Contenido de la publicación..."
+            ></textarea>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-white mb-2">Fecha</label>
+              <input
+                v-model="editingPost.date"
+                type="date"
+                required
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+              />
+            </div>
+            
+            <div>
+              <label class="block text-sm font-medium text-white mb-2">Firmante</label>
+              <input
+                v-model="editingPost.firmante"
+                type="text"
+                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+                placeholder="Alianza La Libertad Avanza"
+              />
+            </div>
+          </div>
+          
+          <div class="flex justify-end space-x-4 pt-4">
+            <button
+              type="button"
+              @click="showEditModal = false"
+              class="px-4 py-2 border border-white/20 rounded-md text-white hover:bg-white/10 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              :disabled="postsLoading"
+              class="px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-md transition-colors disabled:opacity-50"
+            >
+              {{ postsLoading ? 'Actualizando...' : 'Actualizar Publicación' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -277,7 +388,7 @@ useHead({
 });
 
 const { user, signOut, loading } = useAuth()
-const { createPost, loading: postsLoading, getPosts } = usePosts()
+const { createPost, updatePost, deletePost, loading: postsLoading, getPosts } = usePosts()
 
 // Estado de carga inicial
 const pageLoading = ref(true)
@@ -308,12 +419,22 @@ onMounted(async () => {
 })
 
 const showCreateModal = ref(false)
+const showEditModal = ref(false)
 const newPost = ref({
   title: '',
   content: '',
   type: 'COMUNICADO',
   category: 'general',
   date: new Date().toISOString().split('T')[0],
+  firmante: 'Alianza La Libertad Avanza'
+})
+const editingPost = ref({
+  id: null,
+  title: '',
+  content: '',
+  type: 'COMUNICADO',
+  category: 'general',
+  date: '',
   firmante: 'Alianza La Libertad Avanza'
 })
 
@@ -337,15 +458,15 @@ const handleCreatePost = async () => {
   
   if (result.success) {
     showCreateModal.value = false
-      // Resetear el formulario
-  newPost.value = {
-    title: '',
-    content: '',
-    type: 'COMUNICADO',
-    category: 'general',
-    date: new Date().toISOString().split('T')[0],
-    firmante: 'Alianza La Libertad Avanza'
-  }
+    // Resetear el formulario
+    newPost.value = {
+      title: '',
+      content: '',
+      type: 'COMUNICADO',
+      category: 'general',
+      date: new Date().toISOString().split('T')[0],
+      firmante: 'Alianza La Libertad Avanza'
+    }
     // Refrescar la lista de posts
     await loadPosts()
   } else {
@@ -355,6 +476,56 @@ const handleCreatePost = async () => {
       await navigateTo('/login')
     } else {
       alert('Error al crear la publicación: ' + result.error)
+    }
+  }
+}
+
+const handleEditPost = (post) => {
+  editingPost.value = {
+    id: post.id,
+    title: post.title,
+    content: post.content,
+    type: post.type,
+    category: post.category,
+    date: post.date,
+    firmante: post.firmante
+  }
+  showEditModal.value = true
+}
+
+const handleUpdatePost = async () => {
+  const result = await updatePost(editingPost.value.id, editingPost.value)
+  
+  if (result.success) {
+    showEditModal.value = false
+    // Refrescar la lista de posts
+    await loadPosts()
+  } else {
+    if (result.error.includes('no autenticado')) {
+      alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
+      await navigateTo('/login')
+    } else {
+      alert('Error al actualizar la publicación: ' + result.error)
+    }
+  }
+}
+
+const handleDeletePost = async (post) => {
+  if (!confirm(`¿Estás seguro de que quieres eliminar "${post.title}"?`)) {
+    return
+  }
+  
+  const result = await deletePost(post.id)
+  
+  if (result.success) {
+    // Refrescar la lista de posts
+    await loadPosts()
+  } else {
+    if (result.error.includes('no autenticado')) {
+      alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
+      await navigateTo('/login')
+    } else {
+      alert('Error al eliminar la publicación: ' + result.error)
     }
   }
 }
