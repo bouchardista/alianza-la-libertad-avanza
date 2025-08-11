@@ -13,13 +13,34 @@
         :icon-class="getIconClass(content.type)"
         class="absolute -top-6 right-0 md:static mb-4"
       />
-      <h1 v-if="content.title" class="text-xl sm:text-3xl font-bold mb-4 text-white">
-        {{ content.title }}
+      <h1 v-if="content.title" class="text-xl sm:text-3xl font-bold mb-4">
+        <NuxtLink 
+          v-if="isPreview"
+          :to="`/posts/${generateSlug(content.title)}`"
+          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer"
+        >
+          {{ content.title }}
+        </NuxtLink>
+        <span v-else class="text-white">
+          {{ content.title }}
+        </span>
       </h1>
 
       <div class="document prose prose-invert prose-sm max-w-none">
-        <div v-if="content.content" v-html="formatContent(content.content)"></div>
+        <div v-if="content.content" v-html="formatContent(content.content, isPreview)"></div>
       </div>
+      
+      <!-- Botón "Ver más" solo en vista previa -->
+      <div v-if="isPreview && content.content && content.content.length > 200" class="mt-4">
+        <NuxtLink 
+          :to="`/posts/${generateSlug(content.title)}`"
+          class="inline-flex items-center space-x-2 px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-lg transition-colors"
+        >
+          <span>Ver más</span>
+          <Icon name="heroicons:arrow-right" class="w-4 h-4" />
+        </NuxtLink>
+      </div>
+      
       <div v-if="content.firmante" class="mt-6 pt-4 border-t border-white/20">
         <p class="text-sm text-white font-semibold">
           Firmado por: <span class="text-[#EFB141]">{{ content.firmante }}</span>
@@ -27,8 +48,7 @@
       </div>
       
       <!-- Archivos adjuntos -->
-      <div>
-        <p class="text-white text-xs mb-2">Debug: {{ attachments.length }} archivos adjuntos</p>
+      <div v-if="!isPreview || attachments.length > 0">
         <AttachmentsCarousel :attachments="attachments" />
       </div>
     </div>
@@ -40,12 +60,26 @@ const props = defineProps({
   content: {
     type: Object,
     default: () => ({})
+  },
+  isPreview: {
+    type: Boolean,
+    default: false
   }
 });
 
 // Estado para archivos adjuntos
 const attachments = ref([])
 const { getPostAttachments } = useGoogleDrive()
+
+// Generar slug del post
+const generateSlug = (title) => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim('-')
+}
 
 // Cargar archivos adjuntos
 const loadAttachments = async () => {
@@ -86,11 +120,29 @@ const formatDate = (dateString) => {
   }
 };
 
-const formatContent = (content) => {
+const formatContent = (content, isPreview = false) => {
   if (!content) return '';
   
+  let processedContent = content;
+  
+  // Si es vista previa, truncar el contenido
+  if (isPreview && content.length > 300) {
+    // Buscar un buen punto de corte (después de un punto o salto de línea)
+    let cutPoint = 300;
+    const nextPeriod = content.indexOf('.', 300);
+    const nextNewline = content.indexOf('\n', 300);
+    
+    if (nextPeriod !== -1 && nextPeriod < 400) {
+      cutPoint = nextPeriod + 1;
+    } else if (nextNewline !== -1 && nextNewline < 400) {
+      cutPoint = nextNewline;
+    }
+    
+    processedContent = content.substring(0, cutPoint) + '...';
+  }
+  
   // Convertir Markdown básico a HTML
-  return content
+  return processedContent
     // Headers
     .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mb-3 text-white">$1</h3>')
     .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mb-4 text-white">$1</h2>')
@@ -121,13 +173,13 @@ const getIconClass = (type) => {
 
 <style>
 .feed-dot {
-  @apply absolute -top-[1.0625rem] -left-1 h-[0.5625rem] w-[0.5625rem] rounded-full border-2 border-[#EFB141] bg-[#1A043C] md:top-[0.4375rem];
+  @apply absolute -top-[1.0625rem] -left-1 h-[0.5625rem] w-[0.5625rem] rounded-full border-2 border-white bg-[#1A043C] md:top-[0.4375rem];
 }
 .feed-border {
-  @apply absolute -bottom-2 left-0 w-px bg-[#EFB141] -top-3 md:top-2.5;
+  @apply absolute -bottom-2 left-0 w-px bg-white -top-3 md:top-2.5;
 }
 .content-date {
-  @apply pl-7 text-sm sm:text-base leading-6 text-[#EFB141] font-bold md:w-1/4 md:pl-0 md:pr-12 md:text-right;
+  @apply pl-7 text-sm sm:text-base leading-6 text-white font-bold md:w-1/4 md:pl-0 md:pr-12 md:text-right;
 }
 .content-block {
   @apply relative pt-2 pl-7 md:w-3/4 md:pt-0 md:pl-12 pb-8;

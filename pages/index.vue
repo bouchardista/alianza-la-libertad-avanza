@@ -63,6 +63,7 @@
           v-for="post in filteredPosts" 
           :key="post.id" 
           :content="post" 
+          :is-preview="true"
         />
       </div>
       
