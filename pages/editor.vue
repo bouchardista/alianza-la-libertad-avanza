@@ -433,13 +433,10 @@
           
           <div>
             <label class="block text-sm font-medium text-white mb-2">Contenido</label>
-            <textarea
+            <MarkdownEditor
               v-model="editingPost.content"
-              required
-              rows="8"
-              class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
-              placeholder="Contenido de la publicación..."
-            ></textarea>
+              placeholder="Escribe el contenido de la publicación en Markdown..."
+            />
           </div>
           
           <div class="grid grid-cols-2 gap-4">
@@ -456,10 +453,10 @@
             <div>
               <label class="block text-sm font-medium text-white mb-2">Firmante</label>
               <input
-                v-model="editingPost.firmante"
+                value="Alianza La Libertad Avanza Córdoba"
                 type="text"
-                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
-                placeholder="Alianza La Libertad Avanza"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
               />
             </div>
           </div>

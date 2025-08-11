@@ -96,6 +96,7 @@
     <div class="mt-4 p-3 bg-gray-800/50 rounded-md border border-gray-600">
       <div class="flex flex-wrap gap-2">
         <button
+          type="button"
           @click="insertMarkdown('**', '**')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Negrita"
@@ -103,6 +104,7 @@
           <strong>B</strong>
         </button>
         <button
+          type="button"
           @click="insertMarkdown('*', '*')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Cursiva"
@@ -110,6 +112,7 @@
           <em>I</em>
         </button>
         <button
+          type="button"
           @click="insertMarkdown('### ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Título H3"
@@ -117,6 +120,7 @@
           H3
         </button>
         <button
+          type="button"
           @click="insertMarkdown('## ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Título H2"
@@ -124,6 +128,7 @@
           H2
         </button>
         <button
+          type="button"
           @click="insertMarkdown('# ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Título H1"
@@ -131,6 +136,7 @@
           H1
         </button>
         <button
+          type="button"
           @click="insertMarkdown('- ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Lista"
@@ -138,6 +144,7 @@
           •
         </button>
         <button
+          type="button"
           @click="insertMarkdown('[', '](url)')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Enlace"
@@ -145,6 +152,7 @@
           🔗
         </button>
         <button
+          type="button"
           @click="insertMarkdown('> ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Cita"

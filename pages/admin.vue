@@ -449,13 +449,10 @@
           
           <div>
             <label class="block text-sm font-medium text-white mb-2">Contenido</label>
-            <textarea
+            <MarkdownEditor
               v-model="editingPost.content"
-              required
-              rows="8"
-              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
-              placeholder="Contenido de la publicación..."
-            ></textarea>
+              placeholder="Escribe el contenido de la publicación en Markdown..."
+            />
           </div>
           
           <div class="grid grid-cols-2 gap-4">
@@ -472,11 +469,69 @@
             <div>
               <label class="block text-sm font-medium text-white mb-2">Firmante</label>
               <input
-                v-model="editingPost.firmante"
+                value="Alianza La Libertad Avanza Córdoba"
                 type="text"
-                class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
-                placeholder="Alianza La Libertad Avanza"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
               />
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-white mb-2">Archivos adjuntos</label>
+            <div 
+              ref="editDropZone"
+              class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center transition-colors"
+              :class="{ 'border-[#31B4E7] bg-[#31B4E7]/10': isDragOver }"
+              @dragover.prevent="handleDragOver"
+              @dragleave.prevent="handleDragLeave"
+              @drop.prevent="handleDrop"
+            >
+              <input
+                ref="editFileInput"
+                type="file"
+                multiple
+                accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.webp"
+                @change="handleFileUpload"
+                class="hidden"
+              />
+              <div class="space-y-4">
+                <Icon name="heroicons:cloud-arrow-up" class="w-12 h-12 text-gray-400 mx-auto" />
+                <div>
+                  <p class="text-white/80 text-sm">
+                    Arrastra archivos aquí o
+                    <button
+                      type="button"
+                      @click="$refs.editFileInput.click()"
+                      class="text-[#31B4E7] hover:text-[#2A9BC7] underline"
+                    >
+                      haz clic para seleccionar
+                    </button>
+                  </p>
+                  <p class="text-white/60 text-xs mt-1">Máximo 10MB por archivo</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Lista de archivos seleccionados -->
+            <div v-if="selectedFiles.length > 0" class="mt-4 space-y-2">
+              <h4 class="text-sm font-medium text-white">Archivos seleccionados:</h4>
+              <div v-for="(file, index) in selectedFiles" :key="index" class="flex items-center justify-between bg-gray-800 rounded-lg p-3">
+                <div class="flex items-center space-x-3">
+                  <Icon name="heroicons:document" class="w-5 h-5 text-[#31B4E7]" />
+                  <div>
+                    <p class="text-white text-sm">{{ file.name }}</p>
+                    <p class="text-white/60 text-xs">{{ formatFileSize(file.size) }}</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  @click="removeFile(index)"
+                  class="text-red-400 hover:text-red-300"
+                >
+                  <Icon name="heroicons:trash" class="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
           
@@ -718,7 +773,14 @@ const handleUpdatePost = async () => {
   const result = await updatePost(editingPost.value.id, editingPost.value)
   
   if (result.success) {
+    // Subir archivos si hay alguno seleccionado
+    if (selectedFiles.value.length > 0) {
+      await uploadFilesToPost(editingPost.value.id)
+    }
+    
     showEditModal.value = false
+    // Limpiar archivos seleccionados
+    selectedFiles.value = []
     // Refrescar la lista de posts
     await loadPosts()
     showSuccess('✅ Borrador actualizado exitosamente')

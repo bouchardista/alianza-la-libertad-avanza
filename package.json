@@ -1,7 +1,7 @@
 {
   "name": "alianza-la-libertad-avanza",
   "version": "1.0.0",
-  "description": "Sitio oficial de la Alianza La Libertad Avanza",
+  "description": "Sitio oficial de la Alianza La Libertad Avanza Córdoba. Resoluciones, comunicados y declaraciones oficiales.",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

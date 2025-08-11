@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="mt-2 mb-8 text-lg leading-8 text-white">
-        <p>Sitio oficial de la organización.</p>
+        <p>Sitio oficial de la Alianza La Libertad Avanza Córdoba.</p>
         <p>Resoluciones, comunicados y declaraciones oficiales.</p>
       </div>
     </div>
