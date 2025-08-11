@@ -144,7 +144,7 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:calendar" class="h-8 w-8 text-[#6A4C98]" />
+                <Icon name="heroicons:calendar" class="h-8 w-8 text-white" />
               </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Este Mes</p>
@@ -247,16 +247,12 @@
             
             <div>
               <label class="block text-sm font-medium text-white mb-2">Categoría</label>
-              <select
-                v-model="newPost.category"
-                required
-                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
-              >
-                <option value="general">General</option>
-                <option value="politica">Política</option>
-                <option value="institucional">Institucional</option>
-                <option value="eventos">Eventos</option>
-              </select>
+              <input
+                value="General"
+                type="text"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
+              />
             </div>
           </div>
           
@@ -418,16 +414,12 @@
             
             <div>
               <label class="block text-sm font-medium text-white mb-2">Categoría</label>
-              <select
-                v-model="editingPost.category"
-                required
-                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
-              >
-                <option value="general">General</option>
-                <option value="politica">Política</option>
-                <option value="institucional">Institucional</option>
-                <option value="eventos">Eventos</option>
-              </select>
+              <input
+                value="General"
+                type="text"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
+              />
             </div>
           </div>
           

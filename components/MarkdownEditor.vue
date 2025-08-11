@@ -3,6 +3,7 @@
     <!-- Pestañas -->
     <div class="flex border-b border-gray-600 mb-4">
       <button
+        type="button"
         @click="activeTab = 'edit'"
         :class="[
           'px-4 py-2 text-sm font-medium transition-colors',
@@ -15,6 +16,7 @@
         Editar
       </button>
       <button
+        type="button"
         @click="activeTab = 'preview'"
         :class="[
           'px-4 py-2 text-sm font-medium transition-colors',
@@ -27,6 +29,7 @@
         Vista Previa
       </button>
       <button
+        type="button"
         @click="activeTab = 'split'"
         :class="[
           'px-4 py-2 text-sm font-medium transition-colors',

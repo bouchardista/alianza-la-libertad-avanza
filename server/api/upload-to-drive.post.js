@@ -84,10 +84,13 @@ export default defineEventHandler(async (event) => {
       parents: folderId ? [folderId] : [config.googleDriveFolderId]
     }
 
-    // Configurar los medios
+    // Configurar los medios usando un stream de buffer
+    const { Readable } = await import('stream')
+    const stream = Readable.from(buffer)
+    
     const media = {
       mimeType: file.type,
-      body: buffer
+      body: stream
     }
 
     // Subir el archivo
