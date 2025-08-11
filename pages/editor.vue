@@ -34,7 +34,7 @@
 
     <header class="bg-white/10 backdrop-blur-sm border-b border-white/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
           <div class="flex items-center space-x-4">
             <div class="flex-shrink-0">
               <NuxtLink to="/" class="block hover:opacity-80 transition-opacity bg-transparent">
@@ -42,7 +42,7 @@
               </NuxtLink>
             </div>
             <div>
-              <h1 class="text-3xl font-bold text-white">
+              <h1 class="text-2xl lg:text-3xl font-bold text-white">
                 Panel de Editor
               </h1>
               <p class="text-sm text-white/80 mt-1">
@@ -53,17 +53,17 @@
               </p>
             </div>
           </div>
-          <div class="flex space-x-4">
+          <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
             <button
               @click="showCreateModal = true"
-              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#31B4E7] hover:bg-[#2A9BC7] transition-colors"
+              class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#31B4E7] hover:bg-[#2A9BC7] transition-colors"
             >
               <Icon name="heroicons:plus" class="w-4 h-4 mr-2" />
               Nueva Publicación
             </button>
             <a
               href="/"
-              class="inline-flex items-center px-4 py-2 border border-white/20 rounded-md shadow-sm text-sm font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
+              class="inline-flex items-center justify-center px-4 py-2 border border-white/20 rounded-md shadow-sm text-sm font-medium text-white bg-white/10 hover:bg-white/20 transition-colors"
             >
               <Icon name="heroicons:arrow-left" class="w-4 h-4 mr-2" />
               Volver al sitio
@@ -71,7 +71,7 @@
             <button
               @click="handleLogout"
               :disabled="loading"
-              class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#AD3257] hover:bg-[#8B1F3F] transition-colors disabled:opacity-50"
+              class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#AD3257] hover:bg-[#8B1F3F] transition-colors disabled:opacity-50"
             >
               <Icon name="heroicons:arrow-right-on-rectangle" class="w-4 h-4 mr-2" />
               {{ loading ? 'Cerrando...' : 'Cerrar Sesión' }}

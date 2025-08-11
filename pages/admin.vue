@@ -129,26 +129,26 @@
             </div>
           </div>
           
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:megaphone" class="h-5 w-5 sm:h-8 sm:w-8 text-[#B23B8F]" />
+                <Icon name="heroicons:megaphone" class="h-8 w-8 text-[#B23B8F]" />
               </div>
-              <div class="ml-2 sm:ml-4">
-                <p class="text-xs sm:text-sm font-medium text-white/60">Comunicados</p>
-                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'COMUNICADO').length || 0 }}</p>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Comunicados</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'COMUNICADO').length || 0 }}</p>
               </div>
             </div>
           </div>
           
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:calendar" class="h-5 w-5 sm:h-8 sm:w-8 text-white" />
+                <Icon name="heroicons:calendar" class="h-8 w-8 text-white" />
               </div>
-              <div class="ml-2 sm:ml-4">
-                <p class="text-xs sm:text-sm font-medium text-white/60">Este Mes</p>
-                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Este Mes</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
               </div>
             </div>
           </div>
