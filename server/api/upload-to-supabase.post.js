@@ -24,8 +24,8 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // Crear cliente de Supabase
-    const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
+    // Crear cliente de Supabase con service role para bypass RLS
+    const supabase = createClient(config.public.supabaseUrl, config.supabaseServiceRoleKey)
     
     // Obtener el archivo del body
     console.log('📁 Leyendo archivo del request...')
