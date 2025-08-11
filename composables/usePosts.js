@@ -266,6 +266,50 @@ export const usePosts = () => {
     }
   }
 
+  const convertToDraft = async (postId) => {
+    loading.value = true
+    try {
+      const supabase = getSupabase()
+      if (!supabase) {
+        return { success: false, error: 'Cliente de Supabase no disponible' }
+      }
+
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado. Por favor, inicia sesión nuevamente.' }
+      }
+
+      // Verificar que sea admin
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+      if (profile?.role !== 'admin') {
+        return { success: false, error: 'Solo los administradores pueden convertir publicaciones en borradores' }
+      }
+
+      const { data, error } = await supabase
+        .from('posts')
+        .update({ status: 'draft', updated_at: new Date().toISOString() })
+        .eq('id', postId)
+        .select()
+        .single()
+
+      if (error) {
+        return { success: false, error: error.message }
+      }
+
+      return { success: true, post: data }
+    } catch (error) {
+      return { success: false, error: error.message || 'Error al convertir en borrador' }
+    } finally {
+      loading.value = false
+    }
+  }
+
   const requestPublication = async (postId) => {
     loading.value = true
     try {
@@ -460,6 +504,7 @@ export const usePosts = () => {
     getPublicPosts,
     getPost,
     publishDraft,
+    convertToDraft,
     requestPublication,
     getPublishRequests,
     reviewPublishRequest,

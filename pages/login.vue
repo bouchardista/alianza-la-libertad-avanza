@@ -17,7 +17,7 @@
           Acceso al Sistema
         </h2>
         <p class="mt-2 text-center text-sm text-white/80">
-          Alianza La Libertad Avanza - Córdoba
+          Alianza La Libertad Avanza Córdoba
         </p>
       </div>
       

@@ -150,7 +150,7 @@ useHead({
   meta: [
     {
       name: 'description',
-              content: post.value ? post.value.content?.substring(0, 160) + '...' : 'Publicación de Alianza La Libertad Avanza - Córdoba'
+              content: post.value ? post.value.content?.substring(0, 160) + '...' : 'Publicación de Alianza La Libertad Avanza Córdoba'
     }
   ]
 })

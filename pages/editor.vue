@@ -40,7 +40,7 @@
               Panel de Editor
             </h1>
             <p class="text-sm text-white/80 mt-1">
-              Alianza La Libertad Avanza - Córdoba
+              Alianza La Libertad Avanza Córdoba
             </p>
             <p v-if="user" class="text-xs text-white/60 mt-1">
               Conectado como: {{ user.name }} ({{ user.role }})
@@ -524,7 +524,7 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Editor - Alianza La Libertad Avanza - Córdoba',
+  title: 'Editor - Alianza La Libertad Avanza Córdoba',
   meta: [
     { name: 'description', content: 'Panel de editor del sitio oficial' }
   ]

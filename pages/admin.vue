@@ -40,7 +40,7 @@
                         Panel de Administración
                       </h1>
                       <p class="text-sm text-white/80 mt-1">
-                        Alianza La Libertad Avanza - Córdoba
+                        Alianza La Libertad Avanza Córdoba
                       </p>
                       <p v-if="user" class="text-xs text-white/60 mt-1">
                         Conectado como: {{ user.name }} ({{ user.role }})
@@ -186,6 +186,21 @@
                       >
                         <Icon name="heroicons:arrow-up-circle" class="w-4 h-4" />
                         <span>{{ disabledButtons.has(post.id) ? 'Publicando...' : 'Publicar' }}</span>
+                      </button>
+                      <button 
+                        v-if="post.status === 'published'"
+                        @click="handleConvertToDraft(post)"
+                        :disabled="disabledButtons.has(post.id)"
+                        :class="[
+                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors',
+                          disabledButtons.has(post.id)
+                            ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
+                            : 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                        ]"
+                        title="Convertir en borrador"
+                      >
+                        <Icon name="heroicons:document-text" class="w-4 h-4" />
+                        <span>{{ disabledButtons.has(post.id) ? 'Convirtiendo...' : 'Convertir en Borrador' }}</span>
                       </button>
                       <button 
                         @click="handleEditPost(post)"
@@ -528,14 +543,14 @@ definePageMeta({
 })
 
 useHead({
-  title: 'Administración - Alianza La Libertad Avanza - Córdoba',
+  title: 'Administración - Alianza La Libertad Avanza Córdoba',
   meta: [
     { name: 'description', content: 'Panel de administración del sitio oficial' }
   ]
 });
 
 const { user, signOut, loading } = useAuth()
-const { createPost, updatePost, deletePost, publishDraft, loading: postsLoading, getPosts } = usePosts()
+const { createPost, updatePost, deletePost, publishDraft, convertToDraft, loading: postsLoading, getPosts } = usePosts()
 const { uploadToDrive, addAttachment, deleteAttachment, getPostAttachments } = useGoogleDrive()
 
 // Estado de carga inicial
@@ -723,10 +738,16 @@ const confirmDelete = async () => {
   
   if (result.success) {
     showDeleteModal.value = false
+    const deletedPost = deleteConfirmPost.value
     deleteConfirmPost.value = null
     // Refrescar la lista de posts
     await loadPosts()
-    showSuccess('✅ Publicación eliminada exitosamente')
+    // Mostrar mensaje según el estado del post eliminado
+    if (deletedPost.status === 'draft') {
+      showSuccess('✅ Borrador eliminado exitosamente')
+    } else {
+      showSuccess('✅ Publicación eliminada exitosamente')
+    }
   } else {
     if (result.error.includes('no autenticado')) {
       alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
@@ -751,6 +772,23 @@ const handlePublishDraft = async (post) => {
     // Re-habilitar el botón si hay error
     disabledButtons.value.delete(post.id)
     alert('Error al publicar el borrador: ' + result.error)
+  }
+}
+
+const handleConvertToDraft = async (post) => {
+  // Deshabilitar el botón inmediatamente
+  disabledButtons.value.add(post.id)
+  
+  const result = await convertToDraft(post.id)
+  
+  if (result.success) {
+    // Refrescar la lista de posts
+    await loadPosts()
+    showSuccess('✅ Publicación convertida en borrador exitosamente')
+  } else {
+    // Re-habilitar el botón si hay error
+    disabledButtons.value.delete(post.id)
+    alert('Error al convertir en borrador: ' + result.error)
   }
 }
 
