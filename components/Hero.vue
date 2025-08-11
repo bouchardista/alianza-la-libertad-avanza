@@ -3,8 +3,8 @@
     <div class="relative mx-auto max-w-[37.5rem] pt-12 text-center pb-2">
       <div class="sm:flex items-center justify-center space-x-3">
         <div class="flex items-center justify-center">
-          <div class="h-20 w-20 flex items-center justify-center shadow-lg">
-            <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-16 w-16 object-contain" />
+          <div class="h-32 w-32 flex items-center justify-center shadow-lg">
+            <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-28 w-28 object-contain" />
           </div>
         </div>
         <div class="text-center">

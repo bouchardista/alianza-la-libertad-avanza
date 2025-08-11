@@ -2,10 +2,24 @@
   <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859]">
     <!-- Mensaje de éxito -->
     <div v-if="showSuccessMessage" class="fixed top-4 right-4 z-50">
-      <div class="bg-green-500/90 backdrop-blur-sm border border-green-400/20 rounded-lg p-4 shadow-lg">
+      <div :class="[
+        'backdrop-blur-sm border rounded-lg p-4 shadow-lg',
+        successMessage.includes('Borrador') 
+          ? 'bg-yellow-500/90 border-yellow-400/20' 
+          : 'bg-green-500/90 border-green-400/20'
+      ]">
         <div class="flex items-center">
-          <Icon name="heroicons:check-circle" class="h-5 w-5 text-green-100 mr-2" />
-          <p class="text-green-100 font-medium">{{ successMessage }}</p>
+          <Icon 
+            :name="successMessage.includes('Borrador') ? 'heroicons:document-text' : 'heroicons:check-circle'" 
+            :class="[
+              'h-5 w-5 mr-2',
+              successMessage.includes('Borrador') ? 'text-yellow-100' : 'text-green-100'
+            ]" 
+          />
+          <p :class="[
+            'font-medium',
+            successMessage.includes('Borrador') ? 'text-yellow-100' : 'text-green-100'
+          ]">{{ successMessage }}</p>
         </div>
       </div>
     </div>
@@ -670,7 +684,7 @@ const handleUpdatePost = async () => {
     showEditModal.value = false
     // Refrescar la lista de posts
     await loadPosts()
-    showSuccess('✅ Publicación actualizada exitosamente')
+    showSuccess('✅ Borrador actualizado exitosamente')
   } else {
     if (result.error.includes('no autenticado')) {
       alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
