@@ -200,7 +200,7 @@
                         title="Solicitar publicación"
                       >
                         <Icon name="heroicons:paper-airplane" class="w-4 h-4" />
-                        <span>{{ disabledButtons.has(post.id) ? 'Enviando...' : 'Solicitar su Publicación' }}</span>
+                        <span>{{ disabledButtons.has(post.id) ? 'Pendiente de aprobación' : 'Solicitar su Publicación' }}</span>
                       </button>
                       <button 
                         @click="handleEditPost(post)"
@@ -774,6 +774,9 @@ const handleEditPost = async (post) => {
   }
   showEditModal.value = true
   
+  // Limpiar el estado del botón al editar
+  disabledButtons.value.delete(post.id)
+  
   // Cargar archivos adjuntos existentes
   const attachmentsResult = await getPostAttachments(post.id)
   if (attachmentsResult.success) {
@@ -839,6 +842,8 @@ const handleRequestPublication = async (post) => {
     // Refrescar la lista de posts
     await loadPosts()
     showSuccess('✅ Solicitud de publicación enviada. Los administradores la revisarán.')
+    // Limpiar el estado del botón después de una solicitud exitosa
+    disabledButtons.value.delete(post.id)
   } else {
     // Re-habilitar el botón si hay error
     disabledButtons.value.delete(post.id)
