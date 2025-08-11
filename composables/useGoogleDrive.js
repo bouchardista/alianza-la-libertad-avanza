@@ -3,38 +3,23 @@ export const useGoogleDrive = () => {
   
   const getSupabase = () => {
     try {
-      return $supabase.client
+      // Usar el composable oficial de Supabase
+      const client = useSupabaseClient()
+      if (client) {
+        return client
+      }
+      
+      // Fallback: intentar obtener desde el contexto de Nuxt
+      const nuxtApp = useNuxtApp()
+      if (nuxtApp.$supabase) {
+        return nuxtApp.$supabase
+      }
+      
+      console.error('No se pudo obtener el cliente de Supabase')
+      return null
     } catch (error) {
       console.error('Error getting Supabase client:', error)
       return null
-    }
-  }
-
-  // Función para obtener el token de acceso de Google Drive
-  const getGoogleDriveToken = async () => {
-    try {
-      const supabase = getSupabase()
-      if (!supabase) {
-        return { success: false, error: 'Cliente de Supabase no disponible' }
-      }
-
-      const { data: { user }, error: authError } = await supabase.auth.getUser()
-      
-      if (authError || !user) {
-        return { success: false, error: 'Usuario no autenticado' }
-      }
-
-      // Aquí deberías implementar la lógica para obtener el token de Google Drive
-      // Por ahora, usaremos una variable de entorno
-      const token = config.public.googleDriveToken
-      
-      if (!token) {
-        return { success: false, error: 'Token de Google Drive no configurado' }
-      }
-
-      return { success: true, token }
-    } catch (error) {
-      return { success: false, error: error.message || 'Error al obtener token de Google Drive' }
     }
   }
 
@@ -42,12 +27,6 @@ export const useGoogleDrive = () => {
   const uploadToDrive = async (file, folderId = null) => {
     try {
       console.log('Iniciando subida a Google Drive:', { fileName: file.name, fileSize: file.size, folderId })
-      
-      const tokenResult = await getGoogleDriveToken()
-      if (!tokenResult.success) {
-        console.error('Error al obtener token:', tokenResult.error)
-        return tokenResult
-      }
 
       const formData = new FormData()
       formData.append('file', file)
@@ -58,14 +37,10 @@ export const useGoogleDrive = () => {
 
       console.log('Enviando archivo a /api/upload-to-drive')
 
-      // Aquí deberías hacer la llamada a tu API para subir a Google Drive
-      // Por ahora, simularemos la respuesta
+      // Llamada directa al endpoint del servidor
       const response = await $fetch('/api/upload-to-drive', {
         method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${tokenResult.token}`
-        }
+        body: formData
       })
 
       console.log('Respuesta de Google Drive:', response)
