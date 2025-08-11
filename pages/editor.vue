@@ -782,33 +782,20 @@ const formatFileSize = (bytes) => {
 
 // Función para subir archivos a Supabase Storage y agregarlos al post
 const uploadFilesToPost = async (postId) => {
-  console.log('🚀 Iniciando subida de archivos para post:', postId)
-  console.log('📁 Archivos seleccionados:', selectedFiles.value.length)
-  
   if (selectedFiles.value.length === 0) {
-    console.log('📭 No hay archivos para subir')
     return
   }
   
   for (const file of selectedFiles.value) {
     try {
-      console.log('📤 Subiendo archivo:', file.name, 'Tamaño:', file.size)
-      
       // Subir a Supabase Storage
       const uploadResult = await uploadToStorage(file, postId)
-      console.log('📋 Resultado de subida a Storage:', uploadResult)
       
       if (uploadResult.success) {
-        console.log('✅ Archivo subido a Storage exitosamente')
-        console.log('📎 Agregando como adjunto al post...')
-        
         // Agregar como adjunto al post
         const attachmentResult = await addAttachment(postId, uploadResult.fileData)
-        console.log('📋 Resultado de agregar adjunto:', attachmentResult)
         
-        if (attachmentResult.success) {
-          console.log('✅ Adjunto agregado exitosamente')
-        } else {
+        if (!attachmentResult.success) {
           console.error('❌ Error al agregar adjunto:', attachmentResult.error)
         }
       } else {
@@ -818,8 +805,6 @@ const uploadFilesToPost = async (postId) => {
       console.error('❌ Error general al subir archivo:', error)
     }
   }
-  
-  console.log('🏁 Proceso de subida completado')
 }
 </script>
 

@@ -26,21 +26,15 @@ export const useSupabaseStorage = () => {
   // Función para subir archivo a Supabase Storage
   const uploadToStorage = async (file, postId) => {
     try {
-      console.log('Iniciando subida a Supabase Storage:', { fileName: file.name, fileSize: file.size, postId })
-
       const formData = new FormData()
       formData.append('file', file)
       formData.append('postId', postId)
-
-      console.log('Enviando archivo a /api/upload-to-supabase')
 
       // Llamada directa al endpoint del servidor
       const response = await $fetch('/api/upload-to-supabase', {
         method: 'POST',
         body: formData
       })
-
-      console.log('Respuesta de Supabase Storage:', response)
       
       // Verificar si la respuesta indica un error
       if (response.success === false) {
@@ -104,8 +98,6 @@ export const useSupabaseStorage = () => {
         created_by: user.id
       }
 
-      console.log('Datos del attachment a insertar:', attachment)
-
       const { data, error } = await supabase
         .from('post_attachments')
         .insert([attachment])
@@ -116,8 +108,6 @@ export const useSupabaseStorage = () => {
         console.error('Error al insertar attachment:', error)
         return { success: false, error: error.message }
       }
-
-      console.log('Attachment insertado exitosamente:', data)
       return { success: true, attachment: data }
     } catch (error) {
       console.error('Error en addAttachment:', error)

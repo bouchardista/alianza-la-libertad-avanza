@@ -14,11 +14,7 @@ export async function useClickOutside(
 ) {
   if (!el_target_ref) return;
   if (!el_target_ref.value) {
-    console.log(
-      "useClickOutside",
-      "target element was not supplied or is null"
-    );
-    //return
+    return;
   }
 
   var dont_use_first_click = 0;

@@ -91,7 +91,6 @@ const copyUrl = async () => {
       }, 2000)
     }
   } catch (error) {
-    console.log('Error al copiar URL:', error)
     alert('Error al copiar la URL')
   }
 }

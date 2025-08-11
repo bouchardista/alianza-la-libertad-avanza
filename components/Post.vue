@@ -76,17 +76,12 @@ const { generateSlug } = useSlug()
 // Cargar archivos adjuntos
 const loadAttachments = async () => {
   if (props.content.id) {
-    console.log('Cargando archivos adjuntos para post:', props.content.id)
     const result = await getPostAttachments(props.content.id)
-    console.log('Resultado de getPostAttachments:', result)
     if (result.success) {
       attachments.value = result.attachments
-      console.log('Archivos adjuntos cargados:', attachments.value)
     } else {
       console.error('Error al cargar archivos adjuntos:', result.error)
     }
-  } else {
-    console.log('No hay ID de post para cargar archivos adjuntos')
   }
 }
 

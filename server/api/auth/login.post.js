@@ -5,10 +5,6 @@ export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
   try {
-    console.log('🔍 Intentando autenticación para:', email)
-    console.log('🔑 Supabase URL:', config.public.supabaseUrl ? '✅ Configurado' : '❌ No configurado')
-    console.log('🔑 Supabase Key:', config.public.supabaseKey ? '✅ Configurado' : '❌ No configurado')
-
     // Crear cliente de Supabase para el servidor
     const { createClient } = await import('@supabase/supabase-js')
     const supabase = createClient(config.public.supabaseUrl, config.public.supabaseKey)
@@ -18,9 +14,7 @@ export default defineEventHandler(async (event) => {
       email,
       password
     })
-    
-    console.log('📊 Respuesta de Supabase:', { data, error })
-    
+        
     if (error) {
       console.error('❌ Error de autenticación:', error)
       throw createError({
@@ -36,9 +30,7 @@ export default defineEventHandler(async (event) => {
         statusMessage: 'Respuesta inválida del servidor de autenticación'
       })
     }
-    
-    console.log('✅ Usuario autenticado:', data.user.id)
-    
+        
     // Obtener información adicional del usuario desde la tabla de perfiles
     const { data: profile, error: profileError } = await supabase
       .from('profiles')
@@ -46,7 +38,6 @@ export default defineEventHandler(async (event) => {
       .eq('id', data.user.id)
       .single()
     
-    console.log('📋 Perfil obtenido:', { profile, profileError })
     
     if (profileError && profileError.code !== 'PGRST116') {
       console.error('⚠️ Error al obtener perfil:', profileError)
@@ -58,9 +49,7 @@ export default defineEventHandler(async (event) => {
       role: profile?.role || 'editor',
       name: profile?.name || 'Usuario'
     }
-    
-    console.log('🎉 Usuario final:', userData)
-    
+        
     return {
       user: userData
     }

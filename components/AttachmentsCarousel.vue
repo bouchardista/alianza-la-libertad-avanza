@@ -142,13 +142,6 @@ onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
   
-  // Debug: mostrar información sobre el carrusel
-  console.log('🎠 AttachmentsCarousel montado:', {
-    attachmentsCount: props.attachments.length,
-    isMobile: isMobile.value,
-    shouldShowArrows: !isMobile.value && props.attachments.length > 2
-  })
-  
   // Agregar event listener para scroll
   if (carouselContainer.value) {
     carouselContainer.value.addEventListener('scroll', updateCurrentIndex)
@@ -205,11 +198,6 @@ const isImage = (mimeType) => {
 // Función para verificar si es PDF
 const isPDF = (mimeType) => {
   return mimeType === 'application/pdf'
-}
-
-// Función para manejar error de PDF
-const handlePDFError = (event) => {
-  console.log('Error al cargar PDF:', event)
 }
 
 // Funciones de navegación del carrusel infinito
