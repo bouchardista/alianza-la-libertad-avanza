@@ -15,16 +15,25 @@ export default defineEventHandler(async (event) => {
     // Verificar que las credenciales estén configuradas
     if (!config.googleDriveServiceAccountJson) {
       console.error('❌ Google Drive no está configurado correctamente')
-      throw createError({
-        statusCode: 500,
-        statusMessage: 'Google Drive no está configurado correctamente'
-      })
+      return {
+        success: false,
+        error: 'Google Drive no está configurado correctamente. Contacta al administrador.'
+      }
     }
 
     // Configurar cuenta de servicio
     console.log('🔐 Configurando cuenta de servicio...')
-    const serviceAccount = JSON.parse(config.googleDriveServiceAccountJson)
-    console.log('📧 Email de la cuenta de servicio:', serviceAccount.client_email)
+    let serviceAccount
+    try {
+      serviceAccount = JSON.parse(config.googleDriveServiceAccountJson)
+      console.log('📧 Email de la cuenta de servicio:', serviceAccount.client_email)
+    } catch (parseError) {
+      console.error('❌ Error al parsear la configuración de Google Drive:', parseError)
+      return {
+        success: false,
+        error: 'Error en la configuración de Google Drive. Contacta al administrador.'
+      }
+    }
     
     const auth = new google.auth.GoogleAuth({
       credentials: serviceAccount,
@@ -107,9 +116,9 @@ export default defineEventHandler(async (event) => {
     
     console.error('Mensaje de error detallado:', errorMessage)
     
-    throw createError({
-      statusCode: 500,
-      statusMessage: errorMessage
-    })
+    return {
+      success: false,
+      error: errorMessage
+    }
   }
 })
