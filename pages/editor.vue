@@ -290,10 +290,10 @@
             <div>
               <label class="block text-sm font-medium text-white mb-2">Firmante</label>
               <input
-                v-model="newPost.firmante"
+                value="Alianza La Libertad Avanza Córdoba"
                 type="text"
-                class="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-[#31B4E7]"
-                placeholder="Alianza La Libertad Avanza"
+                disabled
+                class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white/60 cursor-not-allowed"
               />
             </div>
           </div>
@@ -582,7 +582,7 @@ const newPost = ref({
   category: 'general',
   status: 'draft',
   date: new Date().toISOString().split('T')[0],
-  firmante: 'Alianza La Libertad Avanza'
+  firmante: 'Alianza La Libertad Avanza Córdoba'
 })
 
 // Estado para archivos seleccionados
@@ -598,7 +598,7 @@ const editingPost = ref({
   type: 'COMUNICADO',
   category: 'general',
   date: '',
-  firmante: 'Alianza La Libertad Avanza'
+  firmante: 'Alianza La Libertad Avanza Córdoba'
 })
 
 const formatDate = (date) => {
@@ -653,7 +653,7 @@ const handleCreatePost = async () => {
       category: 'general',
       status: 'draft',
       date: new Date().toISOString().split('T')[0],
-      firmante: 'Alianza La Libertad Avanza'
+      firmante: 'Alianza La Libertad Avanza Córdoba'
     }
     // Limpiar archivos seleccionados
     selectedFiles.value = []
