@@ -188,9 +188,8 @@
                 required
                 class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
               >
-                <option value="resolucion">Resolución</option>
-                <option value="comunicado">Comunicado</option>
-                <option value="declaracion">Declaración</option>
+                <option value="RESOLUCIÓN">Resolución</option>
+                <option value="COMUNICADO">Comunicado</option>
               </select>
             </div>
             
@@ -312,7 +311,7 @@ const showCreateModal = ref(false)
 const newPost = ref({
   title: '',
   content: '',
-  type: 'comunicado',
+  type: 'COMUNICADO',
   category: 'general',
   date: new Date().toISOString().split('T')[0],
   firmante: 'Alianza La Libertad Avanza'
@@ -338,15 +337,15 @@ const handleCreatePost = async () => {
   
   if (result.success) {
     showCreateModal.value = false
-    // Resetear el formulario
-    newPost.value = {
-      title: '',
-      content: '',
-      type: 'comunicado',
-      category: 'general',
-      date: new Date().toISOString().split('T')[0],
-      firmante: 'Alianza La Libertad Avanza'
-    }
+      // Resetear el formulario
+  newPost.value = {
+    title: '',
+    content: '',
+    type: 'COMUNICADO',
+    category: 'general',
+    date: new Date().toISOString().split('T')[0],
+    firmante: 'Alianza La Libertad Avanza'
+  }
     // Refrescar la lista de posts
     await loadPosts()
   } else {
