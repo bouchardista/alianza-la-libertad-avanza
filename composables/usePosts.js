@@ -136,11 +136,35 @@ export const usePosts = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
-      const { data, error } = await supabase
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado' }
+      }
+
+      // Obtener el rol del usuario
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+      const userRole = profile?.role || 'editor'
+
+      let query = supabase
         .from('posts')
         .select('*')
-        .eq('status', 'published')
         .order('date', { ascending: false })
+
+      // Si es admin, ver todos los posts (publicados y borradores)
+      if (userRole === 'admin') {
+        // No filtrar por status
+      } else {
+        // Si es editor, ver solo sus propios posts (publicados y borradores)
+        query = query.eq('author_id', user.id)
+      }
+
+      const { data, error } = await query
 
       if (error) {
         return { success: false, error: error.message }
@@ -163,7 +187,6 @@ export const usePosts = () => {
         .from('posts')
         .select('*')
         .eq('id', postId)
-        .eq('status', 'published')
         .single()
 
       if (error) {
@@ -176,12 +199,57 @@ export const usePosts = () => {
     }
   }
 
+  const publishDraft = async (postId) => {
+    loading.value = true
+    try {
+      const supabase = getSupabase()
+      if (!supabase) {
+        return { success: false, error: 'Cliente de Supabase no disponible' }
+      }
+
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      
+      if (authError || !user) {
+        return { success: false, error: 'Usuario no autenticado. Por favor, inicia sesión nuevamente.' }
+      }
+
+      // Verificar que sea admin
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+
+      if (profile?.role !== 'admin') {
+        return { success: false, error: 'Solo los administradores pueden publicar borradores' }
+      }
+
+      const { data, error } = await supabase
+        .from('posts')
+        .update({ status: 'published', updated_at: new Date().toISOString() })
+        .eq('id', postId)
+        .select()
+        .single()
+
+      if (error) {
+        return { success: false, error: error.message }
+      }
+
+      return { success: true, post: data }
+    } catch (error) {
+      return { success: false, error: error.message || 'Error al publicar el borrador' }
+    } finally {
+      loading.value = false
+    }
+  }
+
   return {
     loading: readonly(loading),
     createPost,
     updatePost,
     deletePost,
     getPosts,
-    getPost
+    getPost,
+    publishDraft
   }
 }

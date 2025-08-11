@@ -135,37 +135,36 @@
 
         <!-- Lista de Publicaciones -->
         <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-          <div class="px-6 py-4 border-b border-white/20">
-            <h2 class="text-xl font-semibold text-white">Mis Publicaciones</h2>
-          </div>
+                                  <div class="px-6 py-4 border-b border-white/20">
+                          <h2 class="text-xl font-semibold text-white">Mis Publicaciones y Borradores</h2>
+                        </div>
           <div v-if="posts && posts.length > 0" class="divide-y divide-white/20">
             <div v-for="post in posts" :key="post._path" class="px-6 py-4">
-              <div class="flex items-center justify-between">
-                <div class="flex-1">
-                  <h3 class="text-lg font-medium text-white">{{ post.title }}</h3>
-                  <div class="flex items-center space-x-4 mt-2">
-                    <Badge :type="post.type" />
-                    <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
-                    <span class="text-sm text-white/60">{{ post.firmante }}</span>
+                                <div class="flex items-center justify-between">
+                    <div class="flex-1">
+                      <h3 class="text-lg font-medium text-white">{{ post.title }}</h3>
+                      <div class="flex items-center space-x-4 mt-2">
+                        <Badge :type="post.type" />
+                        <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
+                        <span class="text-sm text-white/60">{{ post.firmante }}</span>
+                        <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full">
+                          Borrador
+                        </span>
+                        <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full">
+                          Publicado
+                        </span>
+                      </div>
+                    </div>
+                    <div class="flex space-x-2">
+                      <button 
+                        @click="handleEditPost(post)"
+                        class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors"
+                        title="Editar"
+                      >
+                        <Icon name="heroicons:pencil" class="w-5 h-5" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div class="flex space-x-2">
-                  <button 
-                    @click="handleEditPost(post)"
-                    class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors"
-                    title="Editar"
-                  >
-                    <Icon name="heroicons:pencil" class="w-5 h-5" />
-                  </button>
-                  <button 
-                    @click="handleDeletePost(post)"
-                    class="text-[#AD3257] hover:text-[#8B1F3F] transition-colors"
-                    title="Eliminar"
-                  >
-                    <Icon name="heroicons:trash" class="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
           <div v-else class="px-6 py-12 text-center">
@@ -198,7 +197,7 @@
             />
           </div>
           
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-white mb-2">Tipo</label>
               <select
@@ -224,6 +223,18 @@
                 <option value="eventos">Eventos</option>
               </select>
             </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-white mb-2">Estado</label>
+            <select
+              v-model="newPost.status"
+              required
+              class="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-[#31B4E7] focus:border-transparent"
+            >
+              <option value="draft">Borrador</option>
+              <option value="published">Publicar directamente</option>
+            </select>
           </div>
           
           <div>
@@ -433,7 +444,7 @@ useHead({
 });
 
 const { user, signOut, loading } = useAuth()
-const { createPost, updatePost, deletePost, loading: postsLoading, getPosts } = usePosts()
+const { createPost, updatePost, loading: postsLoading, getPosts } = usePosts()
 
 // Estado de carga inicial
 const pageLoading = ref(true)
@@ -474,6 +485,7 @@ const newPost = ref({
   content: '',
   type: 'COMUNICADO',
   category: 'general',
+  status: 'draft',
   date: new Date().toISOString().split('T')[0],
   firmante: 'Alianza La Libertad Avanza'
 })
@@ -530,6 +542,7 @@ const handleCreatePost = async () => {
       content: '',
       type: 'COMUNICADO',
       category: 'general',
+      status: 'draft',
       date: new Date().toISOString().split('T')[0],
       firmante: 'Alianza La Libertad Avanza'
     }
