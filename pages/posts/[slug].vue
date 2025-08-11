@@ -8,14 +8,15 @@
           <span class="text-lg font-semibold">Volver al inicio</span>
         </NuxtLink>
         
-        <!-- Botones de compartir -->
+        <!-- Botón de copiar URL -->
         <div class="flex space-x-3">
           <button 
-            @click="sharePost"
+            id="copy-button"
+            @click="copyUrl"
             class="flex items-center space-x-2 px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-lg transition-colors"
           >
-            <Icon name="heroicons:share" class="w-5 h-5" />
-            <span>Compartir</span>
+            <Icon name="heroicons:clipboard-document" class="w-5 h-5" />
+            <span>Copiar URL</span>
           </button>
         </div>
       </div>
@@ -61,36 +62,29 @@ const post = ref(null)
 const loading = ref(true)
 const error = ref(null)
 
-// Generar slug del post
-const generateSlug = (title) => {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim('-')
-}
+const { generateSlug } = useSlug()
 
-// Función para compartir
-const sharePost = async () => {
-  if (navigator.share && post.value) {
-    try {
-      await navigator.share({
-        title: post.value.title,
-        text: post.value.content?.substring(0, 100) + '...',
-        url: window.location.href
-      })
-    } catch (error) {
-      console.log('Error al compartir:', error)
+// Función para copiar URL
+const copyUrl = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    // Mostrar mensaje de éxito temporal
+    const button = document.querySelector('#copy-button')
+    if (button) {
+      const originalText = button.innerHTML
+      button.innerHTML = '<Icon name="heroicons:check" class="w-5 h-5" /><span>¡Copiado!</span>'
+      button.classList.add('bg-green-600', 'hover:bg-green-700')
+      button.classList.remove('bg-[#31B4E7]', 'hover:bg-[#2A9BC7]')
+      
+      setTimeout(() => {
+        button.innerHTML = originalText
+        button.classList.remove('bg-green-600', 'hover:bg-green-700')
+        button.classList.add('bg-[#31B4E7]', 'hover:bg-[#2A9BC7]')
+      }, 2000)
     }
-  } else {
-    // Fallback: copiar URL al portapapeles
-    try {
-      await navigator.clipboard.writeText(window.location.href)
-      alert('URL copiada al portapapeles')
-    } catch (error) {
-      console.log('Error al copiar URL:', error)
-    }
+  } catch (error) {
+    console.log('Error al copiar URL:', error)
+    alert('Error al copiar la URL')
   }
 }
 
