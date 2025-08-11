@@ -10,8 +10,8 @@
 
     <div class="max-w-md w-full space-y-8">
       <div>
-        <div class="mx-auto h-20 w-20 flex items-center justify-center shadow-lg">
-          <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-16 w-16 object-contain" />
+        <div class="mx-auto h-20 w-20 flex items-center justify-center bg-transparent">
+          <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-16 w-16 object-contain bg-transparent" />
         </div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
           Acceso al Sistema

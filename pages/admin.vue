@@ -83,7 +83,7 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <!-- Loader de contenido -->
-      <div v-if="postsLoading" class="flex justify-center py-12">
+      <div v-if="postsLoading" class="flex justify-center items-center min-h-[60vh]">
         <div class="text-center">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#31B4E7] mx-auto mb-4"></div>
           <p class="text-white/80">Cargando publicaciones...</p>

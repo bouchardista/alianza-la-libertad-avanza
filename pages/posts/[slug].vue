@@ -24,7 +24,7 @@
 
     <!-- Contenido del post -->
     <div class="container mx-auto px-4 pb-12">
-      <div v-if="loading" class="flex justify-center py-12">
+      <div v-if="loading" class="flex justify-center items-center min-h-[60vh]">
         <div class="text-center">
           <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#EFB141] mx-auto mb-4"></div>
           <p class="text-white/80">Cargando publicación...</p>
