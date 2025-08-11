@@ -69,7 +69,7 @@ const props = defineProps({
 
 // Estado para archivos adjuntos
 const attachments = ref([])
-const { getPostAttachments } = useGoogleDrive()
+const { getPostAttachments } = useSupabaseStorage()
 
 const { generateSlug } = useSlug()
 

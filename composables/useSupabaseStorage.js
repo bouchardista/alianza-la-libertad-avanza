@@ -1,4 +1,4 @@
-export const useGoogleDrive = () => {
+export const useSupabaseStorage = () => {
   const config = useRuntimeConfig()
   
   const getSupabase = () => {
@@ -23,37 +23,34 @@ export const useGoogleDrive = () => {
     }
   }
 
-  // Función para subir archivo a Google Drive
-  const uploadToDrive = async (file, folderId = null) => {
+  // Función para subir archivo a Supabase Storage
+  const uploadToStorage = async (file, postId) => {
     try {
-      console.log('Iniciando subida a Google Drive:', { fileName: file.name, fileSize: file.size, folderId })
+      console.log('Iniciando subida a Supabase Storage:', { fileName: file.name, fileSize: file.size, postId })
 
       const formData = new FormData()
       formData.append('file', file)
-      
-      if (folderId) {
-        formData.append('folderId', folderId)
-      }
+      formData.append('postId', postId)
 
-      console.log('Enviando archivo a /api/upload-to-drive')
+      console.log('Enviando archivo a /api/upload-to-supabase')
 
       // Llamada directa al endpoint del servidor
-      const response = await $fetch('/api/upload-to-drive', {
+      const response = await $fetch('/api/upload-to-supabase', {
         method: 'POST',
         body: formData
       })
 
-      console.log('Respuesta de Google Drive:', response)
+      console.log('Respuesta de Supabase Storage:', response)
       
       // Verificar si la respuesta indica un error
       if (response.success === false) {
         return { success: false, error: response.error }
       }
       
-      return { success: true, fileData: response }
+      return { success: true, fileData: response.fileData }
     } catch (error) {
-      console.error('Error en uploadToDrive:', error)
-      return { success: false, error: error.message || 'Error al subir archivo a Google Drive' }
+      console.error('Error en uploadToStorage:', error)
+      return { success: false, error: error.message || 'Error al subir archivo a Supabase Storage' }
     }
   }
 
@@ -102,10 +99,8 @@ export const useGoogleDrive = () => {
         file_name: fileData.name,
         file_type: fileData.mimeType,
         file_size: fileData.size,
-        drive_file_id: fileData.id,
-        drive_view_url: fileData.webViewLink,
-        drive_download_url: fileData.webContentLink,
-        thumbnail_url: fileData.thumbnailLink,
+        storage_path: fileData.path,
+        storage_url: fileData.url,
         created_by: user.id
       }
 
@@ -138,6 +133,29 @@ export const useGoogleDrive = () => {
         return { success: false, error: 'Cliente de Supabase no disponible' }
       }
 
+      // Primero obtener el attachment para eliminar el archivo del storage
+      const { data: attachment, error: fetchError } = await supabase
+        .from('post_attachments')
+        .select('storage_path')
+        .eq('id', attachmentId)
+        .single()
+
+      if (fetchError) {
+        return { success: false, error: fetchError.message }
+      }
+
+      // Eliminar archivo del storage
+      if (attachment.storage_path) {
+        const { error: storageError } = await supabase.storage
+          .from('post-attachments')
+          .remove([attachment.storage_path])
+
+        if (storageError) {
+          console.error('Error al eliminar archivo del storage:', storageError)
+        }
+      }
+
+      // Eliminar registro de la base de datos
       const { error } = await supabase
         .from('post_attachments')
         .delete()
@@ -184,7 +202,7 @@ export const useGoogleDrive = () => {
   }
 
   return {
-    uploadToDrive,
+    uploadToStorage,
     getPostAttachments,
     addAttachment,
     deleteAttachment,

@@ -611,7 +611,7 @@ useHead({
 
 const { user, signOut, loading } = useAuth()
 const { createPost, updatePost, deletePost, publishDraft, convertToDraft, loading: postsLoading, getPosts } = usePosts()
-const { uploadToDrive, addAttachment, deleteAttachment, getPostAttachments } = useGoogleDrive()
+const { uploadToStorage, addAttachment, deleteAttachment, getPostAttachments } = useSupabaseStorage()
 const { generateSlug } = useSlug()
 
 // Estado de carga inicial
@@ -920,7 +920,7 @@ const formatFileSize = (bytes) => {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-// Función para subir archivos a Google Drive y agregarlos al post
+// Función para subir archivos a Supabase Storage y agregarlos al post
 const uploadFilesToPost = async (postId) => {
   console.log('🚀 Iniciando subida de archivos para post:', postId)
   console.log('📁 Archivos seleccionados:', selectedFiles.value.length)
@@ -934,12 +934,12 @@ const uploadFilesToPost = async (postId) => {
     try {
       console.log('📤 Subiendo archivo:', file.name, 'Tamaño:', file.size)
       
-      // Subir a Google Drive
-      const uploadResult = await uploadToDrive(file)
-      console.log('📋 Resultado de subida a Drive:', uploadResult)
+      // Subir a Supabase Storage
+      const uploadResult = await uploadToStorage(file, postId)
+      console.log('📋 Resultado de subida a Storage:', uploadResult)
       
       if (uploadResult.success) {
-        console.log('✅ Archivo subido a Drive exitosamente')
+        console.log('✅ Archivo subido a Storage exitosamente')
         console.log('📎 Agregando como adjunto al post...')
         
         // Agregar como adjunto al post
@@ -952,7 +952,7 @@ const uploadFilesToPost = async (postId) => {
           console.error('❌ Error al agregar adjunto:', attachmentResult.error)
         }
       } else {
-        console.error('❌ Error al subir archivo a Drive:', uploadResult.error)
+        console.error('❌ Error al subir archivo a Storage:', uploadResult.error)
       }
     } catch (error) {
       console.error('❌ Error general al subir archivo:', error)
