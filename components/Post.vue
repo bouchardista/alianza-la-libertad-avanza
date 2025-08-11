@@ -17,7 +17,9 @@
         {{ content.title }}
       </h1>
 
-      <ContentRenderer :value="content" class="document" />
+      <div class="document prose prose-invert prose-sm max-w-none">
+        <div v-if="content.content" v-html="formatContent(content.content)"></div>
+      </div>
       <div v-if="content.firmante" class="mt-6 pt-4 border-t border-white/20">
         <p class="text-sm text-white font-semibold">
           Firmado por: <span class="text-[#EFB141]">{{ content.firmante }}</span>
@@ -47,6 +49,28 @@ const formatDate = (dateString) => {
   } catch (error) {
     return dateString;
   }
+};
+
+const formatContent = (content) => {
+  if (!content) return '';
+  
+  // Convertir Markdown básico a HTML
+  return content
+    // Headers
+    .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mb-3 text-white">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mb-4 text-white">$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mb-5 text-white">$1</h1>')
+    // Bold
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
+    // Lists
+    .replace(/^- (.*$)/gim, '<li class="text-white mb-1">$1</li>')
+    .replace(/(<li.*<\/li>)/s, '<ul class="list-disc list-inside mb-4 space-y-1">$1</ul>')
+    // Paragraphs
+    .replace(/\n\n/g, '</p><p class="text-white mb-4">')
+    .replace(/^(.+)$/gm, '<p class="text-white mb-4">$1</p>')
+    // Clean up empty paragraphs
+    .replace(/<p class="text-white mb-4"><\/p>/g, '')
+    .replace(/<p class="text-white mb-4">\s*<\/p>/g, '');
 };
 
 const getBadgeClass = (type) => {
