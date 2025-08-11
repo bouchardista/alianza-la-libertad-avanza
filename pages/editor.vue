@@ -754,28 +754,43 @@ const formatFileSize = (bytes) => {
 
 // Función para subir archivos a Google Drive y agregarlos al post
 const uploadFilesToPost = async (postId) => {
-  console.log('Iniciando subida de archivos para post:', postId, 'Archivos:', selectedFiles.value.length)
+  console.log('🚀 Iniciando subida de archivos para post:', postId)
+  console.log('📁 Archivos seleccionados:', selectedFiles.value.length)
   
-  if (selectedFiles.value.length === 0) return
+  if (selectedFiles.value.length === 0) {
+    console.log('📭 No hay archivos para subir')
+    return
+  }
   
   for (const file of selectedFiles.value) {
     try {
-      console.log('Subiendo archivo:', file.name)
+      console.log('📤 Subiendo archivo:', file.name, 'Tamaño:', file.size)
+      
       // Subir a Google Drive
       const uploadResult = await uploadToDrive(file)
-      console.log('Resultado de subida:', uploadResult)
+      console.log('📋 Resultado de subida a Drive:', uploadResult)
       
       if (uploadResult.success) {
-        console.log('Archivo subido exitosamente, agregando como adjunto')
+        console.log('✅ Archivo subido a Drive exitosamente')
+        console.log('📎 Agregando como adjunto al post...')
+        
         // Agregar como adjunto al post
         const attachmentResult = await addAttachment(postId, uploadResult.fileData)
-        console.log('Resultado de agregar adjunto:', attachmentResult)
+        console.log('📋 Resultado de agregar adjunto:', attachmentResult)
+        
+        if (attachmentResult.success) {
+          console.log('✅ Adjunto agregado exitosamente')
+        } else {
+          console.error('❌ Error al agregar adjunto:', attachmentResult.error)
+        }
       } else {
-        console.error('Error al subir archivo:', uploadResult.error)
+        console.error('❌ Error al subir archivo a Drive:', uploadResult.error)
       }
     } catch (error) {
-      console.error('Error al subir archivo:', error)
+      console.error('❌ Error general al subir archivo:', error)
     }
   }
+  
+  console.log('🏁 Proceso de subida completado')
 }
 </script>
