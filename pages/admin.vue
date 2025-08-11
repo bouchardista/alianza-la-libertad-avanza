@@ -181,7 +181,7 @@
                         <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full w-16 text-center">
                           Borrador
                         </span>
-                        <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full w-16 text-center">
+                        <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full w-20 text-center">
                           Publicado
                         </span>
                       </div>

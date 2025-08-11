@@ -1,9 +1,9 @@
 <template>
-  <article class="md:flex" v-if="content">
+  <article class="md:flex overflow-hidden" v-if="content">
     <h2 class="content-date h-full mt-px">
       <span>{{ formatDate(content.date) }}</span>
     </h2>
-    <div class="content-block">
+    <div class="content-block min-w-0">
       <div class="feed-border"></div>
       <div class="feed-dot"></div>
       <badge
@@ -176,9 +176,38 @@ const getIconClass = (type) => {
 }
 .content-block {
   @apply relative pt-2 pl-7 md:w-3/4 md:pt-0 md:pl-12 pb-8;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 .document {
   @apply max-w-none prose-h3:mb-4 prose-h3:text-base prose-h3:leading-6 prose-sm prose prose-pre:text-base prose-invert prose-a:font-semibold prose-a:text-[#31B4E7] hover:prose-a:text-[#1E8BC3] prose-p:text-white prose-h1:text-white prose-h2:text-white prose-h3:text-white prose-h4:text-white prose-h5:text-white prose-h6:text-white prose-strong:text-white prose-em:text-white prose-li:text-white prose-blockquote:text-white prose-code:text-[#EFB141];
+}
+
+/* Manejo de contenido largo */
+.document p {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.document h1, .document h2, .document h3, .document h4, .document h5, .document h6 {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.document ul, .document ol {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.document blockquote {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.document a {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Estilos para scroll horizontal en mobile/tablet */

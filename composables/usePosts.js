@@ -155,6 +155,7 @@ export const usePosts = () => {
         .from('posts')
         .select('*')
         .order('date', { ascending: false })
+        .order('created_at', { ascending: false })
 
       // Si es admin, ver todos los posts (publicados y borradores)
       if (userRole === 'admin') {
@@ -188,6 +189,7 @@ export const usePosts = () => {
         .select('*')
         .eq('status', 'published')
         .order('date', { ascending: false })
+        .order('created_at', { ascending: false })
 
       if (error) {
         return { success: false, error: error.message }
