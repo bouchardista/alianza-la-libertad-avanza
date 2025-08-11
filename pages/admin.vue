@@ -351,7 +351,7 @@
                     o arrastra archivos aquí
                   </p>
                   <p class="text-gray-400 text-xs mt-1">
-                    PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, WEBP (máx. 10MB cada uno)
+                    PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, WEBP (máx. 50MB cada uno)
                   </p>
                 </div>
               </div>
@@ -511,7 +511,7 @@
                       haz clic para seleccionar
                     </button>
                   </p>
-                  <p class="text-white/60 text-xs mt-1">Máximo 10MB por archivo</p>
+                  <p class="text-white/60 text-xs mt-1">Máximo 50MB por archivo</p>
                 </div>
               </div>
             </div>
@@ -914,11 +914,11 @@ const handleFileUpload = (event) => {
 }
 
 const addValidFiles = (files) => {
-  // Validar tamaño máximo (10MB)
-  const maxSize = 10 * 1024 * 1024 // 10MB
+  // Validar tamaño máximo (50MB)
+  const maxSize = 50 * 1024 * 1024 // 50MB
   const validFiles = files.filter(file => {
     if (file.size > maxSize) {
-      alert(`El archivo ${file.name} es demasiado grande. Máximo 10MB.`)
+      alert(`El archivo ${file.name} es demasiado grande. Máximo 50MB.`)
       return false
     }
     return true

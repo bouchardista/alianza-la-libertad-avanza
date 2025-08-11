@@ -45,7 +45,7 @@ async function setupSupabaseStorage() {
         'image/gif',
         'image/webp'
       ],
-      fileSizeLimit: 10485760 // 10MB
+      fileSizeLimit: 52428800 // 50MB
     })
 
     if (bucketError) {
@@ -77,7 +77,7 @@ async function setupSupabaseStorage() {
     console.log('\n🔐 Verificando políticas de acceso...')
     console.log('✅ Bucket configurado como público')
     console.log('✅ Tipos de archivo permitidos configurados')
-    console.log('✅ Límite de tamaño: 10MB')
+    console.log('✅ Límite de tamaño: 50MB')
 
     // 4. Probar subida de archivo de prueba
     console.log('\n🧪 Probando subida de archivo de prueba...')
@@ -124,7 +124,7 @@ async function setupSupabaseStorage() {
     console.log('  ✅ Bucket post-attachments creado/configurado')
     console.log('  ✅ Acceso público habilitado')
     console.log('  ✅ Tipos de archivo permitidos configurados')
-    console.log('  ✅ Límite de tamaño: 10MB')
+    console.log('  ✅ Límite de tamaño: 50MB')
     console.log('  ✅ Subida de archivos funcionando')
     console.log('  ✅ URLs públicas funcionando')
     console.log('')

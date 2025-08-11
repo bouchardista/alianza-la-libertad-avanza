@@ -38,13 +38,29 @@
               />
             </div>
             
-            <!-- Icono para documentos -->
+            <!-- Preview de PDF -->
+            <div v-else-if="isPDF(attachment.file_type)" class="mb-3">
+              <div class="w-full h-32 bg-gradient-to-br from-red-50 to-red-100 rounded-md flex items-center justify-center relative overflow-hidden border border-red-200">
+                <!-- Icono de PDF con fondo decorativo -->
+                <div class="text-center">
+                  <Icon 
+                    name="heroicons:document-text" 
+                    class="w-12 h-12 text-red-500 mx-auto mb-2" 
+                  />
+                  <div class="text-red-600 text-xs font-medium">PDF</div>
+                </div>
+                <!-- Decoración de esquina -->
+                <div class="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-red-400"></div>
+              </div>
+            </div>
+            
+            <!-- Icono para otros documentos -->
             <div v-else class="mb-3 flex justify-center">
-              <div class="w-16 h-16 flex items-center justify-center rounded-lg bg-white/10">
+              <div class="w-full h-32 flex items-center justify-center rounded-lg bg-white/10">
                 <Icon 
                   :name="getFileTypeInfo(attachment.file_type).icon" 
                   :class="getFileTypeInfo(attachment.file_type).color"
-                  class="w-8 h-8" 
+                  class="w-12 h-12" 
                 />
               </div>
             </div>
@@ -71,19 +87,19 @@
       </div>
       
       <!-- Botones de navegación (solo en desktop) -->
-      <div v-if="!isMobile && attachments.length > 4" class="absolute top-1/2 -translate-y-1/2 left-0">
+      <div v-if="!isMobile && attachments.length > 2" class="absolute top-1/2 -translate-y-1/2 left-0 z-10">
         <button 
           @click="scrollLeft"
-          class="w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+          class="w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
         >
           <Icon name="heroicons:chevron-left" class="w-5 h-5" />
         </button>
       </div>
       
-      <div v-if="!isMobile && attachments.length > 4" class="absolute top-1/2 -translate-y-1/2 right-0">
+      <div v-if="!isMobile && attachments.length > 2" class="absolute top-1/2 -translate-y-1/2 right-0 z-10">
         <button 
           @click="scrollRight"
-          class="w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+          class="w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
         >
           <Icon name="heroicons:chevron-right" class="w-5 h-5" />
         </button>
@@ -125,6 +141,18 @@ const checkMobile = () => {
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
+  
+  // Debug: mostrar información sobre el carrusel
+  console.log('🎠 AttachmentsCarousel montado:', {
+    attachmentsCount: props.attachments.length,
+    isMobile: isMobile.value,
+    shouldShowArrows: !isMobile.value && props.attachments.length > 2
+  })
+  
+  // Agregar event listener para scroll
+  if (carouselContainer.value) {
+    carouselContainer.value.addEventListener('scroll', updateCurrentIndex)
+  }
 })
 
 // Función para abrir archivo
@@ -174,16 +202,48 @@ const isImage = (mimeType) => {
   return mimeType.startsWith('image/')
 }
 
-// Funciones de navegación del carrusel
+// Función para verificar si es PDF
+const isPDF = (mimeType) => {
+  return mimeType === 'application/pdf'
+}
+
+// Función para manejar error de PDF
+const handlePDFError = (event) => {
+  console.log('Error al cargar PDF:', event)
+}
+
+// Funciones de navegación del carrusel infinito
 const scrollLeft = () => {
   if (carouselContainer.value) {
-    carouselContainer.value.scrollBy({ left: -300, behavior: 'smooth' })
+    const container = carouselContainer.value
+    const scrollLeft = container.scrollLeft
+    const itemWidth = container.scrollWidth / props.attachments.length
+    
+    // Si estamos al inicio, ir al final
+    if (scrollLeft <= 0) {
+      const lastItemPosition = (props.attachments.length - 1) * itemWidth
+      container.scrollTo({ left: lastItemPosition, behavior: 'smooth' })
+    } else {
+      // Ir al elemento anterior
+      container.scrollBy({ left: -itemWidth, behavior: 'smooth' })
+    }
   }
 }
 
 const scrollRight = () => {
   if (carouselContainer.value) {
-    carouselContainer.value.scrollBy({ left: 300, behavior: 'smooth' })
+    const container = carouselContainer.value
+    const scrollLeft = container.scrollLeft
+    const itemWidth = container.scrollWidth / props.attachments.length
+    const maxScroll = container.scrollWidth - container.clientWidth
+    
+    // Si estamos al final, ir al inicio
+    if (scrollLeft >= maxScroll) {
+      container.scrollTo({ left: 0, behavior: 'smooth' })
+    } else {
+      // Ir al elemento siguiente
+      container.scrollBy({ left: itemWidth, behavior: 'smooth' })
+    }
   }
 }
 
@@ -197,18 +257,23 @@ const scrollToIndex = (index) => {
 
 // Observar cambios en el scroll para actualizar indicadores
 const updateCurrentIndex = () => {
-  if (carouselContainer.value && isMobile.value) {
-    const scrollLeft = carouselContainer.value.scrollLeft
-    const itemWidth = carouselContainer.value.scrollWidth / props.attachments.length
-    currentIndex.value = Math.round(scrollLeft / itemWidth)
+  if (carouselContainer.value) {
+    const container = carouselContainer.value
+    const scrollLeft = container.scrollLeft
+    const itemWidth = container.scrollWidth / props.attachments.length
+    
+    // Calcular el índice actual
+    let newIndex = Math.round(scrollLeft / itemWidth)
+    
+    // Asegurar que el índice esté dentro del rango válido
+    if (newIndex < 0) newIndex = 0
+    if (newIndex >= props.attachments.length) newIndex = props.attachments.length - 1
+    
+    currentIndex.value = newIndex
   }
 }
 
-onMounted(() => {
-  if (carouselContainer.value) {
-    carouselContainer.value.addEventListener('scroll', updateCurrentIndex)
-  }
-})
+
 
 // Limpiar event listeners
 onUnmounted(() => {

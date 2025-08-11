@@ -63,7 +63,7 @@ async function verifySupabaseStorage() {
           'image/gif',
           'image/webp'
         ],
-        fileSizeLimit: 10485760 // 10MB
+        fileSizeLimit: 52428800 // 50MB
       })
 
       if (createError) {
