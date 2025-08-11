@@ -104,39 +104,39 @@
         </div>
 
                               <!-- Estadísticas -->
-                      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+                      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-6 mb-8">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
+                <Icon name="heroicons:document-text" class="h-5 w-5 sm:h-8 sm:w-8 text-[#31B4E7]" />
               </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Total Publicaciones</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
+              <div class="ml-2 sm:ml-4">
+                <p class="text-xs sm:text-sm font-medium text-white/60">Total Publicaciones</p>
+                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
               </div>
             </div>
           </div>
           
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
+                <Icon name="heroicons:flag" class="h-5 w-5 sm:h-8 sm:w-8 text-[#EFB141]" />
               </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Resoluciones</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'RESOLUCIÓN').length || 0 }}</p>
+              <div class="ml-2 sm:ml-4">
+                <p class="text-xs sm:text-sm font-medium text-white/60">Resoluciones</p>
+                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'RESOLUCIÓN').length || 0 }}</p>
               </div>
             </div>
           </div>
           
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-3 sm:p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:megaphone" class="h-8 w-8 text-[#B23B8F]" />
+                <Icon name="heroicons:megaphone" class="h-5 w-5 sm:h-8 sm:w-8 text-[#B23B8F]" />
               </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Comunicados</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'COMUNICADO').length || 0 }}</p>
+              <div class="ml-2 sm:ml-4">
+                <p class="text-xs sm:text-sm font-medium text-white/60">Comunicados</p>
+                <p class="text-lg sm:text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'COMUNICADO').length || 0 }}</p>
               </div>
             </div>
           </div>
@@ -159,7 +159,7 @@
                                   <div class="px-6 py-4 border-b border-white/20">
                           <h2 class="text-xl font-semibold text-white">Todas las Publicaciones</h2>
                         </div>
-          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20">
+          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20 overflow-x-auto">
             <div v-for="post in posts" :key="post.id" class="px-4 sm:px-6 py-4">
                                 <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">
@@ -964,3 +964,30 @@ const uploadFilesToPost = async (postId) => {
   console.log('🏁 Proceso de subida completado')
 }
 </script>
+
+<style scoped>
+/* Estilos para scroll horizontal en mobile/tablet */
+@media (max-width: 768px) {
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+</style>

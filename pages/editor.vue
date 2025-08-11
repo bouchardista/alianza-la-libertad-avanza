@@ -159,7 +159,7 @@
                                   <div class="px-6 py-4 border-b border-white/20">
                           <h2 class="text-xl font-semibold text-white">Mis Publicaciones y Borradores</h2>
                         </div>
-          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20">
+          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20 overflow-x-auto">
             <div v-for="post in posts" :key="post.id" class="px-6 py-4">
                                 <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">
@@ -816,3 +816,30 @@ const uploadFilesToPost = async (postId) => {
   console.log('🏁 Proceso de subida completado')
 }
 </script>
+
+<style scoped>
+/* Estilos para scroll horizontal en mobile/tablet */
+@media (max-width: 768px) {
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+  
+  .overflow-x-auto::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+</style>
