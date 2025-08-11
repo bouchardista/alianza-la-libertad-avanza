@@ -178,10 +178,10 @@
                       <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2">
                         <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
                         <span class="text-sm text-white/60 truncate">{{ post.firmante }}</span>
-                        <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full">
+                        <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full w-16 text-center">
                           Borrador
                         </span>
-                        <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full">
+                        <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full w-16 text-center">
                           Publicado
                         </span>
                       </div>

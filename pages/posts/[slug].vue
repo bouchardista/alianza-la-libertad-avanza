@@ -11,12 +11,11 @@
         <!-- Botón de copiar URL -->
         <div class="flex space-x-3">
           <button 
-            id="copy-button"
             @click="copyUrl"
-            class="flex items-center space-x-2 px-4 py-2 bg-[#31B4E7] hover:bg-[#2A9BC7] text-white rounded-lg transition-colors"
+            :class="`flex items-center space-x-2 px-4 py-2 text-white rounded-lg transition-colors ${copyButtonClasses}`"
           >
-            <Icon name="heroicons:clipboard-document" class="w-5 h-5" />
-            <span>Copiar URL</span>
+            <Icon :name="copyButtonIcon" class="w-5 h-5" />
+            <span>{{ copyButtonText }}</span>
           </button>
         </div>
       </div>
@@ -69,6 +68,9 @@ const { getPost } = usePosts()
 const post = ref(null)
 const loading = ref(true)
 const error = ref(null)
+const copyButtonText = ref('Copiar URL')
+const copyButtonIcon = ref('heroicons:clipboard-document')
+const copyButtonClasses = ref('bg-transparent border border-white hover:bg-white/10')
 
 const { generateSlug } = useSlug()
 
@@ -77,19 +79,15 @@ const copyUrl = async () => {
   try {
     await navigator.clipboard.writeText(window.location.href)
     // Mostrar mensaje de éxito temporal
-    const button = document.querySelector('#copy-button')
-    if (button) {
-      const originalText = button.innerHTML
-      button.innerHTML = '<Icon name="heroicons:check" class="w-5 h-5" /><span>¡Copiado!</span>'
-      button.classList.add('bg-green-600', 'hover:bg-green-700')
-      button.classList.remove('bg-[#31B4E7]', 'hover:bg-[#2A9BC7]')
-      
-      setTimeout(() => {
-        button.innerHTML = originalText
-        button.classList.remove('bg-green-600', 'hover:bg-green-700')
-        button.classList.add('bg-[#31B4E7]', 'hover:bg-[#2A9BC7]')
-      }, 2000)
-    }
+    copyButtonText.value = '¡Copiado!'
+    copyButtonIcon.value = 'heroicons:check'
+    copyButtonClasses.value = 'bg-green-600 border-green-600 hover:bg-green-700'
+    
+    setTimeout(() => {
+      copyButtonText.value = 'Copiar URL'
+      copyButtonIcon.value = 'heroicons:clipboard-document'
+      copyButtonClasses.value = 'bg-transparent border border-white hover:bg-white/10'
+    }, 2000)
   } catch (error) {
     alert('Error al copiar la URL')
   }
