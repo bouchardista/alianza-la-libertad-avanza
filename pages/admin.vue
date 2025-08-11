@@ -278,7 +278,14 @@
           
           <div>
             <label class="block text-sm font-medium text-white mb-2">Archivos adjuntos</label>
-            <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+            <div 
+              ref="dropZone"
+              class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center transition-colors"
+              :class="{ 'border-[#31B4E7] bg-[#31B4E7]/10': isDragOver }"
+              @dragover.prevent="handleDragOver"
+              @dragleave.prevent="handleDragLeave"
+              @drop.prevent="handleDrop"
+            >
               <input
                 ref="fileInput"
                 type="file"
@@ -554,6 +561,7 @@ const newPost = ref({
 
 // Estado para archivos seleccionados
 const selectedFiles = ref([])
+const isDragOver = ref(false)
 const editingPost = ref({
   id: null,
   title: '',
@@ -701,7 +709,11 @@ const handlePublishDraft = async (post) => {
 // Funciones para manejar archivos
 const handleFileUpload = (event) => {
   const files = Array.from(event.target.files)
-  
+  addValidFiles(files)
+  event.target.value = '' // Limpiar input
+}
+
+const addValidFiles = (files) => {
   // Validar tamaño máximo (10MB)
   const maxSize = 10 * 1024 * 1024 // 10MB
   const validFiles = files.filter(file => {
@@ -713,7 +725,25 @@ const handleFileUpload = (event) => {
   })
   
   selectedFiles.value.push(...validFiles)
-  event.target.value = '' // Limpiar input
+}
+
+// Funciones para drag & drop
+const handleDragOver = (event) => {
+  event.preventDefault()
+  isDragOver.value = true
+}
+
+const handleDragLeave = (event) => {
+  event.preventDefault()
+  isDragOver.value = false
+}
+
+const handleDrop = (event) => {
+  event.preventDefault()
+  isDragOver.value = false
+  
+  const files = Array.from(event.dataTransfer.files)
+  addValidFiles(files)
 }
 
 const removeFile = (index) => {

@@ -185,7 +185,7 @@
 
     <!-- Modal para crear nueva publicación -->
     <div v-if="showCreateModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div class="bg-gray-900 rounded-lg border border-gray-700 p-6 w-full max-w-2xl mx-4">
+      <div class="bg-gray-900 rounded-lg border border-gray-700 p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-white">Nueva Publicación</h2>
           <button @click="showCreateModal = false" class="text-white/60 hover:text-white">
@@ -276,7 +276,14 @@
           
           <div>
             <label class="block text-sm font-medium text-white mb-2">Archivos adjuntos</label>
-            <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center">
+            <div 
+              ref="dropZone"
+              class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center transition-colors"
+              :class="{ 'border-[#31B4E7] bg-[#31B4E7]/10': isDragOver }"
+              @dragover.prevent="handleDragOver"
+              @dragleave.prevent="handleDragLeave"
+              @drop.prevent="handleDrop"
+            >
               <input
                 ref="fileInput"
                 type="file"
@@ -352,7 +359,7 @@
 
     <!-- Modal para editar publicación -->
     <div v-if="showEditModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div class="bg-gray-900 rounded-lg border border-gray-700 p-6 w-full max-w-2xl mx-4">
+      <div class="bg-gray-900 rounded-lg border border-gray-700 p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h2 class="text-2xl font-bold text-white">Editar Publicación</h2>
           <button @click="showEditModal = false" class="text-white/60 hover:text-white">
@@ -553,6 +560,7 @@ const newPost = ref({
 
 // Estado para archivos seleccionados
 const selectedFiles = ref([])
+const isDragOver = ref(false)
 const editingPost = ref({
   id: null,
   title: '',
@@ -679,7 +687,11 @@ const handleRequestPublication = async (post) => {
 // Funciones para manejar archivos
 const handleFileUpload = (event) => {
   const files = Array.from(event.target.files)
-  
+  addValidFiles(files)
+  event.target.value = '' // Limpiar input
+}
+
+const addValidFiles = (files) => {
   // Validar tamaño máximo (10MB)
   const maxSize = 10 * 1024 * 1024 // 10MB
   const validFiles = files.filter(file => {
@@ -691,7 +703,25 @@ const handleFileUpload = (event) => {
   })
   
   selectedFiles.value.push(...validFiles)
-  event.target.value = '' // Limpiar input
+}
+
+// Funciones para drag & drop
+const handleDragOver = (event) => {
+  event.preventDefault()
+  isDragOver.value = true
+}
+
+const handleDragLeave = (event) => {
+  event.preventDefault()
+  isDragOver.value = false
+}
+
+const handleDrop = (event) => {
+  event.preventDefault()
+  isDragOver.value = false
+  
+  const files = Array.from(event.dataTransfer.files)
+  addValidFiles(files)
 }
 
 const removeFile = (index) => {
@@ -710,15 +740,24 @@ const formatFileSize = (bytes) => {
 
 // Función para subir archivos a Google Drive y agregarlos al post
 const uploadFilesToPost = async (postId) => {
+  console.log('Iniciando subida de archivos para post:', postId, 'Archivos:', selectedFiles.value.length)
+  
   if (selectedFiles.value.length === 0) return
   
   for (const file of selectedFiles.value) {
     try {
+      console.log('Subiendo archivo:', file.name)
       // Subir a Google Drive
       const uploadResult = await uploadToDrive(file)
+      console.log('Resultado de subida:', uploadResult)
+      
       if (uploadResult.success) {
+        console.log('Archivo subido exitosamente, agregando como adjunto')
         // Agregar como adjunto al post
-        await addAttachment(postId, uploadResult.fileData)
+        const attachmentResult = await addAttachment(postId, uploadResult.fileData)
+        console.log('Resultado de agregar adjunto:', attachmentResult)
+      } else {
+        console.error('Error al subir archivo:', uploadResult.error)
       }
     } catch (error) {
       console.error('Error al subir archivo:', error)

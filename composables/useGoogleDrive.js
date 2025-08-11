@@ -41,8 +41,11 @@ export const useGoogleDrive = () => {
   // Función para subir archivo a Google Drive
   const uploadToDrive = async (file, folderId = null) => {
     try {
+      console.log('Iniciando subida a Google Drive:', { fileName: file.name, fileSize: file.size, folderId })
+      
       const tokenResult = await getGoogleDriveToken()
       if (!tokenResult.success) {
+        console.error('Error al obtener token:', tokenResult.error)
         return tokenResult
       }
 
@@ -52,6 +55,8 @@ export const useGoogleDrive = () => {
       if (folderId) {
         formData.append('folderId', folderId)
       }
+
+      console.log('Enviando archivo a /api/upload-to-drive')
 
       // Aquí deberías hacer la llamada a tu API para subir a Google Drive
       // Por ahora, simularemos la respuesta
@@ -63,8 +68,10 @@ export const useGoogleDrive = () => {
         }
       })
 
+      console.log('Respuesta de Google Drive:', response)
       return { success: true, fileData: response }
     } catch (error) {
+      console.error('Error en uploadToDrive:', error)
       return { success: false, error: error.message || 'Error al subir archivo a Google Drive' }
     }
   }
@@ -96,6 +103,8 @@ export const useGoogleDrive = () => {
   // Función para agregar archivo adjunto a un post
   const addAttachment = async (postId, fileData) => {
     try {
+      console.log('Agregando archivo adjunto:', { postId, fileData })
+      
       const supabase = getSupabase()
       if (!supabase) {
         return { success: false, error: 'Cliente de Supabase no disponible' }
@@ -119,6 +128,8 @@ export const useGoogleDrive = () => {
         created_by: user.id
       }
 
+      console.log('Datos del attachment a insertar:', attachment)
+
       const { data, error } = await supabase
         .from('post_attachments')
         .insert([attachment])
@@ -126,11 +137,14 @@ export const useGoogleDrive = () => {
         .single()
 
       if (error) {
+        console.error('Error al insertar attachment:', error)
         return { success: false, error: error.message }
       }
 
+      console.log('Attachment insertado exitosamente:', data)
       return { success: true, attachment: data }
     } catch (error) {
+      console.error('Error en addAttachment:', error)
       return { success: false, error: error.message || 'Error al agregar archivo adjunto' }
     }
   }
