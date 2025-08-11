@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859]">
+  <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859] flex flex-col">
     <!-- Mensaje de éxito -->
     <div v-if="showSuccessMessage" class="fixed top-4 right-4 z-50">
       <div :class="[
@@ -776,6 +776,9 @@ const handlePublishDraft = async (post) => {
     disabledButtons.value.delete(post.id)
     alert('Error al publicar el borrador: ' + result.error)
   }
+  
+  // Siempre limpiar el estado del botón al final
+  disabledButtons.value.delete(post.id)
 }
 
 const handleConvertToDraft = async (post) => {
@@ -793,6 +796,9 @@ const handleConvertToDraft = async (post) => {
     disabledButtons.value.delete(post.id)
     alert('Error al convertir en borrador: ' + result.error)
   }
+  
+  // Siempre limpiar el estado del botón al final
+  disabledButtons.value.delete(post.id)
 }
 
 // Funciones para manejar archivos

@@ -182,7 +182,7 @@
                         title="Solicitar publicación"
                       >
                         <Icon name="heroicons:paper-airplane" class="w-4 h-4" />
-                        <span>{{ disabledButtons.has(post.id) ? 'Enviando...' : 'Solicitar' }}</span>
+                        <span>{{ disabledButtons.has(post.id) ? 'Enviando...' : 'Solicitar su Publicación' }}</span>
                       </button>
                       <button 
                         @click="handleEditPost(post)"
