@@ -1,5 +1,15 @@
 <template>
   <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859]">
+    <!-- Mensaje de éxito -->
+    <div v-if="showSuccessMessage" class="fixed top-4 right-4 z-50">
+      <div class="bg-green-500/90 backdrop-blur-sm border border-green-400/20 rounded-lg p-4 shadow-lg">
+        <div class="flex items-center">
+          <Icon name="heroicons:check-circle" class="h-5 w-5 text-green-100 mr-2" />
+          <p class="text-green-100 font-medium">{{ successMessage }}</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Loader de página -->
     <div v-if="pageLoading" class="fixed inset-0 bg-gradient-to-b from-[#1A043C] to-[#371859] flex items-center justify-center z-50">
       <div class="text-center">
@@ -371,6 +381,41 @@
         </form>
       </div>
     </div>
+
+    <!-- Modal de confirmación de eliminación -->
+    <div v-if="showDeleteModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 p-6 w-full max-w-md">
+        <div class="text-center">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100/10 mb-4">
+            <Icon name="heroicons:exclamation-triangle" class="h-6 w-6 text-red-400" />
+          </div>
+          <h3 class="text-lg font-medium text-white mb-2">
+            Confirmar eliminación
+          </h3>
+          <p class="text-sm text-white/80 mb-6">
+            ¿Estás seguro de que quieres eliminar <strong class="text-white">{{ deleteConfirmPost?.title }}</strong>?
+          </p>
+          <p class="text-xs text-white/60 mb-6">
+            Esta acción no se puede deshacer.
+          </p>
+          <div class="flex space-x-3">
+            <button
+              @click="showDeleteModal = false"
+              class="flex-1 px-4 py-2 border border-white/20 rounded-md text-white hover:bg-white/10 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              @click="confirmDelete"
+              :disabled="postsLoading"
+              class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors disabled:opacity-50"
+            >
+              {{ postsLoading ? 'Eliminando...' : 'Eliminar' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -420,6 +465,10 @@ onMounted(async () => {
 
 const showCreateModal = ref(false)
 const showEditModal = ref(false)
+const showDeleteModal = ref(false)
+const deleteConfirmPost = ref(null)
+const successMessage = ref('')
+const showSuccessMessage = ref(false)
 const newPost = ref({
   title: '',
   content: '',
@@ -446,6 +495,14 @@ const formatDate = (date) => {
   })
 }
 
+const showSuccess = (message) => {
+  successMessage.value = message
+  showSuccessMessage.value = true
+  setTimeout(() => {
+    showSuccessMessage.value = false
+  }, 3000)
+}
+
 const handleLogout = async () => {
   const result = await signOut()
   if (result.success) {
@@ -469,6 +526,7 @@ const handleCreatePost = async () => {
     }
     // Refrescar la lista de posts
     await loadPosts()
+    showSuccess('✅ Publicación creada exitosamente')
   } else {
     // Mostrar error más descriptivo
     if (result.error.includes('no autenticado')) {
@@ -500,6 +558,7 @@ const handleUpdatePost = async () => {
     showEditModal.value = false
     // Refrescar la lista de posts
     await loadPosts()
+    showSuccess('✅ Publicación actualizada exitosamente')
   } else {
     if (result.error.includes('no autenticado')) {
       alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
@@ -510,16 +569,20 @@ const handleUpdatePost = async () => {
   }
 }
 
-const handleDeletePost = async (post) => {
-  if (!confirm(`¿Estás seguro de que quieres eliminar "${post.title}"?`)) {
-    return
-  }
-  
-  const result = await deletePost(post.id)
+const handleDeletePost = (post) => {
+  deleteConfirmPost.value = post
+  showDeleteModal.value = true
+}
+
+const confirmDelete = async () => {
+  const result = await deletePost(deleteConfirmPost.value.id)
   
   if (result.success) {
+    showDeleteModal.value = false
+    deleteConfirmPost.value = null
     // Refrescar la lista de posts
     await loadPosts()
+    showSuccess('✅ Publicación eliminada exitosamente')
   } else {
     if (result.error.includes('no autenticado')) {
       alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
