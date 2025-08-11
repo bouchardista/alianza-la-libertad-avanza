@@ -559,7 +559,7 @@
                   </button>
                   <button
                     type="button"
-                    @click="deleteAttachment(attachment.id)"
+                    @click="handleDeleteAttachment(attachment.id)"
                     class="text-red-400 hover:text-red-300"
                     title="Eliminar archivo"
                   >
@@ -1010,9 +1010,9 @@ const openAttachment = (attachment) => {
 }
 
 // Función para eliminar archivo adjunto
-const deleteAttachment = async (attachmentId) => {
+const handleDeleteAttachment = async (attachmentId) => {
   if (confirm('¿Estás seguro de que quieres eliminar este archivo?')) {
-    const result = await deleteAttachmentFromStorage(attachmentId)
+    const result = await deleteAttachment(attachmentId)
     if (result.success) {
       // Remover el archivo de la lista
       editingPost.value.attachments = editingPost.value.attachments.filter(

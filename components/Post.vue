@@ -47,8 +47,8 @@
         </p>
       </div>
       
-      <!-- Archivos adjuntos -->
-      <div v-if="!isPreview || attachments.length > 0">
+      <!-- Archivos adjuntos - solo en vista completa -->
+      <div v-if="!isPreview && attachments.length > 0">
         <AttachmentsCarousel :attachments="attachments" />
       </div>
     </div>
