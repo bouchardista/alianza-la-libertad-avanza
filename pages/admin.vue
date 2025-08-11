@@ -646,7 +646,7 @@ const handleCreatePost = async () => {
       selectedFiles.value = []
       // Refrescar la lista de posts
       await loadPosts()
-      showSuccess('✅ Publicación creada exitosamente')
+      showSuccess('✅ Borrador creado exitosamente')
     } else {
       // Mostrar error más descriptivo
       if (result.error.includes('no autenticado')) {
