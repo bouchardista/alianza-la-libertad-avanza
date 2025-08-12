@@ -6,12 +6,12 @@
     <div class="content-block min-w-0">
       <div class="feed-border"></div>
       <div class="feed-dot"></div>
-      <div class="absolute -top-6 right-0 md:static mb-4 flex items-center space-x-2">
+      <div class="absolute -top-6 right-0 md:static mb-4 flex items-center justify-end">
         <!-- Clip a la izquierda en mobile (solo en vista previa) -->
         <NuxtLink 
           v-if="attachments.length > 0 && isPreview"
           :to="`/posts/${generateSlug(content.title)}`"
-          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer md:hidden"
+          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer mr-2 md:hidden"
         >
           <Icon 
             name="heroicons:paper-clip" 
@@ -30,7 +30,7 @@
         <NuxtLink 
           v-if="attachments.length > 0 && isPreview"
           :to="`/posts/${generateSlug(content.title)}`"
-          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer hidden md:block"
+          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer ml-2 hidden md:block"
         >
           <Icon 
             name="heroicons:paper-clip" 
