@@ -6,14 +6,19 @@
     <div class="content-block min-w-0">
       <div class="feed-border"></div>
       <div class="feed-dot"></div>
-      <badge
-        v-if="content.type"
-        :label="content.type"
-        :badge-class="getBadgeClass(content.type)"
-        :icon-class="getIconClass(content.type)"
-        :show-clip="attachments.length > 0"
-        class="absolute -top-6 right-0 md:static mb-4"
-      />
+      <div class="absolute -top-6 right-0 md:static mb-4 flex items-center space-x-2">
+        <badge
+          v-if="content.type"
+          :label="content.type"
+          :badge-class="getBadgeClass(content.type)"
+          :icon-class="getIconClass(content.type)"
+        />
+        <Icon 
+          v-if="attachments.length > 0"
+          name="heroicons:paper-clip" 
+          class="h-4 w-4 text-white" 
+        />
+      </div>
       <h1 v-if="content.title" class="text-xl sm:text-3xl font-bold mb-4">
         <NuxtLink 
           v-if="isPreview"
