@@ -17,7 +17,7 @@
         <NuxtLink 
           v-if="isPreview"
           :to="`/posts/${generateSlug(content.title)}`"
-          class="text-white hover:text-[#31B4E7] transition-colors cursor-pointer title-link"
+          class="text-white hover:text-white transition-colors cursor-pointer title-link"
         >
           {{ content.title }}
         </NuxtLink>
@@ -212,22 +212,22 @@ const getIconClass = (type) => {
 }
 
 /* Hover conectado entre título y contenido */
-.title-link:hover ~ .document .content-hover-area p,
-.title-link:hover ~ .document .content-hover-area h1,
-.title-link:hover ~ .document .content-hover-area h2,
-.title-link:hover ~ .document .content-hover-area h3,
-.title-link:hover ~ .document .content-hover-area h4,
-.title-link:hover ~ .document .content-hover-area h5,
-.title-link:hover ~ .document .content-hover-area h6,
-.title-link:hover ~ .document .content-hover-area ul,
-.title-link:hover ~ .document .content-hover-area ol,
-.title-link:hover ~ .document .content-hover-area blockquote {
-  color: #31B4E7 !important;
+h1:hover ~ .document .content-hover-area p,
+h1:hover ~ .document .content-hover-area h1,
+h1:hover ~ .document .content-hover-area h2,
+h1:hover ~ .document .content-hover-area h3,
+h1:hover ~ .document .content-hover-area h4,
+h1:hover ~ .document .content-hover-area h5,
+h1:hover ~ .document .content-hover-area h6,
+h1:hover ~ .document .content-hover-area ul,
+h1:hover ~ .document .content-hover-area ol,
+h1:hover ~ .document .content-hover-area blockquote {
+  color: white !important;
 }
 
 /* Cuando se hace hover en el contenido, activar el título */
-.content-hover-area:hover ~ h1 .title-link {
-  color: #31B4E7 !important;
+.document:hover ~ h1 .title-link {
+  color: white !important;
 }
 
 /* Estilos para enlaces sin subrayado */
@@ -252,7 +252,7 @@ const getIconClass = (type) => {
 .content-hover-area:hover ul,
 .content-hover-area:hover ol,
 .content-hover-area:hover blockquote {
-  color: #31B4E7 !important;
+  color: white !important;
 }
 
 .document h1, .document h2, .document h3, .document h4, .document h5, .document h6 {
