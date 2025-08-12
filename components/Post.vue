@@ -7,16 +7,11 @@
       <div class="feed-border"></div>
       <div class="feed-dot"></div>
       <div class="absolute -top-6 right-0 md:static mb-4 flex items-center space-x-2">
-        <badge
-          v-if="content.type"
-          :label="content.type"
-          :badge-class="getBadgeClass(content.type)"
-          :icon-class="getIconClass(content.type)"
-        />
+        <!-- Clip a la izquierda en mobile -->
         <NuxtLink 
           v-if="attachments.length > 0 && isPreview"
           :to="`/posts/${generateSlug(content.title)}`"
-          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer"
+          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer md:hidden"
         >
           <Icon 
             name="heroicons:paper-clip" 
@@ -26,7 +21,31 @@
         <Icon 
           v-else-if="attachments.length > 0"
           name="heroicons:paper-clip" 
-          class="h-4 w-4 text-white" 
+          class="h-4 w-4 text-white md:hidden" 
+        />
+        
+        <badge
+          v-if="content.type"
+          :label="content.type"
+          :badge-class="getBadgeClass(content.type)"
+          :icon-class="getIconClass(content.type)"
+        />
+        
+        <!-- Clip a la derecha en desktop/tablet -->
+        <NuxtLink 
+          v-if="attachments.length > 0 && isPreview"
+          :to="`/posts/${generateSlug(content.title)}`"
+          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer hidden md:block"
+        >
+          <Icon 
+            name="heroicons:paper-clip" 
+            class="h-4 w-4" 
+          />
+        </NuxtLink>
+        <Icon 
+          v-else-if="attachments.length > 0"
+          name="heroicons:paper-clip" 
+          class="h-4 w-4 text-white hidden md:block" 
         />
       </div>
       <h1 v-if="content.title" class="text-xl sm:text-3xl font-bold mb-4">
