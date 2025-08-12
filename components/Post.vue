@@ -13,8 +13,18 @@
           :badge-class="getBadgeClass(content.type)"
           :icon-class="getIconClass(content.type)"
         />
+        <NuxtLink 
+          v-if="attachments.length > 0 && isPreview"
+          :to="`/posts/${generateSlug(content.title)}`"
+          class="text-white hover:text-[#EFB141] transition-colors cursor-pointer"
+        >
+          <Icon 
+            name="heroicons:paper-clip" 
+            class="h-4 w-4" 
+          />
+        </NuxtLink>
         <Icon 
-          v-if="attachments.length > 0"
+          v-else-if="attachments.length > 0"
           name="heroicons:paper-clip" 
           class="h-4 w-4 text-white" 
         />
@@ -44,7 +54,7 @@
       </div>
       
       <!-- Botón "Ver post completo" solo en vista previa -->
-      <div v-if="isPreview && content.content && content.content.length > 150" class="mt-4">
+      <div v-if="isPreview && ((content.content && content.content.length > 150) || attachments.length > 0)" class="mt-4">
         <NuxtLink 
           :to="`/posts/${generateSlug(content.title)}`"
           class="inline-flex items-center space-x-2 px-3 py-1.5 bg-transparent border border-white text-white hover:bg-white/10 rounded-lg transition-colors text-sm"
