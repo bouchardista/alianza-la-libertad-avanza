@@ -11,6 +11,7 @@
         :label="content.type"
         :badge-class="getBadgeClass(content.type)"
         :icon-class="getIconClass(content.type)"
+        :show-clip="attachments.length > 0"
         class="absolute -top-6 right-0 md:static mb-4"
       />
       <h1 v-if="content.title" class="text-xl sm:text-3xl font-bold mb-4">

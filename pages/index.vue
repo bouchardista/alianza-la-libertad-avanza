@@ -105,24 +105,33 @@
 <script setup>
 import seoConfig from "../seoConfig/index";
 
+// Construir URLs absolutas para las imágenes
+const baseUrl = process.client ? window.location.origin : 'https://alianzalalibertadavanzacordoba.com.ar'
+const ogImageUrl = `${baseUrl}${seoConfig.og.image}`
+const twitterImageUrl = `${baseUrl}${seoConfig.twitter.image}`
+
 useHead({
   title: seoConfig.title,
   meta: [
     { name: "description", content: seoConfig.description },
-    { name: "og:title", content: seoConfig.og.title },
-    { name: "og:description", content: seoConfig.og.description },
-    { name: "og:image", content: seoConfig.og.image },
-    { name: "og:url", content: seoConfig.og.url },
-    { name: "og:type", content: seoConfig.og.type },
-    { name: "og:site_name", content: seoConfig.og.site_name },
-    { name: "og:image:width", content: "1200" },
-    { name: "og:image:height", content: "630" },
-    { name: "og:image:alt", content: "Logo de Alianza La Libertad Avanza Córdoba" },
+    // Open Graph tags (usar property para compatibilidad con Twitter)
+    { property: "og:title", content: seoConfig.og.title },
+    { property: "og:description", content: seoConfig.og.description },
+    { property: "og:image", content: ogImageUrl },
+    { property: "og:url", content: seoConfig.og.url },
+    { property: "og:type", content: seoConfig.og.type },
+    { property: "og:site_name", content: seoConfig.og.site_name },
+    { property: "og:image:width", content: "1200" },
+    { property: "og:image:height", content: "630" },
+    { property: "og:image:alt", content: "Logo de Alianza La Libertad Avanza Córdoba" },
+    // Twitter Card tags
+    { name: "twitter:card", content: seoConfig.twitter.card },
     { name: "twitter:title", content: seoConfig.twitter.title },
     { name: "twitter:description", content: seoConfig.twitter.description },
-    { name: "twitter:image", content: seoConfig.twitter.image },
-    { name: "twitter:card", content: seoConfig.twitter.card },
+    { name: "twitter:image", content: twitterImageUrl },
     { name: "twitter:image:alt", content: "Logo de Alianza La Libertad Avanza Córdoba" },
+    { name: "twitter:site", content: "@alianzallacba" },
+    { name: "twitter:creator", content: "@alianzallacba" },
     // Meta tags específicos para WhatsApp
     { name: "theme-color", content: "#8B5CF6" }, // Color violeta del fondo
     { name: "msapplication-TileColor", content: "#8B5CF6" },

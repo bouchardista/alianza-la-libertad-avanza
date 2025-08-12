@@ -14,6 +14,11 @@
       <circle cx="4" cy="4" r="3" />
     </svg>
     {{ label }}
+    <Icon 
+      v-if="showClip"
+      name="heroicons:paper-clip" 
+      class="ml-1.5 h-3 w-3 text-white" 
+    />
   </span>
 </template>
 
@@ -27,6 +32,10 @@ const props = defineProps({
   iconClass: {
     type: String,
     default: 'text-sky-400'
+  },
+  showClip: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
