@@ -6,7 +6,7 @@
     <div class="content-block min-w-0">
       <div class="feed-border"></div>
       <div class="feed-dot"></div>
-      <div class="absolute -top-6 right-0 md:static mb-4 flex items-center justify-end">
+      <div class="absolute -top-6 right-0 md:static mb-4 flex items-center justify-end md:justify-start">
         <!-- Clip a la izquierda en mobile (solo en vista previa) -->
         <NuxtLink 
           v-if="attachments.length > 0 && isPreview"
