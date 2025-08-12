@@ -7,7 +7,7 @@
       <div class="feed-border"></div>
       <div class="feed-dot"></div>
       <div class="absolute -top-6 right-0 md:static mb-4 flex items-center space-x-2">
-        <!-- Clip a la izquierda en mobile -->
+        <!-- Clip a la izquierda en mobile (solo en vista previa) -->
         <NuxtLink 
           v-if="attachments.length > 0 && isPreview"
           :to="`/posts/${generateSlug(content.title)}`"
@@ -18,11 +18,6 @@
             class="h-4 w-4" 
           />
         </NuxtLink>
-        <Icon 
-          v-else-if="attachments.length > 0"
-          name="heroicons:paper-clip" 
-          class="h-4 w-4 text-white md:hidden" 
-        />
         
         <badge
           v-if="content.type"
@@ -31,7 +26,7 @@
           :icon-class="getIconClass(content.type)"
         />
         
-        <!-- Clip a la derecha en desktop/tablet -->
+        <!-- Clip a la derecha en desktop/tablet (solo en vista previa) -->
         <NuxtLink 
           v-if="attachments.length > 0 && isPreview"
           :to="`/posts/${generateSlug(content.title)}`"
@@ -42,11 +37,6 @@
             class="h-4 w-4" 
           />
         </NuxtLink>
-        <Icon 
-          v-else-if="attachments.length > 0"
-          name="heroicons:paper-clip" 
-          class="h-4 w-4 text-white hidden md:block" 
-        />
       </div>
       <h1 v-if="content.title" class="text-xl sm:text-3xl font-bold mb-4">
         <NuxtLink 
