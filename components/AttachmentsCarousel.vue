@@ -20,7 +20,8 @@
           class="flex-shrink-0"
           :class="{
             'w-full snap-center': isMobile,
-            'w-1/4': !isMobile
+            'w-1/3': isTablet,
+            'w-1/4': isDesktop
           }"
         >
           <!-- Tarjeta de archivo -->
@@ -86,22 +87,22 @@
         </div>
       </div>
       
-      <!-- Botones de navegación (solo en desktop) -->
-      <div v-if="!isMobile && attachments.length > 2" class="absolute top-1/2 -translate-y-1/2 left-0 z-10">
+      <!-- Botones de navegación -->
+      <div v-if="attachments.length > 2" class="absolute top-1/2 -translate-y-1/2 left-0 z-10">
         <button 
           @click="scrollLeft"
-          class="w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
+          class="w-8 h-8 sm:w-10 sm:h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
         >
-          <Icon name="heroicons:chevron-left" class="w-5 h-5" />
+          <Icon name="heroicons:chevron-left" class="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </div>
       
-      <div v-if="!isMobile && attachments.length > 2" class="absolute top-1/2 -translate-y-1/2 right-0 z-10">
+      <div v-if="attachments.length > 2" class="absolute top-1/2 -translate-y-1/2 right-0 z-10">
         <button 
           @click="scrollRight"
-          class="w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
+          class="w-8 h-8 sm:w-10 sm:h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors shadow-lg"
         >
-          <Icon name="heroicons:chevron-right" class="w-5 h-5" />
+          <Icon name="heroicons:chevron-right" class="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
       </div>
     </div>
@@ -132,15 +133,20 @@ const props = defineProps({
 const carouselContainer = ref(null)
 const currentIndex = ref(0)
 const isMobile = ref(false)
+const isTablet = ref(false)
+const isDesktop = ref(false)
 
-// Detectar si es mobile
-const checkMobile = () => {
-  isMobile.value = window.innerWidth < 768
+// Detectar tipo de dispositivo
+const checkDeviceType = () => {
+  const width = window.innerWidth
+  isMobile.value = width < 768
+  isTablet.value = width >= 768 && width < 1024
+  isDesktop.value = width >= 1024
 }
 
 onMounted(() => {
-  checkMobile()
-  window.addEventListener('resize', checkMobile)
+  checkDeviceType()
+  window.addEventListener('resize', checkDeviceType)
   
   // Agregar event listener para scroll
   if (carouselContainer.value) {
@@ -265,7 +271,7 @@ const updateCurrentIndex = () => {
 
 // Limpiar event listeners
 onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile)
+  window.removeEventListener('resize', checkDeviceType)
   if (carouselContainer.value) {
     carouselContainer.value.removeEventListener('scroll', updateCurrentIndex)
   }
