@@ -245,19 +245,24 @@
                         <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
                         <span class="text-sm text-white/60 truncate">{{ post.firmante }}</span>
                         <div class="flex flex-wrap gap-2">
-                          <!-- Pill de tipo -->
-                          <span v-if="post.type === 'RESOLUCIÓN'" class="text-xs bg-[#EFB141]/20 text-[#EFB141] px-2 py-1 rounded-full border border-[#EFB141]/30">
+                          <!-- Pill combinada de tipo y estado -->
+                          <span v-if="post.type === 'RESOLUCIÓN'" 
+                                :class="[
+                                  'text-xs px-2 py-1 rounded-full border text-center',
+                                  post.status === 'draft' 
+                                    ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' 
+                                    : 'bg-green-500/20 text-green-300 border-green-500/30'
+                                ]">
                             Resolución
                           </span>
-                          <span v-else-if="post.type === 'COMUNICADO'" class="text-xs bg-[#B23B8F]/20 text-[#B23B8F] px-2 py-1 rounded-full border border-[#B23B8F]/30">
+                          <span v-else-if="post.type === 'COMUNICADO'" 
+                                :class="[
+                                  'text-xs px-2 py-1 rounded-full border text-center',
+                                  post.status === 'draft' 
+                                    ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' 
+                                    : 'bg-green-500/20 text-green-300 border-green-500/30'
+                                ]">
                             Comunicado
-                          </span>
-                          <!-- Pill de estado -->
-                          <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full w-16 text-center border border-yellow-500/30">
-                            Borrador
-                          </span>
-                          <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full w-20 text-center border border-green-500/30">
-                            Publicado
                           </span>
                         </div>
                       </div>
@@ -288,10 +293,10 @@
                             ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
                             : 'bg-yellow-600 hover:bg-yellow-700 text-white'
                         ]"
-                        title="Convertir en borrador"
+                        title="Borrador"
                       >
                         <Icon name="heroicons:document-text" class="w-4 h-4" />
-                        <span>{{ disabledButtons.has(post.id) ? 'Convirtiendo...' : 'Convertir en Borrador' }}</span>
+                        <span>{{ disabledButtons.has(post.id) ? 'Convirtiendo...' : 'Borrador' }}</span>
                       </button>
                       <button 
                         @click="handleEditPost(post)"
