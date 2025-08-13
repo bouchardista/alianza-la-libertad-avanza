@@ -91,6 +91,7 @@
       </div>
 
       <!-- Contenido principal -->
+      <div v-else>
         <!-- Error de carga -->
         <div v-if="postsError" class="bg-red-500/10 border border-red-500/20 rounded-lg p-6 mb-8">
           <div class="flex items-center">
