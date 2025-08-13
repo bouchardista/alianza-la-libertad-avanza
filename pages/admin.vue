@@ -161,61 +161,61 @@
               <h2 class="text-xl font-semibold text-white">Filtros</h2>
               <div class="flex flex-wrap gap-3">
                 <button
-                @click="activeFilter = 'all'"
-                :class="[
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                  activeFilter === 'all'
-                    ? 'bg-[#31B4E7] text-white'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20'
-                ]"
-              >
-                Todos
-              </button>
-              <button
-                @click="activeFilter = 'published'"
-                :class="[
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                  activeFilter === 'published'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20'
-                ]"
-              >
-                Publicados
-              </button>
-              <button
-                @click="activeFilter = 'draft'"
-                :class="[
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                  activeFilter === 'draft'
-                    ? 'bg-yellow-600 text-white'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20'
-                ]"
-              >
-                Borradores
-              </button>
-              <button
-                @click="activeFilter = 'RESOLUCIÓN'"
-                :class="[
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                  activeFilter === 'RESOLUCIÓN'
-                    ? 'bg-[#B23B8F] text-white'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20'
-                ]"
-              >
-                Resoluciones
-              </button>
-              <button
-                @click="activeFilter = 'COMUNICADO'"
-                :class="[
-                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-                  activeFilter === 'COMUNICADO'
-                    ? 'bg-[#B23B8F] text-white'
-                    : 'bg-white/10 text-white/80 hover:bg-white/20'
-                ]"
-              >
-                Comunicados
-              </button>
-            </div>
+                  @click="activeFilter = 'all'"
+                  :class="[
+                    'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                    activeFilter === 'all'
+                      ? 'bg-[#31B4E7] text-white'
+                      : 'bg-white/10 text-white/80 hover:bg-white/20'
+                  ]"
+                >
+                  Todos
+                </button>
+                <button
+                  @click="activeFilter = 'published'"
+                  :class="[
+                    'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                    activeFilter === 'published'
+                      ? 'bg-green-600 text-white'
+                      : 'bg-white/10 text-white/80 hover:bg-white/20'
+                  ]"
+                >
+                  Publicados
+                </button>
+                <button
+                  @click="activeFilter = 'draft'"
+                  :class="[
+                    'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                    activeFilter === 'draft'
+                      ? 'bg-yellow-600 text-white'
+                      : 'bg-white/10 text-white/80 hover:bg-white/20'
+                  ]"
+                >
+                  Borradores
+                </button>
+                <button
+                  @click="activeFilter = 'RESOLUCIÓN'"
+                  :class="[
+                    'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                    activeFilter === 'RESOLUCIÓN'
+                      ? 'bg-[#B23B8F] text-white'
+                      : 'bg-white/10 text-white/80 hover:bg-white/20'
+                  ]"
+                >
+                  Resoluciones
+                </button>
+                <button
+                  @click="activeFilter = 'COMUNICADO'"
+                  :class="[
+                    'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                    activeFilter === 'COMUNICADO'
+                      ? 'bg-[#B23B8F] text-white'
+                      : 'bg-white/10 text-white/80 hover:bg-white/20'
+                  ]"
+                >
+                  Comunicados
+                </button>
+              </div>
           </div>
         </div>
 
