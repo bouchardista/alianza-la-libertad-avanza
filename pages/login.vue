@@ -106,20 +106,4 @@ const handleLogin = async () => {
   await navigateTo('/admin/secure-login')
   return
 }
-  pageLoading.value = true
-  
-  const result = await signIn(email.value, password.value)
-  
-  if (result.success) {
-    // Redirigir según el rol
-    if (result.user.role === 'admin') {
-      window.location.href = '/admin'
-    } else if (result.user.role === 'editor') {
-      window.location.href = '/editor'
-    }
-  } else {
-    pageLoading.value = false
-    error.value = result.error || 'Error al iniciar sesión'
-  }
-}
 </script>
