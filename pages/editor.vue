@@ -197,7 +197,7 @@
                 :class="[
                   'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
                   activeFilter === 'RESOLUCIÓN'
-                    ? 'bg-[#EFB141] text-gray-800'
+                    ? 'bg-[#B23B8F] text-white'
                     : 'bg-white/10 text-white/80 hover:bg-white/20'
                 ]"
               >
@@ -273,10 +273,10 @@
                         @click="handleRequestPublication(post)"
                         :disabled="disabledButtons.has(post.id)"
                         :class="[
-                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors',
+                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors border',
                           disabledButtons.has(post.id)
-                            ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                            : 'bg-green-600 hover:bg-green-700 text-white'
+                            ? 'bg-gray-500/20 text-gray-300 border-gray-500/30 cursor-not-allowed'
+                            : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                         ]"
                         title="Solicitar publicación"
                       >

@@ -157,8 +157,9 @@
         <!-- Filtros -->
         <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 mb-6">
           <div class="px-6 py-4 border-b border-white/20">
-            <h2 class="text-xl font-semibold text-white mb-4">Filtros</h2>
-            <div class="flex flex-wrap gap-3">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+              <h2 class="text-xl font-semibold text-white">Filtros</h2>
+              <div class="flex flex-wrap gap-3">
               <button
                 @click="activeFilter = 'all'"
                 :class="[
@@ -197,7 +198,7 @@
                 :class="[
                   'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
                   activeFilter === 'RESOLUCIÓN'
-                    ? 'bg-[#EFB141] text-gray-800'
+                    ? 'bg-[#B23B8F] text-white'
                     : 'bg-white/10 text-white/80 hover:bg-white/20'
                 ]"
               >
@@ -273,10 +274,10 @@
                         @click="handlePublishDraft(post)"
                         :disabled="disabledButtons.has(post.id)"
                         :class="[
-                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors',
+                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors border',
                           disabledButtons.has(post.id)
-                            ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                            : 'bg-green-600 hover:bg-green-700 text-white'
+                            ? 'bg-gray-500/20 text-gray-300 border-gray-500/30 cursor-not-allowed'
+                            : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                         ]"
                         title="Publicar borrador"
                       >
@@ -288,15 +289,15 @@
                         @click="handleConvertToDraft(post)"
                         :disabled="disabledButtons.has(post.id)"
                         :class="[
-                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors',
+                          'inline-flex items-center space-x-2 px-3 py-1.5 text-sm rounded-lg transition-colors border',
                           disabledButtons.has(post.id)
-                            ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                            : 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                            ? 'bg-gray-500/20 text-gray-300 border-gray-500/30 cursor-not-allowed'
+                            : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
                         ]"
-                        title="Borrador"
+                        title="Despublicar"
                       >
                         <Icon name="heroicons:document-text" class="w-4 h-4" />
-                        <span>{{ disabledButtons.has(post.id) ? 'Convirtiendo...' : 'Borrador' }}</span>
+                        <span>{{ disabledButtons.has(post.id) ? 'Convirtiendo...' : 'Despublicar' }}</span>
                       </button>
                       <button 
                         @click="handleEditPost(post)"
