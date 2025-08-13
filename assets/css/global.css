@@ -34,7 +34,7 @@ input, textarea, select, button {
 }
 
 /* Asegurar que los logos tengan fondo transparente */
-img[src*="white-logo.png"] {
+img[src*="white-logo.png?v=3"] {
   background: transparent !important;
   background-color: transparent !important;
 }

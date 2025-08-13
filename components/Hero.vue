@@ -4,7 +4,7 @@
       <div class="sm:flex items-center justify-center space-x-2">
         <div class="flex items-center justify-center">
           <div class="h-48 w-48 flex items-center justify-center bg-transparent">
-            <img src="/white-logo.png" alt="Logo Alianza La Libertad Avanza" class="h-44 w-44 object-contain bg-transparent" />
+            <img src="/white-logo.png?v=3" alt="Logo Alianza La Libertad Avanza" class="h-44 w-44 object-contain bg-transparent" />
           </div>
         </div>
         <div class="text-center">
