@@ -154,13 +154,79 @@
           </div>
         </div>
 
+        <!-- Filtros -->
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20 mb-6">
+          <div class="px-6 py-4 border-b border-white/20">
+            <h2 class="text-xl font-semibold text-white mb-4">Filtros</h2>
+            <div class="flex flex-wrap gap-3">
+              <button
+                @click="activeFilter = 'all'"
+                :class="[
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                  activeFilter === 'all'
+                    ? 'bg-[#31B4E7] text-white'
+                    : 'bg-white/10 text-white/80 hover:bg-white/20'
+                ]"
+              >
+                Todos
+              </button>
+              <button
+                @click="activeFilter = 'published'"
+                :class="[
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                  activeFilter === 'published'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-white/10 text-white/80 hover:bg-white/20'
+                ]"
+              >
+                Publicados
+              </button>
+              <button
+                @click="activeFilter = 'draft'"
+                :class="[
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                  activeFilter === 'draft'
+                    ? 'bg-yellow-600 text-white'
+                    : 'bg-white/10 text-white/80 hover:bg-white/20'
+                ]"
+              >
+                Borradores
+              </button>
+              <button
+                @click="activeFilter = 'RESOLUCIÓN'"
+                :class="[
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                  activeFilter === 'RESOLUCIÓN'
+                    ? 'bg-[#EFB141] text-gray-800'
+                    : 'bg-white/10 text-white/80 hover:bg-white/20'
+                ]"
+              >
+                Resoluciones
+              </button>
+              <button
+                @click="activeFilter = 'COMUNICADO'"
+                :class="[
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                  activeFilter === 'COMUNICADO'
+                    ? 'bg-[#B23B8F] text-white'
+                    : 'bg-white/10 text-white/80 hover:bg-white/20'
+                ]"
+              >
+                Comunicados
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Lista de Publicaciones -->
         <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
-                                  <div class="px-6 py-4 border-b border-white/20">
-                          <h2 class="text-xl font-semibold text-white">Mis Publicaciones y Borradores</h2>
-                        </div>
-          <div v-if="posts && posts.length > 0" class="divide-y divide-white/20 overflow-x-auto min-w-full">
-            <div v-for="post in posts" :key="post.id" class="px-6 py-4">
+          <div class="px-6 py-4 border-b border-white/20">
+            <h2 class="text-xl font-semibold text-white">
+              {{ getFilteredPostsTitle() }}
+            </h2>
+          </div>
+          <div v-if="filteredPosts && filteredPosts.length > 0" class="divide-y divide-white/20 overflow-x-auto min-w-full">
+            <div v-for="post in filteredPosts" :key="post.id" class="px-6 py-4">
                                 <div class="flex flex-col sm:flex-row sm:justify-between space-y-3 sm:space-y-0">
                     <div class="flex-1 min-w-0">
                       <h3 class="text-base sm:text-lg font-medium text-white truncate">
@@ -178,12 +244,22 @@
                       <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 mt-2">
                         <span class="text-sm text-white/60">{{ formatDate(post.date) }}</span>
                         <span class="text-sm text-white/60 truncate">{{ post.firmante }}</span>
-                        <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full w-16 text-center">
-                          Borrador
-                        </span>
-                        <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full w-20 text-center">
-                          Publicado
-                        </span>
+                        <div class="flex flex-wrap gap-2">
+                          <!-- Pill de tipo -->
+                          <span v-if="post.type === 'RESOLUCIÓN'" class="text-xs bg-[#EFB141]/20 text-[#EFB141] px-2 py-1 rounded-full border border-[#EFB141]/30">
+                            Resolución
+                          </span>
+                          <span v-else-if="post.type === 'COMUNICADO'" class="text-xs bg-[#B23B8F]/20 text-[#B23B8F] px-2 py-1 rounded-full border border-[#B23B8F]/30">
+                            Comunicado
+                          </span>
+                          <!-- Pill de estado -->
+                          <span v-if="post.status === 'draft'" class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-1 rounded-full w-16 text-center border border-yellow-500/30">
+                            Borrador
+                          </span>
+                          <span v-else class="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full w-20 text-center border border-green-500/30">
+                            Publicado
+                          </span>
+                        </div>
                       </div>
                     </div>
                     <div class="flex items-end space-x-2">
@@ -215,7 +291,7 @@
           </div>
           <div v-else class="px-6 py-12 text-center">
             <Icon name="heroicons:document-text" class="h-12 w-12 text-white/40 mx-auto mb-4" />
-            <p class="text-white/60">No hay publicaciones disponibles.</p>
+            <p class="text-white/60">{{ getNoPostsMessage() }}</p>
           </div>
         </div>
       </div>
@@ -694,6 +770,27 @@ const editingPost = ref({
   firmante: 'Alianza La Libertad Avanza Córdoba'
 })
 
+// Filtros
+const activeFilter = ref('all')
+
+// Posts filtrados
+const filteredPosts = computed(() => {
+  if (!posts.value) return []
+  
+  switch (activeFilter.value) {
+    case 'published':
+      return posts.value.filter(post => post.status === 'published')
+    case 'draft':
+      return posts.value.filter(post => post.status === 'draft')
+    case 'RESOLUCIÓN':
+      return posts.value.filter(post => post.type === 'RESOLUCIÓN')
+    case 'COMUNICADO':
+      return posts.value.filter(post => post.type === 'COMUNICADO')
+    default:
+      return posts.value
+  }
+})
+
 const formatDate = (date) => {
   if (!date) return '';
   try {
@@ -702,7 +799,6 @@ const formatDate = (date) => {
     const dateObj = new Date(year, month - 1, day); // month - 1 porque los meses van de 0-11
     
     return dateObj.toLocaleDateString('es-AR', {
-      year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
@@ -717,6 +813,38 @@ const showSuccess = (message) => {
   setTimeout(() => {
     showSuccessMessage.value = false
   }, 3000)
+}
+
+// Función para obtener el título de la lista filtrada
+const getFilteredPostsTitle = () => {
+  switch (activeFilter.value) {
+    case 'published':
+      return 'Mis Publicaciones Publicadas'
+    case 'draft':
+      return 'Mis Borradores'
+    case 'RESOLUCIÓN':
+      return 'Mis Resoluciones'
+    case 'COMUNICADO':
+      return 'Mis Comunicados'
+    default:
+      return 'Mis Publicaciones y Borradores'
+  }
+}
+
+// Función para obtener el mensaje cuando no hay posts
+const getNoPostsMessage = () => {
+  switch (activeFilter.value) {
+    case 'published':
+      return 'No tienes publicaciones publicadas.'
+    case 'draft':
+      return 'No tienes borradores disponibles.'
+    case 'RESOLUCIÓN':
+      return 'No tienes resoluciones disponibles.'
+    case 'COMUNICADO':
+      return 'No tienes comunicados disponibles.'
+    default:
+      return 'No tienes publicaciones disponibles.'
+  }
 }
 
 const handleLogout = async () => {
