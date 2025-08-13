@@ -160,7 +160,7 @@
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
               <h2 class="text-xl font-semibold text-white">Filtros</h2>
               <div class="flex flex-wrap gap-3">
-              <button
+                <button
                 @click="activeFilter = 'all'"
                 :class="[
                   'px-4 py-2 rounded-lg text-sm font-medium transition-colors',
