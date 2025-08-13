@@ -20,7 +20,7 @@ export default defineNuxtConfig({
     redirectOptions: {
       login: '/admin/secure-login',
       callback: '/confirm',
-      exclude: ['/', '/posts/*', '/admin/secure-login']
+      exclude: ['/', '/posts/*', '/admin/secure-login', '/admin/panel']
     }
   },
   runtimeConfig: {

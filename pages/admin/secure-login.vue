@@ -86,6 +86,30 @@ const password = ref('')
 const loading = ref(false)
 const error = ref('')
 
+// Verificar si ya está autenticado como admin
+onMounted(async () => {
+  try {
+    const { data: { user } } = await $supabase.auth.getUser()
+    
+    if (user) {
+      // Verificar que tenga rol de admin
+      const { data: profile } = await $supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+      
+      if (profile && profile.role === 'admin') {
+        // Si ya está autenticado como admin, redirigir al panel principal
+        await router.replace('/admin')
+        return
+      }
+    }
+  } catch (error) {
+    console.error('Error verificando autenticación:', error)
+  }
+})
+
 async function handleLogin() {
   if (!username.value || !password.value) {
     error.value = 'Por favor completa todos los campos'
@@ -121,7 +145,7 @@ async function handleLogin() {
     }
 
     // Redirigir al panel de administración
-    await router.push('/admin/panel')
+    await router.push('/admin')
 
   } catch (err) {
     console.error('Error en login:', err)
