@@ -107,7 +107,7 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
+                <Icon name="heroicons:document-text" class="h-8 w-8 text-green-400" />
               </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Publicados</p>
@@ -219,7 +219,7 @@
         </div>
 
         <!-- Lista de Publicaciones -->
-        <div class="bg-white/5 backdrop-blur-sm rounded-lg border border-white/20">
+        <div class="bg-white/0 backdrop-blur-sm rounded-lg border border-white/20">
           <div class="px-6 py-4 border-b border-white/20">
             <h2 class="text-xl font-semibold text-white">
               {{ getFilteredPostsTitle() }}
