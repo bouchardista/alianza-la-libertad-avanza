@@ -144,20 +144,32 @@ const formatContent = (content, isPreview = false) => {
   
   let processedContent = content;
   
-  // Si es vista previa, truncar el contenido
-  if (isPreview && content.length > 200) {
-    // Buscar un buen punto de corte (después de un punto o salto de línea)
-    let cutPoint = 200;
-    const nextPeriod = content.indexOf('.', 200);
-    const nextNewline = content.indexOf('\n', 200);
+  // Si es vista previa, limitar por altura (aproximadamente 3-4 líneas)
+  if (isPreview) {
+    // Dividir por líneas para contar párrafos
+    const lines = content.split('\n').filter(line => line.trim() !== '');
     
-    if (nextPeriod !== -1 && nextPeriod < 250) {
-      cutPoint = nextPeriod + 1;
-    } else if (nextNewline !== -1 && nextNewline < 250) {
-      cutPoint = nextNewline;
+    // Si hay más de 3 líneas con contenido, truncar
+    if (lines.length > 3) {
+      // Tomar las primeras 3 líneas
+      const firstThreeLines = lines.slice(0, 3);
+      
+      // Buscar un buen punto de corte en la última línea
+      let lastLine = firstThreeLines[2];
+      const lastPeriod = lastLine.lastIndexOf('.');
+      const lastSpace = lastLine.lastIndexOf(' ');
+      
+      if (lastPeriod !== -1 && lastPeriod > lastLine.length * 0.7) {
+        // Si hay un punto después del 70% de la línea, cortar ahí
+        lastLine = lastLine.substring(0, lastPeriod + 1);
+      } else if (lastSpace !== -1 && lastSpace > lastLine.length * 0.6) {
+        // Si no hay punto pero hay un espacio después del 60%, cortar ahí
+        lastLine = lastLine.substring(0, lastSpace);
+      }
+      
+      firstThreeLines[2] = lastLine;
+      processedContent = firstThreeLines.join('\n') + '...';
     }
-    
-    processedContent = content.substring(0, cutPoint) + '...';
   }
   
   // Convertir Markdown básico a HTML (método mejorado)
