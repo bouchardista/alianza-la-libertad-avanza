@@ -73,7 +73,7 @@
         </NuxtLink>
       </div>
       
-      <div v-if="content.firmante" class="mt-6 pt-4 border-t border-white/20">
+      <div v-if="content.firmante" class="mt-6 pt-4 border-t border-white/20 mb-12">
         <p class="text-sm text-white font-semibold">
           Firmado por: <span class="text-[#EFB141]">{{ content.firmante }}</span>
         </p>

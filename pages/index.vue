@@ -64,7 +64,6 @@
           :key="post.id" 
           :content="post" 
           :is-preview="true"
-          class="mb-12"
         />
       </div>
       
