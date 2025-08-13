@@ -32,7 +32,7 @@
       </div>
     </div>
 
-    <header class="bg-white/10 backdrop-blur-sm border-b border-white/20">
+    <header class="bg-white/5 backdrop-blur-sm border-b border-white/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center space-y-4 lg:space-y-0">
           <div class="flex items-center space-x-4">
@@ -110,8 +110,20 @@
                 <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
               </div>
               <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Total</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
+                <p class="text-sm font-medium text-white/60">Publicados</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.status === 'published').length || 0 }}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <Icon name="heroicons:document" class="h-8 w-8 text-yellow-400" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Borradores</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.status === 'draft').length || 0 }}</p>
               </div>
             </div>
           </div>
@@ -136,18 +148,6 @@
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Comunicados</p>
                 <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.type === 'COMUNICADO').length || 0 }}</p>
-              </div>
-            </div>
-          </div>
-          
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <Icon name="heroicons:calendar" class="h-8 w-8 text-white" />
-              </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Este Mes</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
               </div>
             </div>
           </div>
@@ -219,7 +219,7 @@
         </div>
 
         <!-- Lista de Publicaciones -->
-        <div class="bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+        <div class="bg-white/5 backdrop-blur-sm rounded-lg border border-white/20">
           <div class="px-6 py-4 border-b border-white/20">
             <h2 class="text-xl font-semibold text-white">
               {{ getFilteredPostsTitle() }}
@@ -235,7 +235,7 @@
                           :href="`/posts/${generateSlug(post.title)}`"
                           target="_blank"
                           rel="noopener noreferrer"
-                          class="text-white hover:text-[#31B4E7] underline transition-colors cursor-pointer"
+                          class="text-white hover:text-white/80 underline transition-colors cursor-pointer"
                         >
                           {{ post.title }}
                         </a>
