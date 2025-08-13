@@ -19,9 +19,12 @@
         <p class="mt-2 text-center text-sm text-white/80">
           Alianza La Libertad Avanza Córdoba
         </p>
+        <p class="mt-2 text-center text-sm text-[#EFB141]">
+          Redirigiendo al acceso administrativo...
+        </p>
       </div>
       
-      <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
+      <form class="mt-8 space-y-6" @submit.prevent="handleLogin" style="display: none;">
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="email" class="sr-only">Email</label>
@@ -91,13 +94,18 @@ const password = ref('')
 const error = ref('')
 const pageLoading = ref(false)
 
-// Evitar problemas de hidratación usando onMounted
+// Redirigir automáticamente al login administrativo
 onMounted(() => {
-  // El estado se inicializa en el cliente
+  setTimeout(() => {
+    navigateTo('/admin/secure-login')
+  }, 2000)
 })
 
 const handleLogin = async () => {
-  error.value = ''
+  // Redirigir al login administrativo
+  await navigateTo('/admin/secure-login')
+  return
+}
   pageLoading.value = true
   
   const result = await signIn(email.value, password.value)
