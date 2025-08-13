@@ -169,7 +169,7 @@
                       : 'bg-white/10 text-white/80 hover:bg-white/20'
                   ]"
                 >
-                  Todos
+                  Todas
                 </button>
                 <button
                   @click="activeFilter = 'published'"
@@ -180,7 +180,7 @@
                       : 'bg-white/10 text-white/80 hover:bg-white/20'
                   ]"
                 >
-                  Publicados
+                  Publicadas
                 </button>
                 <button
                   @click="activeFilter = 'draft'"

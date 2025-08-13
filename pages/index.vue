@@ -15,7 +15,7 @@
               : 'bg-white/10 text-white hover:bg-[#EFB141] hover:text-gray-800 border border-white/20'
           ]"
         >
-          Todos
+          Todas
         </button>
         <button 
           @click="filterType = 'RESOLUCIÓN'"
