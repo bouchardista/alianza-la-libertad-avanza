@@ -132,7 +132,7 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:megaphone" class="h-8 w-8 text-[#EFB141]" />
+                <Icon name="heroicons:megaphone" class="h-8 w-8 text-[#B23B8F]" />
               </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Resoluciones</p>
