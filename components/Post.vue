@@ -160,26 +160,39 @@ const formatContent = (content, isPreview = false) => {
     processedContent = content.substring(0, cutPoint) + '...';
   }
   
-  // Convertir Markdown básico a HTML (método simple sin async)
+  // Convertir Markdown básico a HTML (método mejorado)
   return processedContent
-    // Headers
+    // Headers (procesar primero)
     .replace(/^### (.*$)/gim, '<h3 class="text-lg font-semibold mb-3 text-white">$1</h3>')
     .replace(/^## (.*$)/gim, '<h2 class="text-xl font-semibold mb-4 text-white">$1</h2>')
     .replace(/^# (.*$)/gim, '<h1 class="text-2xl font-bold mb-5 text-white">$1</h1>')
-    // Bold
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
-    // Italic
-    .replace(/\*(.*?)\*/g, '<em class="italic text-white/90">$1</em>')
-    // Lists
+    // Blockquotes (procesar antes que párrafos)
+    .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-[#31B4E7] pl-4 italic text-white/80 mb-4">$1</blockquote>')
+    // Lists (procesar antes que párrafos)
     .replace(/^- (.*$)/gim, '<li class="text-white mb-1">$1</li>')
     .replace(/(<li.*<\/li>)/s, '<ul class="list-disc list-inside mb-4 space-y-1">$1</ul>')
-    // Links
+    // Bold e Italic (procesar antes que párrafos)
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-white">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic text-white/90">$1</em>')
+    // Links (procesar antes que párrafos)
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="text-[#31B4E7] hover:text-[#2A9BC7] underline">$1</a>')
-    // Blockquotes
-    .replace(/^> (.*$)/gim, '<blockquote class="border-l-4 border-[#31B4E7] pl-4 italic text-white/80 mb-4">$1</blockquote>')
-    // Paragraphs
-    .replace(/\n\n/g, '</p><p class="text-white mb-4">')
-    .replace(/^(.+)$/gm, '<p class="text-white mb-4">$1</p>')
+    // Párrafos (procesar al final, pero solo en líneas que no sean headers, blockquotes, o listas)
+    .split('\n')
+    .map(line => {
+      const trimmedLine = line.trim()
+      // Si la línea ya es HTML (headers, blockquotes, listas), no envolver en párrafo
+      if (trimmedLine.startsWith('<h') || trimmedLine.startsWith('<blockquote') || 
+          trimmedLine.startsWith('<ul') || trimmedLine.startsWith('<li') || 
+          trimmedLine === '') {
+        return line
+      }
+      // Si la línea tiene contenido, envolver en párrafo
+      if (trimmedLine) {
+        return `<p class="text-white mb-4">${line}</p>`
+      }
+      return line
+    })
+    .join('\n')
     // Clean up empty paragraphs
     .replace(/<p class="text-white mb-4"><\/p>/g, '')
     .replace(/<p class="text-white mb-4">\s*<\/p>/g, '');
