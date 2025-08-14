@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-violet-900 via-violet-800 to-violet-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8">
       <div>
         <div class="mx-auto h-20 w-20 flex items-center justify-center bg-transparent">
@@ -9,7 +9,7 @@
           Acceso Administrativo
         </h2>
         <p class="mt-2 text-center text-sm text-white/80">
-          Ingresa con tus credenciales de administrador
+          Alianza La Libertad Avanza Córdoba
         </p>
       </div>
       
@@ -23,7 +23,7 @@
               name="username"
               type="text"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-violet-500 focus:border-violet-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 placeholder-white/60 text-white bg-white/10 rounded-t-md focus:outline-none focus:ring-[#EFB141] focus:border-[#EFB141] focus:z-10 sm:text-sm"
               placeholder="Usuario"
             />
           </div>
@@ -35,7 +35,7 @@
               name="password"
               type="password"
               required
-              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-violet-500 focus:border-violet-500 focus:z-10 sm:text-sm"
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-white/20 placeholder-white/60 text-white bg-white/10 rounded-b-md focus:outline-none focus:ring-[#EFB141] focus:border-[#EFB141] focus:z-10 sm:text-sm"
               placeholder="Contraseña"
             />
           </div>
@@ -49,7 +49,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-gray-800 bg-[#EFB141] hover:bg-[#E36030] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#EFB141] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <span v-if="loading" class="absolute left-0 inset-y-0 flex items-center pl-3">
               <Icon name="heroicons:arrow-path" class="h-5 w-5 animate-spin" />
@@ -59,8 +59,8 @@
         </div>
 
         <div class="text-center">
-          <NuxtLink to="/" class="text-white/60 hover:text-white text-sm">
-            ← Volver al sitio
+          <NuxtLink to="/" class="text-[#EFB141] hover:text-[#E36030] text-sm transition-colors">
+            ← Volver al sitio principal
           </NuxtLink>
         </div>
       </form>
@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-const { $supabase } = useNuxtApp()
+const client = useSupabaseClient()
 const router = useRouter()
 
 // SEO
@@ -89,11 +89,11 @@ const error = ref('')
 // Verificar si ya está autenticado como admin
 onMounted(async () => {
   try {
-    const { data: { user } } = await $supabase.auth.getUser()
+    const { data: { user } } = await client.auth.getUser()
     
     if (user) {
       // Verificar que tenga rol de admin
-      const { data: profile } = await $supabase
+      const { data: profile } = await client
         .from('profiles')
         .select('role')
         .eq('id', user.id)
@@ -101,7 +101,7 @@ onMounted(async () => {
       
       if (profile && profile.role === 'admin') {
         // Si ya está autenticado como admin, redirigir al panel principal
-        await router.replace('/admin')
+        await router.replace('/admin/panel')
         return
       }
     }
@@ -120,32 +120,49 @@ async function handleLogin() {
   error.value = ''
 
   try {
+    console.log('🔄 Intentando login con:', `${username.value}@alianza.com.ar`)
+    
     // Intentar login con el username como email
-    const { data, error: authError } = await $supabase.auth.signInWithPassword({
+    const { data, error: authError } = await client.auth.signInWithPassword({
       email: `${username.value}@alianza.com.ar`,
       password: password.value
     })
 
     if (authError) {
+      console.error('❌ Error de autenticación:', authError)
       error.value = 'Credenciales incorrectas'
       return
     }
 
+    console.log('✅ Login exitoso, usuario:', data.user.id)
+
     // Verificar que el usuario tenga rol de admin
-    const { data: profile, error: profileError } = await $supabase
+    const { data: profile, error: profileError } = await client
       .from('profiles')
       .select('role')
       .eq('id', data.user.id)
       .single()
 
-    if (profileError || profile.role !== 'admin') {
+    if (profileError) {
+      console.error('❌ Error al obtener perfil:', profileError)
+      await $supabase.auth.signOut()
+      error.value = 'Error al verificar permisos'
+      return
+    }
+
+    console.log('📋 Perfil encontrado:', profile)
+
+    if (profile.role !== 'admin') {
+      console.log('❌ Usuario no es admin, rol:', profile.role)
       await $supabase.auth.signOut()
       error.value = 'No tienes permisos de administrador'
       return
     }
 
+    console.log('✅ Usuario es admin, redirigiendo...')
+
     // Redirigir al panel de administración
-    await router.push('/admin')
+    await router.push('/admin/panel')
 
   } catch (err) {
     console.error('Error en login:', err)
