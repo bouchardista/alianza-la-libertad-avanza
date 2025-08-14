@@ -1,9 +1,9 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   try {
-    const { $supabase } = useNuxtApp()
+    const client = useSupabaseClient()
     
     // Verificar si el usuario está autenticado
-    const { data: { user }, error: authError } = await $supabase.auth.getUser()
+    const { data: { user }, error: authError } = await client.auth.getUser()
     
     if (authError || !user) {
       console.log('Usuario no autenticado, redirigiendo a login administrativo')
@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
     
     // Verificar que tenga rol de admin
-    const { data: profile, error: profileError } = await $supabase
+    const { data: profile, error: profileError } = await client
       .from('profiles')
       .select('role')
       .eq('id', user.id)

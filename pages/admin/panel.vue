@@ -71,7 +71,8 @@ useHead({
 // Función para cerrar sesión
 const handleLogout = async () => {
   try {
-    await $supabase.auth.signOut()
+    const client = useSupabaseClient()
+    await client.auth.signOut()
     await navigateTo('/admin/secure-login')
   } catch (error) {
     console.error('Error al cerrar sesión:', error)
