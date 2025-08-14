@@ -10,8 +10,8 @@
 
     <div class="max-w-md w-full space-y-8">
       <div>
-        <div class="mx-auto h-24 w-24 flex items-center justify-center bg-transparent">
-          <img src="/white-logo.png?v=2" alt="Logo Alianza La Libertad Avanza" class="h-20 w-20 object-contain bg-transparent" />
+        <div class="mx-auto h-32 w-32 flex items-center justify-center bg-transparent mb-4">
+          <img src="/white-logo.png?v=2" alt="Logo Alianza La Libertad Avanza" class="h-28 w-28 object-contain bg-transparent" />
         </div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
           Acceso Administrativo
