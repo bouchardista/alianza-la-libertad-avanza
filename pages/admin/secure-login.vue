@@ -1,9 +1,17 @@
 <template>
   <div class="min-h-screen bg-gradient-to-b from-[#1A043C] to-[#371859] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <!-- Loader de página -->
+    <div v-if="pageLoading" class="fixed inset-0 bg-gradient-to-b from-[#1A043C] to-[#371859] flex items-center justify-center z-50">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-[#EFB141] mx-auto mb-4"></div>
+        <p class="text-white/80 text-lg">Iniciando sesión...</p>
+      </div>
+    </div>
+
     <div class="max-w-md w-full space-y-8">
       <div>
-        <div class="mx-auto h-20 w-20 flex items-center justify-center bg-transparent">
-          <img src="/white-logo.png?v=2" alt="Logo Alianza La Libertad Avanza" class="h-16 w-16 object-contain bg-transparent" />
+        <div class="mx-auto h-24 w-24 flex items-center justify-center bg-transparent">
+          <img src="/white-logo.png?v=2" alt="Logo Alianza La Libertad Avanza" class="h-20 w-20 object-contain bg-transparent" />
         </div>
         <h2 class="mt-6 text-center text-3xl font-extrabold text-white">
           Acceso Administrativo
