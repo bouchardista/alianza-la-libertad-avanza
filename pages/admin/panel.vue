@@ -108,11 +108,11 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:document-text" class="h-8 w-8 text-[#31B4E7]" />
+                <Icon name="heroicons:document-text" class="h-8 w-8 text-green-400" />
               </div>
               <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Total</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.length || 0 }}</p>
+                <p class="text-sm font-medium text-white/60">Publicadas</p>
+                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => p.published).length || 0 }}</p>
               </div>
             </div>
           </div>
@@ -305,7 +305,7 @@
                   </button>
                   <button 
                     @click="handleEditPost(post)"
-                    class="text-[#31B4E7] hover:text-[#2A9BC7] transition-colors p-1"
+                    class="text-white hover:text-white/80 transition-colors p-1"
                     title="Editar"
                   >
                     <Icon name="heroicons:pencil" class="w-5 h-5" />
