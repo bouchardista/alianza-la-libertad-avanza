@@ -120,7 +120,21 @@
           <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <Icon name="heroicons:flag" class="h-8 w-8 text-[#EFB141]" />
+                <Icon name="heroicons:document" class="h-8 w-8 text-yellow-400" />
+              </div>
+              <div class="ml-4">
+                <p class="text-sm font-medium text-white/60">Borradores</p>
+                <p class="text-2xl font-bold text-white">
+                  {{ posts?.filter(p => !p.published).length || 0 }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <Icon name="heroicons:megaphone" class="h-8 w-8 text-[#B23B8F]" />
               </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-white/60">Resoluciones</p>
@@ -141,17 +155,6 @@
             </div>
           </div>
           
-          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                <Icon name="heroicons:calendar" class="h-8 w-8 text-white" />
-              </div>
-              <div class="ml-4">
-                <p class="text-sm font-medium text-white/60">Este Mes</p>
-                <p class="text-2xl font-bold text-white">{{ posts?.filter(p => new Date(p.date).getMonth() === new Date().getMonth()).length || 0 }}</p>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- Filtros -->
@@ -430,12 +433,12 @@
                       @click="$refs.fileInput.click()"
                       class="text-[#31B4E7] hover:text-[#2A9BC7] font-medium"
                     >
-                      Haz clic para subir
+                      Haz click para subir
                     </button>
                     o arrastra archivos aquí
                   </p>
                   <p class="text-gray-400 text-xs mt-1">
-                    PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, WEBP (máx. 50MB cada uno)
+                    PDF, DOC, PPT, JPG, PNG, ETC (máx. 50MB cada uno)
                   </p>
                 </div>
               </div>
