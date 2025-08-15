@@ -103,6 +103,7 @@
           @click="insertMarkdown('**', '**')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Negrita"
+          @mousedown.prevent
         >
           <strong>B</strong>
         </button>
@@ -111,6 +112,7 @@
           @click="insertMarkdown('*', '*')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Cursiva"
+          @mousedown.prevent
         >
           <em>I</em>
         </button>
@@ -119,6 +121,7 @@
           @click="insertMarkdown('### ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Título H3"
+          @mousedown.prevent
         >
           H3
         </button>
@@ -127,6 +130,7 @@
           @click="insertMarkdown('## ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Título H2"
+          @mousedown.prevent
         >
           H2
         </button>
@@ -135,6 +139,7 @@
           @click="insertMarkdown('# ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Título H1"
+          @mousedown.prevent
         >
           H1
         </button>
@@ -143,6 +148,7 @@
           @click="insertMarkdown('- ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Lista"
+          @mousedown.prevent
         >
           •
         </button>
@@ -151,6 +157,7 @@
           @click="insertMarkdown('[', '](url)')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Enlace"
+          @mousedown.prevent
         >
           🔗
         </button>
@@ -159,6 +166,7 @@
           @click="insertMarkdown('> ', '')"
           class="px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
           title="Cita"
+          @mousedown.prevent
         >
           "
         </button>
@@ -204,11 +212,17 @@ const renderedMarkdown = computed(() => {
 
 // Función para insertar markdown en el cursor
 const insertMarkdown = (before, after) => {
-  const textarea = document.querySelector('.markdown-editor textarea')
-  if (!textarea) return
+  // Encontrar el textarea activo (el que tiene el foco)
+  let activeTextarea = document.activeElement
+  if (!activeTextarea || activeTextarea.tagName !== 'TEXTAREA') {
+    // Si no hay textarea con foco, usar el primero disponible
+    activeTextarea = document.querySelector('.markdown-editor textarea')
+  }
+  
+  if (!activeTextarea) return
 
-  const start = textarea.selectionStart
-  const end = textarea.selectionEnd
+  const start = activeTextarea.selectionStart
+  const end = activeTextarea.selectionEnd
   const selectedText = props.modelValue.substring(start, end)
   
   const newText = props.modelValue.substring(0, start) + 
@@ -217,13 +231,32 @@ const insertMarkdown = (before, after) => {
   
   emit('update:modelValue', newText)
   
-  // Restaurar el foco y la selección
+  // Restaurar el foco y la selección después de que se actualice el DOM
   nextTick(() => {
-    textarea.focus()
-    textarea.setSelectionRange(
-      start + before.length,
-      end + before.length
-    )
+    // Encontrar el textarea correcto después de la actualización
+    const textareas = document.querySelectorAll('.markdown-editor textarea')
+    let targetTextarea = null
+    
+    // En modo dividido, siempre usar el primer textarea (editor)
+    if (activeTab.value === 'split') {
+      targetTextarea = textareas[0]
+    } else {
+      // En modo edit, usar el único textarea
+      targetTextarea = textareas[0]
+    }
+    
+    if (targetTextarea) {
+      targetTextarea.focus()
+      const newStart = start + before.length
+      const newEnd = end + before.length
+      targetTextarea.setSelectionRange(newStart, newEnd)
+      
+      // Asegurar que el scroll esté en la posición correcta
+      const lineHeight = parseInt(getComputedStyle(targetTextarea).lineHeight) || 20
+      const linesBeforeCursor = targetTextarea.value.substring(0, newStart).split('\n').length
+      const scrollTop = (linesBeforeCursor - 1) * lineHeight
+      targetTextarea.scrollTop = Math.max(0, scrollTop - targetTextarea.clientHeight / 2)
+    }
   })
 }
 </script>
