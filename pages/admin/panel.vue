@@ -876,7 +876,7 @@
  const handleLogout = async () => {
    const result = await signOut()
    if (result.success) {
-     await navigateTo('/login')
+     await navigateTo('/admin/secure-login')
    }
  }
 
@@ -917,7 +917,7 @@
        // Mostrar error más descriptivo
        if (result.error.includes('no autenticado')) {
          alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
-         await navigateTo('/login')
+         await navigateTo('/admin/secure-login')
        } else {
          alert('Error al crear la publicación: ' + result.error)
        }
@@ -971,7 +971,7 @@
    } else {
      if (result.error.includes('no autenticado')) {
        alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
-       await navigateTo('/login')
+       await navigateTo('/admin/secure-login')
      } else {
        alert('Error al actualizar la publicación: ' + result.error)
      }
@@ -1001,7 +1001,7 @@
    } else {
      if (result.error.includes('no autenticado')) {
        alert('Error de autenticación: ' + result.error + '\n\nSerás redirigido al login.')
-       await navigateTo('/login')
+       await navigateTo('/admin/secure-login')
      } else {
        alert('Error al eliminar la publicación: ' + result.error)
      }
